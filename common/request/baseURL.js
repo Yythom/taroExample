@@ -1,0 +1,19 @@
+import config from './config';
+
+const getBaseURL = () => {
+  let BASE_URL = '';
+  if (config.OPEN_MOCK) {
+    BASE_URL = 'http://localhost:3008';
+    return BASE_URL;
+  }
+
+  // 开发环境
+  if (process.env.NODE_ENV === 'development') {
+    BASE_URL = 'api'; // api
+  } else { // 生产环境
+    BASE_URL = 'api';
+  }
+  return BASE_URL;
+};
+
+export default getBaseURL;

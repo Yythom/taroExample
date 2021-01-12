@@ -1,0 +1,116 @@
+/* eslint-disable react/jsx-indent-props */
+/* eslint-disable no-unused-vars */
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import React, { Component, useEffect, useState } from 'react';
+import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync } from '@tarojs/taro';
+import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker } from '@tarojs/components';
+// import Modal from '@/components/Modal'
+import NavBar from '@/components/NavBar'
+// import Notice from '@/components/Notice'
+import Search from '@/components/Search'
+import Avatar from '@/components/Avatar'
+import Tabs from '@/components/Tabs'
+import UpImg from '@/components/Up_image'
+import BlurImg from '@/components/BlurImg'
+// import WithUserVerify from '@/components/WithUserVerify'
+import TestService from '@/services/test'
+
+import { actions } from './store/slice'
+
+import './index.scss';
+
+function Index() {
+    const [img, setImage] = useState(false);
+    const testStore = useSelector(e => e.testStore, shallowEqual);
+    const dispatch = useDispatch();
+
+
+    // // tab 相关设置
+    // const [refresh_status, setRefresh_status] = useState(false);
+    // const [tag_id, setTag_id] = useState('');
+    // const [content_list, setContent_list] = useState(['首页-1', '首页-2', '首页-3', '首页-4'])
+    // const [list, setList] = useState([
+    //     { title: '首页', tag_id: '101' },
+    //     { title: '测试', tag_id: '102' },
+    //     { title: '我的', tag_id: '103' },
+    //     { title: 'hello', tag_id: '104' },
+    //     { title: '测试-1', tag_id: '105' },
+    //     { title: '测试-2', tag_id: '106' },
+    //     { title: '测试-3', tag_id: '107' },
+    //     { title: '测试-4', tag_id: '108' },
+    //     { title: '测试-5', tag_id: '109' },
+    // ])
+
+    // const change_tag = (id) => {
+    //     console.log(id);
+    //     setTag_id(id);
+    //     setContent_list(['hello-1', 'hello-2', 'hello-3', 'hello-4', 'hello-5'])
+    // }
+
+    // ////////////////////////////////
+
+    useDidShow(() => {
+
+
+        // dispatch(actions.changeuserInfoActionAsync())
+    })
+
+
+    return (
+        <View className='test-h' >
+            <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
+            <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+                <Avatar size={80}></Avatar>
+                {/* <Button onClick={() => {
+                    Taro.navigateTo({
+                        url: '/subpages/create_pages_demo/demo_pages/example/index'
+                    })
+                }}
+                >跳转分包</Button> */}
+                <Picker mode='region' value={["浙江省", "杭州市", "西湖区"]} onChange={((e) => {
+                    console.log(e);
+                })}
+                >
+                    <View className='picker'>
+                        当前选择：
+                    </View>
+                </Picker>
+            </View >
+            <View
+                onClick={() => {
+                    setStorageSync('cop_src', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3592591149,2523126110&fm=26&gp=0.jpg');
+                    navigateTo({ url: '/subpages/img_cop/index' })
+                }}
+            >
+                图片裁剪
+            </View>
+            {/* <UpImg btn_text='上传图片' /> */}
+            {/*             
+            <View>
+                <Tabs
+                    list={list}
+                    tag_id={tag_id}
+                    setTag_id={setTag_id}
+                    onChange={change_tag}
+                    content_list={content_list}
+                    refresh_status={refresh_status}
+                    setRefresh_status={setRefresh_status}
+                    refresh_handle={() => {
+                        // http req
+                        setTimeout(() => {
+                            setRefresh_status(false);
+                        }, 500);
+                    }}
+                    scrollToLowerFn={() => {
+                        // http req
+                    }}
+                    parentClass='nav-parent'
+                    childrenClass='children-class'
+                />
+                {'targ' + tag_id}
+            </View>
+             */}
+        </View>
+    )
+}
+export default Index

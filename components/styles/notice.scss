@@ -1,0 +1,28 @@
+@keyframes move {
+    0% {
+        transform: translateX(100%);
+    }
+
+    50% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-101%);
+    }
+}
+
+.notice-wrap {
+    width: 100vw;
+    height: 80px;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    Text {
+        width: 100%;
+        display: block;
+        animation: move 8s infinite linear;
+    }
+}
