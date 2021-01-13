@@ -9,7 +9,7 @@ const Avatar = ({ size }) => {
     const userInfo = userStore.userInfo || null;
     return (
         <View className='avatar-wrap' style={size && { width: size + 'rpx', height: size + 'rpx' }}>
-            <WithUserVerify isVerifyPhone>
+            <WithUserVerify onClick={() => console.log('头像')}>
                 {
                     !userInfo && !userInfo?.avatar ? <Text class='iconfont icon-wode' style={{ fontSize: size + 'rpx' }} /> : (userInfo && userInfo.avatar && <Image src={userInfo.avatar} style={{ width: size + 'rpx', height: size + 'rpx' }} />)
                 }

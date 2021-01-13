@@ -48,7 +48,7 @@ const WithUserVerify = ({
                     title: '获取用户信息成功'
                 })
                 setType('');
-                if (!isVerifyPhone) handleClick();
+                if (!isVerifyPhone) onClick();
             } else {
                 Taro.showToast({
                     icon: 'none',
@@ -77,7 +77,7 @@ const WithUserVerify = ({
                 title: '绑定手机号成功'
             })
             dispatch(actions.setPhone(''));
-            handleClick();
+            onClick();
         }
     };
     return (
