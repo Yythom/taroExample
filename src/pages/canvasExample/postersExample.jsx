@@ -104,7 +104,7 @@ function Pre() {
         // 商品图片
         ctx.beginPath();
         ctx.rect(0, 92, w1, cover);
-        ctx.setFillStyle("#888686");
+        ctx.setFillStyle("#fff");
         ctx.fill();
 
         ctx.clip();

@@ -31,6 +31,11 @@ function Index() {
                 fullScreen
                 onCut={res => {
                     showLoading({ title: '加载中' });
+                    // Taro.previewImage({
+                    //     current: 'test', // 当前显示图片的http链接
+                    //     urls: [res] // 需要预览的图片http链接列表
+                    // })
+
                     setCutImagePath(res);
                     Taro.saveImageToPhotosAlbum({
                         filePath: res,

@@ -10,6 +10,12 @@ export default {
         'pages/example/index',
       ],
     },
+    {
+      root: 'pages/canvasExample',
+      pages: [
+        'postersExample',
+      ],
+    },
   ],
   window: {
     backgroundTextStyle: 'light',
