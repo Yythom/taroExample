@@ -3,7 +3,7 @@
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import React, { Component, useEffect, useState } from 'react';
 import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync } from '@tarojs/taro';
-import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker } from '@tarojs/components';
+import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Slider, Progress } from '@tarojs/components';
 // import Modal from '@/components/Modal'
 import NavBar from '@/components/NavBar'
 // import Notice from '@/components/Notice'
@@ -20,6 +20,9 @@ import { actions } from './store/slice'
 import './index.scss';
 
 function Index() {
+    const query = Taro.getCurrentInstance().router.params;
+    // console.log(decodeURIComponent(query));
+
     const [img, setImage] = useState(false);
     const testStore = useSelector(e => e.testStore, shallowEqual);
     const dispatch = useDispatch();
@@ -105,14 +108,19 @@ function Index() {
                     </View>
                 </Picker>
             </View >
+
+
+
             <View
                 onClick={() => {
+
                     setStorageSync('cop_src', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3592591149,2523126110&fm=26&gp=0.jpg');
                     navigateTo({ url: '/subpages/img_cop/index' })
                 }}
             >
                 图片裁剪
             </View>
+
             {/* <UpImg btn_text='上传图片' /> */}
             {/*             
             <View>

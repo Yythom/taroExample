@@ -48,29 +48,65 @@ function Pre() {
         const _w = w - wR * 40;
 
         Promise.all(imgArr.map((i) => processMultipleImages(i))).then((imgs) => {
+            console.log(imgs);
+
             canvasDraw(w, _w, h, imgs);
         });
     };
 
+    function darwRoundRect(x, y, w, h, r, ctx) {
+        ctx.save()
+        ctx.beginPath()
+
+        // 左上弧线
+        ctx.arc(x + r, y + r, r, 1 * Math.PI, 1.5 * Math.PI)
+        // 左直线
+        ctx.moveTo(x, y + r)
+        ctx.lineTo(x, y + h - r)
+        // 左下弧线
+        ctx.arc(x + r, y + h - r, r, 0.5 * Math.PI, 1 * Math.PI)
+        // 下直线
+        ctx.lineTo(x + r, y + h)
+        ctx.lineTo(x + w - r, y + h)
+        // 右下弧线
+        ctx.arc(x + w - r, y + h - r, r, 0 * Math.PI, 0.5 * Math.PI)
+        // 右直线
+        ctx.lineTo(x + w, y + h - r)
+        ctx.lineTo(x + w, y + r)
+        // 右上弧线
+        ctx.arc(x + w - r, y + r, r, 1.5 * Math.PI, 2 * Math.PI)
+        // 上直线
+        ctx.lineTo(x + w - r, y)
+        ctx.lineTo(x + r, y)
+
+        ctx.setFillStyle('rgb(193, 201, 207)')
+        ctx.fill();
+        ctx.save();
+    }
+
     const canvasDraw = (w1, w, h, imgs) => {
         const ctx = Taro.createCanvasContext("product");
-        let cover = imgs[2].height / (imgs[2].width / w);
-        cover = 60;
-
+        let cover = imgs[2].height
+        const rightX = 15;
+        const rightY = 15;
         // 背景
-        ctx.rect(0, 0, w1, h);
-        ctx.setFillStyle("#fff");
+        ctx.rect(0, 0, w1, 720);
+        ctx.setFillStyle('#fff');
         ctx.fill();
         ctx.save();
 
+        darwRoundRect(rightX, rightY, w1 - 30, 590, 20, ctx);
+
         // 头像
+        const avatarX = 30 + rightX;
+        const avatarY = rightY + 30;
         ctx.beginPath();
-        ctx.arc(30, 50, 20, 0, 2 * Math.PI);
-        ctx.setFillStyle("#f4f3f3");
+        ctx.arc(avatarX, 20 + avatarY, 20, 0, 2 * Math.PI);
+        ctx.setFillStyle("red");
         ctx.fill();
 
         ctx.clip();
-        ctx.drawImage(imgs[0].path, 10, 30, 40, 40);
+        ctx.drawImage(imgs[0].path, avatarX - 20, avatarY, 40, 40); // 往回位移自身一半居中
         ctx.closePath();
         ctx.restore();
         ctx.save();
@@ -79,42 +115,45 @@ function Pre() {
         ctx.beginPath();
         ctx.setFontSize(15);
         ctx.setFillStyle("#101010");
-        ctx.fillText('用户昵称', 58, 50);
+        ctx.fillText('用户昵称', 58 + rightX, 20 + avatarY);
         ctx.save();
 
         // 描述
         ctx.beginPath();
         ctx.setFontSize(8);
         ctx.setFillStyle("#888686");
-        ctx.fillText("邀请您使用大树精选长按识别小程序码", 58, 65);
+        ctx.fillText("邀请您使用大树精选长按识别小程序码", 58 + rightX, 35 + avatarY);
         ctx.save();
 
         // 小程序码
+        const codeX = w1 - 46 - rightX;
         ctx.beginPath();
-        ctx.arc(w1 - 46, 46, 36, 0, 2 * Math.PI);
-        ctx.setFillStyle("#f4f3f3");
+        ctx.arc(codeX, 48 + rightY, 36, 0, 2 * Math.PI);
+        ctx.setFillStyle("red");
         ctx.fill();
 
         ctx.clip();
-        ctx.drawImage(imgs[1].path, w1 - 82, 10, 72, 72);
+        ctx.drawImage(imgs[1].path, codeX - 36, 12 + rightY, 72, 72); // 往回位移自身一半居中
         ctx.closePath();
         ctx.restore();
         ctx.save();
 
         // 商品图片
+        const ImgY = 92 + rightY;
+
         ctx.beginPath();
-        ctx.rect(0, 92, w1, cover);
+        ctx.rect(rightX, ImgY, w1, imgs[0].height);
         ctx.setFillStyle("#fff");
         ctx.fill();
 
         ctx.clip();
-        // ctx.drawImage(
-        //     imgs[2].path,
-        //     0,
-        //     92,
-        //     w1,
-        //     cover
-        // );
+        ctx.drawImage(
+            imgs[0].path,
+            rightX,
+            ImgY,
+            w1,
+            imgs[0].height
+        );
         ctx.closePath();
         ctx.restore();
         ctx.save();
@@ -122,10 +161,11 @@ function Pre() {
         let moveHeight = 92 + cover + 20 + 11;
 
         // tag [京东]
+        const tagY = 92 + cover + rightY + 20
         ctx.beginPath();
         ctx.rect(
-            10,
-            92 + cover + 18,
+            10 + rightX,
+            tagY + 18,
             10 + ctx.measureText('【标签】').width,
             15
         );
@@ -133,12 +173,12 @@ function Pre() {
         ctx.fill();
         ctx.save();
 
-        ctx.setFillStyle("#fff");
+        ctx.setFillStyle('#FFFFFF')
         ctx.setFontSize(10);
         ctx.fillText(
             '【标签】',
-            12,
-            92 + cover + 20 + 9
+            12 + rightX,
+            tagY + 29,
         );
 
         // 商品描述
@@ -148,39 +188,41 @@ function Pre() {
             w - 30,
             moveHeight,
             text,
-            ctx.measureText('【标签】').width + 10
+            ctx.measureText('【标签】').width + 10,
+            rightX,
+            rightY + 20
         );
 
         // 上间距
-        const tm = moveHeight + 60;
+        const tm = moveHeight + 40 + rightY + 20;
 
         // 折扣文字
         ctx.setFillStyle("#f66666");
         ctx.setFontSize(12);
-        ctx.fillText("折后价 ¥", 10, tm);
+        ctx.fillText("折后价 ¥", 10 + rightX, tm);
 
         // 折扣价格
         ctx.setFillStyle("#f66666");
         ctx.setFontSize(24);
-        ctx.fillText('price', 60, tm + 1);
+        ctx.fillText('price', 60 + rightX, tm + 1);
 
         // 原价
         ctx.setFillStyle("#88898A");
         ctx.setFontSize(10);
         ctx.fillText(
             "原价 ¥ " + 'price2',
-            120 + ctx.measureText('price').width,
+            120 + ctx.measureText('price').width + rightX,
             tm - 1
         );
 
         // 横线
         ctx.beginPath();
         ctx.setFillStyle("#88898A");
-        ctx.moveTo(120 + ctx.measureText('price').width, tm - 3);
+        ctx.moveTo(120 + ctx.measureText('price').width + rightX, tm - 3);
         ctx.lineTo(
             120 +
             ctx.measureText("原价 ¥ " + 'price2').width +
-            ctx.measureText('price').width,
+            ctx.measureText('price').width + rightX,
             tm - 3.5
         );
         ctx.stroke();
@@ -191,7 +233,7 @@ function Pre() {
         ctx.fillText(
             // "过期时间：" + dayjs.unix(product.expire_time).format("YYYY年MM月DD日"),
             "过期时间：" + '2020-01-20',
-            10,
+            10 + rightX,
             tm + 20
         );
 
@@ -221,7 +263,7 @@ function Pre() {
     };
 
     // 商品文本
-    const drawText = (ctx, w, h, text, tagw) => {
+    const drawText = (ctx, w, h, text, tagw, rightX, rightY) => {
         var chr = text.split(""); //这个方法是将一个字符串分割成字符串数组
         var temp = "";
         var row = [];
@@ -258,9 +300,9 @@ function Pre() {
         for (var b = 0; b < row.length; b++) {
             if (b === 0) {
                 console.log(tagw, "balue");
-                ctx.fillText(row[b], tagw + 10, h + b * 18, w - 30);
+                ctx.fillText(row[b], tagw + 10 + rightX, h + b * 18 + rightY, w - 30);
             } else {
-                ctx.fillText(row[b], 10, h + b * 18, w);
+                ctx.fillText(row[b], 10 + rightX, h + b * 18 + rightY, w);
             }
         }
     };
@@ -373,14 +415,14 @@ function Pre() {
                 )}
             </View>
 
-            <View className='shared-actions'>
+            {/* <View className='shared-actions'>
                 <View className='action' onClick={saveImgFn}>
                     <View className='bg_wrap1'>
                         <View className='action-bg shared-friend' />
                     </View>
                     <View>保存图片</View>
                 </View>
-            </View>
+            </View> */}
         </View>
     );
 }
