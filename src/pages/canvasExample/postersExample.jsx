@@ -98,7 +98,7 @@ function Pre() {
         darwRoundRect(rightX, rightY, w1 - 30, 590, 20, ctx);
 
         // 头像
-        const avatarX = 30 + rightX;
+        const avatarX = 30 + rightX + 3;
         const avatarY = rightY + 30;
         ctx.beginPath();
         ctx.arc(avatarX, 20 + avatarY, 20, 0, 2 * Math.PI);
@@ -142,7 +142,7 @@ function Pre() {
         const ImgY = 92 + rightY;
 
         ctx.beginPath();
-        ctx.rect(rightX, ImgY, w1 - 30, imgs[0].height);
+        ctx.rect(rightX, ImgY, w1 - 30, imgs[0].height - (30 * (imgs[0].height / w1)));
         ctx.setFillStyle("#fff");
         ctx.fill();
 
@@ -259,7 +259,7 @@ function Pre() {
                     }, 300);
                 },
             });
-        }, 200);
+        }, 600);
     };
 
     // 商品文本
