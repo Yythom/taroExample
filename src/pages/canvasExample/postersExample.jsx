@@ -79,7 +79,7 @@ function Pre() {
         ctx.lineTo(x + w - r, y)
         ctx.lineTo(x + r, y)
 
-        ctx.setFillStyle('rgb(193, 201, 207)')
+        ctx.setFillStyle('#fff')
         ctx.fill();
         ctx.save();
     }
@@ -87,11 +87,11 @@ function Pre() {
     const canvasDraw = (w1, w, h, imgs) => {
         const ctx = Taro.createCanvasContext("product");
         let cover = imgs[2].height
-        const rightX = 15;
+        const rightX = 17.5;
         const rightY = 15;
         // 背景
-        ctx.rect(0, 0, w1, 720);
-        ctx.setFillStyle('#fff');
+        ctx.rect(0, 0, w1, 710);
+        ctx.setFillStyle('#F3F3F3');
         ctx.fill();
         ctx.save();
 
@@ -142,7 +142,7 @@ function Pre() {
         const ImgY = 92 + rightY;
 
         ctx.beginPath();
-        ctx.rect(rightX, ImgY, w1, imgs[0].height);
+        ctx.rect(rightX, ImgY, w1 - 30, imgs[0].height);
         ctx.setFillStyle("#fff");
         ctx.fill();
 
@@ -151,7 +151,7 @@ function Pre() {
             imgs[0].path,
             rightX,
             ImgY,
-            w1,
+            w1 - 30,
             imgs[0].height
         );
         ctx.closePath();
