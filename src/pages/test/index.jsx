@@ -3,7 +3,7 @@
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import React, { Component, useEffect, useState } from 'react';
 import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync } from '@tarojs/taro';
-import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Slider, Progress } from '@tarojs/components';
+import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Slider, Progress, OpenData } from '@tarojs/components';
 // import Modal from '@/components/Modal'
 import NavBar from '@/components/NavBar'
 // import Notice from '@/components/Notice'
@@ -28,27 +28,27 @@ function Index() {
     const dispatch = useDispatch();
 
 
-    // // tab 相关设置
-    // const [refresh_status, setRefresh_status] = useState(false);
-    // const [tag_id, setTag_id] = useState('');
-    // const [content_list, setContent_list] = useState(['首页-1', '首页-2', '首页-3', '首页-4'])
-    // const [list, setList] = useState([
-    //     { title: '首页', tag_id: '101' },
-    //     { title: '测试', tag_id: '102' },
-    //     { title: '我的', tag_id: '103' },
-    //     { title: 'hello', tag_id: '104' },
-    //     { title: '测试-1', tag_id: '105' },
-    //     { title: '测试-2', tag_id: '106' },
-    //     { title: '测试-3', tag_id: '107' },
-    //     { title: '测试-4', tag_id: '108' },
-    //     { title: '测试-5', tag_id: '109' },
-    // ])
+    // tab 相关设置
+    const [refresh_status, setRefresh_status] = useState(false);
+    const [tag_id, setTag_id] = useState('');
+    const [content_list, setContent_list] = useState(['首页-1', '首页-2', '首页-3', '首页-4'])
+    const [list, setList] = useState([
+        { title: '首页', tag_id: '101' },
+        { title: '测试', tag_id: '102' },
+        { title: '我的', tag_id: '103' },
+        { title: 'hello', tag_id: '104' },
+        { title: '测试-1', tag_id: '105' },
+        { title: '测试-2', tag_id: '106' },
+        { title: '测试-3', tag_id: '107' },
+        { title: '测试-4', tag_id: '108' },
+        { title: '测试-5', tag_id: '109' },
+    ])
 
-    // const change_tag = (id) => {
-    //     console.log(id);
-    //     setTag_id(id);
-    //     setContent_list(['hello-1', 'hello-2', 'hello-3', 'hello-4', 'hello-5'])
-    // }
+    const change_tag = (id) => {
+        console.log(id);
+        setTag_id(id);
+        setContent_list(['hello-1', 'hello-2', 'hello-3', 'hello-4', 'hello-5'])
+    }
 
     // ////////////////////////////////
 
@@ -64,6 +64,7 @@ function Index() {
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
             <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <Avatar size={80}></Avatar>
+
                 {/* <Button onClick={() => {
                     Taro.navigateTo({
                         url: '/subpages/create_pages_demo/demo_pages/example/index'
@@ -122,7 +123,7 @@ function Index() {
             </View>
 
             {/* <UpImg btn_text='上传图片' /> */}
-            {/*             
+
             <View>
                 <Tabs
                     list={list}
@@ -146,7 +147,7 @@ function Index() {
                 />
                 {'targ' + tag_id}
             </View>
-             */}
+
         </View>
     )
 }

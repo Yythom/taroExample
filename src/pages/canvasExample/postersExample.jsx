@@ -31,9 +31,9 @@ function Pre() {
         console.log(params);
         let imgArr = [];
         imgArr = [
-            `https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2344451607,2404623174&fm=11&gp=0.jpg`,
+            `https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fclubimg.club.vmall.com%2Fdata%2Fattachment%2Fforum%2F202004%2F08%2F2027583mef12cyidfscoob.jpg&refer=http%3A%2F%2Fclubimg.club.vmall.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1613719173&t=bc2e1691d5106a707d4e54d063d8140f`,
             `https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2410745465,4132959416&fm=26&gp=0.jpg`,
-            `https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2410745465,4132959416&fm=26&gp=0.jpg`,
+            `https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg1.bcoderss.com%2Fwp-content%2Fuploads%2F2019%2F12%2F1_1575278712.jpg&refer=http%3A%2F%2Fimg1.bcoderss.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1613718870&t=e2649ccc4565e03556667302a23b90f6`,
         ];
         init(imgArr);
     });
@@ -54,41 +54,13 @@ function Pre() {
         });
     };
 
-    function darwRoundRect(x, y, w, h, r, ctx) {
-        ctx.save()
-        ctx.beginPath()
 
-        // 左上弧线
-        ctx.arc(x + r, y + r, r, 1 * Math.PI, 1.5 * Math.PI)
-        // 左直线
-        ctx.moveTo(x, y + r)
-        ctx.lineTo(x, y + h - r)
-        // 左下弧线
-        ctx.arc(x + r, y + h - r, r, 0.5 * Math.PI, 1 * Math.PI)
-        // 下直线
-        ctx.lineTo(x + r, y + h)
-        ctx.lineTo(x + w - r, y + h)
-        // 右下弧线
-        ctx.arc(x + w - r, y + h - r, r, 0 * Math.PI, 0.5 * Math.PI)
-        // 右直线
-        ctx.lineTo(x + w, y + h - r)
-        ctx.lineTo(x + w, y + r)
-        // 右上弧线
-        ctx.arc(x + w - r, y + r, r, 1.5 * Math.PI, 2 * Math.PI)
-        // 上直线
-        ctx.lineTo(x + w - r, y)
-        ctx.lineTo(x + r, y)
-
-        ctx.setFillStyle('#fff')
-        ctx.fill();
-        ctx.save();
-    }
-
+    // 绘画canvas
     const canvasDraw = (w1, w, h, imgs) => {
         const ctx = Taro.createCanvasContext("product");
-        let cover = imgs[2].height
-        const rightX = 17.5;
-        const rightY = 15;
+        let cover = imgs[2].height / (imgs[2].width / (w1 - 30)) - 240; // 大图外框-高度
+        const rightX = 15; // 右偏移
+        const rightY = 15; // 上偏移
         // 背景
         ctx.rect(0, 0, w1, 710);
         ctx.setFillStyle('#F3F3F3');
@@ -140,28 +112,30 @@ function Pre() {
 
         // 商品图片
         const ImgY = 92 + rightY;
-
+        let imgWidth = w1 - 30;
+        let imgHeight = imgs[2].height / (imgs[2].width / (w1 - 30));
         ctx.beginPath();
-        ctx.rect(rightX, ImgY, w1 - 30, imgs[0].height - (30 * (imgs[0].height / w1)));
+        ctx.rect(rightX, ImgY, imgWidth, cover);
         ctx.setFillStyle("#fff");
         ctx.fill();
 
         ctx.clip();
         ctx.drawImage(
-            imgs[0].path,
+            imgs[2].path,
             rightX,
             ImgY,
-            w1 - 30,
-            imgs[0].height
+            imgWidth,
+            imgHeight
         );
         ctx.closePath();
         ctx.restore();
         ctx.save();
 
-        let moveHeight = 92 + cover + 20 + 11;
+        let moveHeight = 92 + cover + 10 + 11;
 
         // tag [京东]
-        const tagY = 92 + cover + rightY + 20
+        const tagY = 92 + cover + rightY + 10
+
         ctx.beginPath();
         ctx.rect(
             10 + rightX,
@@ -217,8 +191,8 @@ function Pre() {
 
         // 横线
         ctx.beginPath();
-        ctx.setFillStyle("#88898A");
-        ctx.moveTo(120 + ctx.measureText('price').width + rightX, tm - 3);
+        ctx.setFillStyle("#aaa");
+        ctx.moveTo(120 + ctx.measureText('price').width + rightX, tm - 4);
         ctx.lineTo(
             120 +
             ctx.measureText("原价 ¥ " + 'price2').width +
@@ -237,30 +211,65 @@ function Pre() {
             tm + 20
         );
 
-        ctx.draw();
-        setTimeout(() => {
-            Taro.canvasToTempFilePath({
-                canvasId: "product",
-                success: (res) => {
-                    const { tempFilePath } = res;
-                    console.log(tempFilePath);
-                    setTimeout(() => {
-                        Taro.hideLoading();
-                    }, 300);
-                    setSrc(tempFilePath);
-                },
-                fail: (err) => {
-                    setTimeout(() => {
-                        Taro.hideLoading();
-                        Taro.showToast({
-                            icon: "none",
-                            title: "图片生成失败" + err.errMsg,
-                        });
-                    }, 300);
-                },
-            });
-        }, 600);
+        ctx.draw(false, () => {
+            canvasToImage();
+        });
+        ctx.save();
     };
+
+
+    // 将canvas转化成图片       
+    function canvasToImage() {
+        Taro.canvasToTempFilePath({
+            canvasId: "product",
+            success: (res) => {
+                const { tempFilePath } = res;
+                console.log(tempFilePath, 'canvas转图片');
+                Taro.hideLoading();
+                setSrc(tempFilePath);
+            },
+            fail: (err) => {
+                console.log(err);
+                Taro.hideLoading();
+                Taro.showToast({
+                    icon: "none",
+                    title: "图片生成失败" + err.errMsg,
+                });
+            }
+        });
+    }
+
+
+    // 圆角矩形
+    function darwRoundRect(x, y, w, h, r, ctx) {
+        ctx.save()
+        ctx.beginPath()
+
+        // 左上弧线
+        ctx.arc(x + r, y + r, r, 1 * Math.PI, 1.5 * Math.PI)
+        // 左直线
+        ctx.moveTo(x, y + r)
+        ctx.lineTo(x, y + h - r)
+        // 左下弧线
+        ctx.arc(x + r, y + h - r, r, 0.5 * Math.PI, 1 * Math.PI)
+        // 下直线
+        ctx.lineTo(x + r, y + h)
+        ctx.lineTo(x + w - r, y + h)
+        // 右下弧线
+        ctx.arc(x + w - r, y + h - r, r, 0 * Math.PI, 0.5 * Math.PI)
+        // 右直线
+        ctx.lineTo(x + w, y + h - r)
+        ctx.lineTo(x + w, y + r)
+        // 右上弧线
+        ctx.arc(x + w - r, y + r, r, 1.5 * Math.PI, 2 * Math.PI)
+        // 上直线
+        ctx.lineTo(x + w - r, y)
+        ctx.lineTo(x + r, y)
+
+        ctx.setFillStyle('#fff')
+        ctx.fill();
+        ctx.save();
+    }
 
     // 商品文本
     const drawText = (ctx, w, h, text, tagw, rightX, rightY) => {
@@ -415,14 +424,14 @@ function Pre() {
                 )}
             </View>
 
-            {/* <View className='shared-actions'>
+            <View className='shared-actions'>
                 <View className='action' onClick={saveImgFn}>
                     <View className='bg_wrap1'>
                         <View className='action-bg shared-friend' />
                     </View>
                     <View>保存图片</View>
                 </View>
-            </View> */}
+            </View>
         </View>
     );
 }
