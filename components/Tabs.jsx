@@ -9,7 +9,7 @@ import './styles/tabs.scss'
 const Index = (props) => {
     const {
         onChange,
-        list, // list=[{title,content}]  content=>swiper所需要的列表内容 Array
+        list, // list=[{title,tag_id}]  分类列表
         content_list, // swiper-item typeof Array
         scrollToLowerFn, // swiper到底触发事件
         refresh_status, // 刷新状态
@@ -52,7 +52,6 @@ const Index = (props) => {
                             navInfosArr.push({ width: item.width, left: item.left });
                         });
                         setNavInfos(navInfosArr)
-                        console.log(navInfosArr, '---->>>');
                     } else {
                         init();
                     }
