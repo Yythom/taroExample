@@ -126,7 +126,7 @@ function Index() {
 
             <View>
                 <Tabs
-                    list={list}
+                    tag_list={list}
                     tag_id={tag_id}
                     setTag_id={setTag_id}
                     onChange={change_tag}
