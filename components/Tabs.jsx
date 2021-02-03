@@ -9,7 +9,7 @@ import './styles/tabs.scss'
 const Index = (props) => {
     const {
         onChange,
-        list, // list=[{title,tag_id}]  分类列表
+        tag_list, // list=[{title,tag_id}]  分类列表
         content_list, // swiper-item typeof Array
         scrollToLowerFn, // swiper到底触发事件
         refresh_status, // 刷新状态
@@ -41,7 +41,7 @@ const Index = (props) => {
                 }
             });
             query.selectAll(`.${childrenClass}`).fields({ rect: true, size: true }, data => {
-                if (list) {
+                if (tag_list) {
                     if (data[0]) {
                         let navInfosArr = [];
                         data.forEach((item, index) => {
@@ -83,9 +83,9 @@ const Index = (props) => {
 
     // 滑动swiper切换
     function swiperChange(e) {
-        let current = e.detail.current
+        let current = e.detail.current;
         taggleNav(current);
-        onChange(list[current].tag_id);
+        onChange(tag_list[current].tag_id);
     }
 
     function scrollMoveDom(index) {
@@ -102,9 +102,10 @@ const Index = (props) => {
     }
 
     useEffect(() => {
-        if (list) {
+        if (tag_list) {
             init();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -114,7 +115,7 @@ const Index = (props) => {
                 <ScrollView className='nav-scroll' enableFlex scrollWithAnimation scrollX scrollLeft={scrollLeft}>
                     <View className={`nav ${parentClass}`} >
                         {
-                            list && list.map((item, index) => {
+                            tag_list && tag_list.map((item, index) => {
                                 return (
                                     <View key={item} className={swiperIndex == index ? 'nav-item-act nav-item ' + childrenClass : 'nav-item ' + childrenClass} onClick={() => taggleNav(index)}>
                                         {item.title}
@@ -130,7 +131,7 @@ const Index = (props) => {
                     <View className='swiper'>
                         <Swiper current={swiperIndex} duration={300} className='swiper_ex' easingFunction='linear' onChange={swiperChange}>
                             {
-                                list && list.map((item, index) => {
+                                tag_list && tag_list.map((item, index) => {
                                     return <SwiperItem key={index}>
                                         <ScrollView
                                             className='swiper-scroll'
