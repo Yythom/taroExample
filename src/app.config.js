@@ -7,7 +7,13 @@ export default {
     {
       root: 'subpages/create_pages_demo',
       pages: [
-        'pages/example/index',
+        'example/index',
+      ],
+    },
+    {
+      root: 'subpages/img_cop',
+      pages: [
+        'index',
       ],
     },
     {

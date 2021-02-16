@@ -1,9 +1,8 @@
 /* eslint-disable react/jsx-indent-props */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { View, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
-
-// eslint-disable-next-line no-unused-vars
 import Taro, { createSelectorQuery } from '@tarojs/taro'
+import { debounce } from '@/common/utils';
 import './styles/tabs.scss'
 
 const Index = (props) => {
@@ -41,33 +40,33 @@ const Index = (props) => {
                 }
             });
             query.selectAll(`.${childrenClass}`).fields({ rect: true, size: true }, data => {
-                if (tag_list) {
-                    if (data[0]) {
-                        let navInfosArr = [];
-                        data.forEach((item, index) => {
-                            if (index == 0) {
-                                setNavItemLeft(item.left);
-                                setNavItemWidth(item.width);
-                            }
-                            navInfosArr.push({ width: item.width, left: item.left });
-                        });
-                        setNavInfos(navInfosArr)
-                    } else {
-                        init();
-                    }
+
+                if (data[0]) {
+                    let navInfosArr = [];
+                    data.forEach((item, index) => {
+                        if (index == 0) {
+                            setNavItemLeft(item.left);
+                            setNavItemWidth(item.width);
+                        }
+                        navInfosArr.push({ width: item.width, left: item.left });
+                    });
+                    setNavInfos(navInfosArr)
+                } else {
+                    init();
                 }
             });
             query.exec();
         }, 100);
     }
     // swiper到底事件
-    const onLower = () => {
+    const onLower = debounce(() => {
         console.log('到底了');
         scrollToLowerFn();
-    }
+    }, 600)
 
     // 下拉刷新事件
     const refresh = () => {
+        if (refresh_status) return
         console.log('刷新');
         setRefresh_status(true);
         refresh_handle(); // props
@@ -78,7 +77,7 @@ const Index = (props) => {
     // 点击tab切换函数
     function taggleNav(i) {
         setSwiperIndex(i);
-        scrollMoveDom(i)
+        scrollMoveDom(i);
     }
 
     // 滑动swiper切换
@@ -102,67 +101,74 @@ const Index = (props) => {
     }
 
     useEffect(() => {
-        if (tag_list) {
+        if (tag_list[0]) {
             init();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tag_list]);
 
     return (
-        <View className='tab-wrap'>
-            <View>
-                <ScrollView className='nav-scroll' enableFlex scrollWithAnimation scrollX scrollLeft={scrollLeft}>
-                    <View className={`nav ${parentClass}`} >
+        <>
+            {
+                (tag_list[0] || content_list[0])
+                && <View className='tab-wrap'>
+                    <View>
                         {
-                            tag_list && tag_list.map((item, index) => {
-                                return (
-                                    <View key={item} className={swiperIndex == index ? 'nav-item-act nav-item ' + childrenClass : 'nav-item ' + childrenClass} onClick={() => taggleNav(index)}>
-                                        {item.title}
-                                    </View>
-                                )
-                            })
+                            tag_list[0]
+                            &&
+                            <ScrollView className='nav-scroll' enableFlex scrollWithAnimation scrollX scrollLeft={scrollLeft}>
+                                <View className={`nav ${parentClass}`} >
+                                    {
+                                        tag_list && tag_list.map((item, index) => {
+                                            return (
+                                                <View key={item} className={swiperIndex == index ? 'nav-item-act nav-item ' + childrenClass : 'nav-item ' + childrenClass} onClick={() => taggleNav(index)}>
+                                                    {item.title}
+                                                </View>
+                                            )
+                                        })
+                                    }
+                                    <View className='nav-line' style={{ width: navItemWidth + 'px', left: navItemLeft + 'px' }} ></View>
+                                </View>
+                            </ScrollView>
                         }
-                        <View className='nav-line' style={{ width: navItemWidth + 'px', left: navItemLeft + 'px' }} ></View>
-                    </View>
-                </ScrollView>
-                {content_list[0]
-                    &&
-                    <View className='swiper'>
-                        <Swiper current={swiperIndex} duration={300} className='swiper_ex' easingFunction='linear' onChange={swiperChange}>
-                            {
-                                tag_list && tag_list.map((item, index) => {
-                                    return <SwiperItem key={index}>
-                                        <ScrollView
-                                            className='swiper-scroll'
-                                            scrollY
-                                            lowerThreshold={80}
-                                            refresherTriggered={refresh_status}
-                                            onRefresherRefresh={refresh}
-                                            onScrollToLower={onLower}
-                                            refresherEnabled
-                                        >
-                                            <View>
-                                                {
-                                                    content_list && content_list.map((e, i) => {
-                                                        return <View className='swiper-item-list' key={e} >{typeof e === 'string' && e} -- index：{i}</View>
-                                                    })
-                                                }
+                        {
+                            content_list[0]
+                            &&
+                            <View className='swiper'>
+                                <Swiper current={swiperIndex} duration={300} className='swiper_ex' easingFunction='linear' onChange={swiperChange}>
+                                    {
+                                        tag_list && tag_list[0] && tag_list.map((item, index) => {
+                                            return <SwiperItem key={index}>
+                                                <ScrollView
+                                                    className='swiper-scroll'
+                                                    scrollY
+                                                    lowerThreshold={80}
+                                                    refresherTriggered={refresh_status}
+                                                    onRefresherRefresh={refresh}
+                                                    onScrollToLower={onLower}
+                                                    refresherEnabled
+                                                >
+                                                    <View>
+                                                        {
+                                                            content_list && content_list.map((e, i) => {
+                                                                return <View className='swiper-item-list' key={e} >{typeof e === 'string' && e} -- index：{i}</View>
+                                                            })
+                                                        }
+                                                    </View>
+                                                </ScrollView>
+                                            </SwiperItem>
+                                        })
+                                    }
 
-                                            </View>
-                                        </ScrollView>
-                                    </SwiperItem>
-                                })
-                            }
-
-                        </Swiper>
-                    </View>
-                }
-
-
-
-            </View >
-        </View >
+                                </Swiper>
+                            </View>
+                        }
+                    </View >
+                </View >
+            }
+        </>
     )
 }
-export default Index;
+
+export default memo(Index);

@@ -1,15 +1,4 @@
 /* eslint-disable no-unused-vars */
-/**
- * var url = "http://.....?a=10";
- * @param {url参数名} name 
- */
-
-function GetUrlParam(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]);
-    return null;
-}
 
 /**
  * 格式化金额

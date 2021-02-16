@@ -43,6 +43,7 @@ const WithUserVerify = ({
             const userInfoRes = await lkGetUserInfo();
             if (userInfoRes !== 'openSetting') {
                 dispatch(actions.setUserInfo(userInfoRes));
+                dispatch(actions.changeTokenActionAsync('data---test'));
                 Taro.showToast({
                     icon: 'none',
                     title: '获取用户信息成功'

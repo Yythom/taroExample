@@ -31,7 +31,7 @@ function Index() {
     // tab 相关设置
     const [refresh_status, setRefresh_status] = useState(false);
     const [tag_id, setTag_id] = useState('');
-    const [content_list, setContent_list] = useState(['首页-1', '首页-2', '首页-3', '首页-4'])
+    const [content_list, setContent_list] = useState(['test']);
     const [list, setList] = useState([
         { title: '首页', tag_id: '101' },
         { title: '测试', tag_id: '102' },
@@ -47,15 +47,15 @@ function Index() {
     const change_tag = (id) => {
         console.log(id);
         setTag_id(id);
-        setContent_list(['hello-1', 'hello-2', 'hello-3', 'hello-4', 'hello-5'])
+        setContent_list([id]);
     }
 
     // ////////////////////////////////
 
     useDidShow(() => {
+        change_tag(list[0]?.tag_id); // 初始化默认选中tag——id
 
-
-        // dispatch(actions.changeuserInfoActionAsync())
+        dispatch(actions.changeuserInfoActionAsync())
     })
 
 
@@ -71,43 +71,45 @@ function Index() {
                     })
                 }}
                 >跳转分包</Button> */}
-                <Picker mode='region' value={["浙江省", "杭州市", "西湖区"]} onChange={((e) => {
-                    console.log(e);
-                })}
-                >
-                    <View className='picker'>
-                        省市：
+                <View className='pickers_wrap'>
+                    <Picker mode='region' value={["浙江省", "杭州市", "西湖区"]} onChange={((e) => {
+                        console.log(e);
+                    })}
+                    >
+                        <View className='picker'>
+                            省市：
                     </View>
-                </Picker>
-                <Picker mode='time' value='00:04' onChange={((e) => {
-                    console.log(e);
-                })}
-                >
-                    <View className='picker'>
-                        时间：
+                    </Picker>
+                    <Picker mode='time' value='00:04' onChange={((e) => {
+                        console.log(e);
+                    })}
+                    >
+                        <View className='picker'>
+                            时间：
                     </View>
-                </Picker>
-                <Picker mode='date' value='2021-02-12' onChange={((e) => {
-                    console.log(e);
-                })}
-                >
-                    <View className='picker'>
-                        日期：
+                    </Picker>
+                    <Picker mode='date' value='2021-02-12' onChange={((e) => {
+                        console.log(e);
+                    })}
+                    >
+                        <View className='picker'>
+                            日期：
                     </View>
-                </Picker>
-                <Picker mode='multiSelector' range={[['123', '32'], '中国', '1']} onChange={((e) => {
-                    console.log(e);
-                })}
-                >
-                    <View className='picker'>
-                        自定义：
+                    </Picker>
+                    <Picker mode='multiSelector' range={[['123', '32'], '中国', '1']} onChange={((e) => {
+                        console.log(e);
+                    })}
+                    >
+                        <View className='picker'>
+                            自定义：
                     </View>
-                </Picker>
-                <Picker mode='selector' range={['美国', '中国', '巴西', '日本']} >
-                    <View className='picker'>
-                        当前选择：
+                    </Picker>
+                    <Picker mode='selector' range={['美国', '中国', '巴西', '日本']} >
+                        <View className='picker'>
+                            当前选择：
                     </View>
-                </Picker>
+                    </Picker>
+                </View>
             </View >
 
 
@@ -133,13 +135,25 @@ function Index() {
                     content_list={content_list}
                     refresh_status={refresh_status}
                     setRefresh_status={setRefresh_status}
-                    refresh_handle={() => {
-                        // http req
-                        setTimeout(() => {
-                            setRefresh_status(false);
-                        }, 500);
+                    refresh_handle={async () => {
+                        let a = new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                resolve(6666);
+                            }, 500);
+                        });
+                        let res = await a; // http req
+                        if (res) setRefresh_status(false);
+                        console.log(res, 'a');
                     }}
-                    scrollToLowerFn={() => {
+                    scrollToLowerFn={async () => {
+                        let a = new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                resolve(6666);
+                            }, 500);
+                        });
+                        let res = await a; // http req
+                        if (res) setRefresh_status(false);
+                        console.log(res, 'a');
                         // http req
                     }}
                     parentClass='nav-parent'

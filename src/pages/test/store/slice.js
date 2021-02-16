@@ -35,7 +35,7 @@ const changeuserInfoActionAsync = createAsyncThunk(
         const res = await TestService.getTestDataApi();
         console.log(res, 'res---------->>>');
 
-        return res;
+        return res; // 返回结果通过payload接收
     }
 )
 
@@ -45,6 +45,7 @@ const changeuserInfoActionAsync = createAsyncThunk(
  */
 const extraReducers = builder => {
     builder.addCase(changeuserInfoActionAsync.fulfilled, (state, action) => {
+        console.log(action.payload, action, '--------');
         state.test = action.payload;
     })
 }

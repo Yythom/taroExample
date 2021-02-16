@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 // import * as actionType from './contants'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getStorageSync, setStorageSync } from '@tarojs/taro'
+import { getStorageSync, setStorageSync, login } from '@tarojs/taro'
 import TestService from '../services/test'
 /**
  * 初始化数据
  */
 const initialState = {
-    token: '',
+    token: getStorageSync('token') || null,
     userInfo: getStorageSync('info') || null,
 }
 /**
@@ -29,32 +29,29 @@ const reducers = {
 
 /**
  * 异步action
- * 第二个参数 payloadCreator 应返回包含一些异步逻辑结果的promise
- * thunkAPI:
- * dispatch
- * getState
- * extra
- * signal
- * rejectWithValue
+ * 应返回包含一些异步逻辑结果的promise 通过extraReducers空间处理
  */
-const changeuserInfoActionAsync = createAsyncThunk(
-    // 'home/changeuserInfoActionAsync',
-    // async (data, thunkAPI) => {
-    //     const res = await TestService.getTestDataApi(data);
-    //     return res.data;
-    // }
+const changeTokenActionAsync = createAsyncThunk(
+    'user/changeTokenActionAsync',
+    async (data, thunkAPI) => {
+        const Tlogin = await login();
+        // const res = await TestService.getTestDataApi(Tlogin.code); // 通过微信登入获取code取接口token
+        // setStorageSync('token',res.token)
+        return Tlogin.code;
+    }
 )
 /**
  * 其它reducers，异步及其公共recuders
  * @param {*} builder 
  */
 const extraReducers = builder => {
-    // builder.addCase(changeuserInfoActionAsync.fulfilled, (state, action) => {
-    //     state.userInfo = action.payload;
-    // })
+    builder.addCase(changeTokenActionAsync.fulfilled, (state, action) => {
+        console.log(action);
+        state.token = action.payload
+    })
 }
 
-const homeSlice = createSlice({
+const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers,
@@ -63,7 +60,7 @@ const homeSlice = createSlice({
 
 
 export const actions = {
-    ...homeSlice.actions,
-    changeuserInfoActionAsync,
+    ...userSlice.actions,
+    changeTokenActionAsync,
 };
-export default homeSlice.reducer;
+export default userSlice.reducer;
