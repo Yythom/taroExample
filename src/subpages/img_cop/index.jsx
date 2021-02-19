@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-indent-props */
 /* eslint-disable react/react-in-jsx-scope */
-import Taro, { showLoading, hideLoading, useDidShow, getStorageSync, navigateBack } from '@tarojs/taro'
+import Taro, { showLoading, hideLoading, useDidShow, getStorageSync, navigateBack, clearStorageSync, removeStorageSync } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import React, { useState } from 'react';
 import TaroCropper from 'taro-cropper';
@@ -41,6 +41,7 @@ function Index() {
                         filePath: res,
                         success() {
                             hideLoading();
+                            removeStorageSync('cop_src'); 3
                             Taro.showToast({
                                 title: '保存成功!'
                             })
