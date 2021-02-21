@@ -9,13 +9,14 @@ const Index = (props) => {
     const {
         onChange,
         tag_list, // list=[{title,tag_id}]  分类列表
-        content_list, // swiper-item typeof Array
+        tag_id,
         scrollToLowerFn, // swiper到底触发事件
         refresh_status, // 刷新状态
         refresh_handle, // 刷新事件函数
         setRefresh_status, // 设置刷新状态
         parentClass, // 是 并且不能为 nav
         childrenClass, // 是 并且不能为 nav-item-act nav-item nav-item 
+        isRefresh,
     } = props;
 
     const query = createSelectorQuery();
@@ -108,10 +109,22 @@ const Index = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tag_list]);
 
+    useEffect(() => {
+        if (navInfos[0]) {
+            console.log(navInfos, parentLeft, 'parentLeft');
+            let i = tag_list.findIndex(v => v.tag_id == tag_id);
+            if (i !== -1) {
+                taggleNav(i);
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tag_id, navInfos[0]])
+
+
     return (
         <>
             {
-                (tag_list[0] || content_list[0])
+                (tag_list[0] || props.children)
                 && <View className='tab-wrap'>
                     <View>
                         {
@@ -128,12 +141,12 @@ const Index = (props) => {
                                             )
                                         })
                                     }
-                                    <View className='nav-line' style={{ width: navItemWidth + 'px', left: navItemLeft + 'px' }} ></View>
+                                    <View className='nav-line' style={{ width: navItemWidth + 'px', left: navItemLeft - 1 + 'px' }} ></View>
                                 </View>
                             </ScrollView>
                         }
                         {
-                            content_list[0]
+                            props.children
                             &&
                             <View className='swiper'>
                                 <Swiper current={swiperIndex} duration={300} className='swiper_ex' easingFunction='linear' onChange={swiperChange}>
@@ -147,14 +160,10 @@ const Index = (props) => {
                                                     refresherTriggered={refresh_status}
                                                     onRefresherRefresh={refresh}
                                                     onScrollToLower={onLower}
-                                                    refresherEnabled
+                                                    refresherEnabled={isRefresh}
                                                 >
                                                     <View>
-                                                        {
-                                                            content_list && content_list.map((e, i) => {
-                                                                return <View className='swiper-item-list' key={e} >{typeof e === 'string' && e} -- index：{i}</View>
-                                                            })
-                                                        }
+                                                        {item.tag_id === tag_id ? props.children : null}
                                                     </View>
                                                 </ScrollView>
                                             </SwiperItem>

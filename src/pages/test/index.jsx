@@ -132,7 +132,6 @@ function Index() {
                     tag_id={tag_id}
                     setTag_id={setTag_id}
                     onChange={change_tag}
-                    content_list={content_list}
                     refresh_status={refresh_status}
                     setRefresh_status={setRefresh_status}
                     refresh_handle={async () => {
@@ -158,8 +157,10 @@ function Index() {
                     }}
                     parentClass='nav-parent'
                     childrenClass='children-class'
-                />
-                {'targ' + tag_id}
+                >
+                    <View>111----{tag_id}</View>
+
+                </Tabs>
             </View>
 
         </View>
