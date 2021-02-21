@@ -10,6 +10,7 @@ const Index = (props) => {
         onChange,
         tag_list, // list=[{title,tag_id}]  分类列表
         tag_id,
+        height,
         scrollToLowerFn, // swiper到底触发事件
         refresh_status, // 刷新状态
         refresh_handle, // 刷新事件函数
@@ -148,7 +149,7 @@ const Index = (props) => {
                         {
                             props.children
                             &&
-                            <View className='swiper'>
+                            <View className='swiper' style={{ height: height + 'rpx' }}>
                                 <Swiper current={swiperIndex} duration={300} className='swiper_ex' easingFunction='linear' onChange={swiperChange}>
                                     {
                                         tag_list && tag_list[0] && tag_list.map((item, index) => {
