@@ -8,7 +8,9 @@ import {
   navigateTo, getUserInfo, switchTab, showLoading, hideLoading,
   hideToast,
   login,
+  request,
 } from '@tarojs/taro';
+
 import Config from './mapConfig';
 // import { locationStore, userStore } from '../store';
 // import UserService from '../service/UserService';
@@ -199,6 +201,18 @@ export function lkGoToChangeLocation(latitude, longitude) {
   });
 }
 
+export function mapRoute(name, lat, lng) {
+  let endPoint = JSON.stringify({  //终点
+    'name': name,
+    'latitude': lat,
+    'longitude': lng
+  });
+  navigateTo({
+    url: 'plugin://routePlan/index?key=' + Config.LOCATION_KEY + '&referer=' + Config.APP_NAME + '&endPoint=' + endPoint + '&navigation=1'
+  });
+
+}
+
 
 
 /**
@@ -240,9 +254,9 @@ export async function lkGetUserInfo(url) {
  * 显示Loading
  * @param {Object} options {title} wx.showLoading方法的参数对象
  */
-export function lkShowLoading(options) {
+export function lkShowLoading(title) {
   loadingFixStatus = true;
-  const param = { mask: true, ...options || {} };
+  const param = { mask: true, title };
   showLoading(param);
 }
 
@@ -276,6 +290,58 @@ export function lkHideToast() {
   }
 }
 
+export const getDetailLocation = async (desc) => {//'腾讯位置服务返回' 位置获取坐标
+  const url = `${Config.MAP_SERVER_URL}/ws/geocoder/v1/?address=${desc}&get_poi=1&poi_options=radius=1000&key=${Config.LOCATION_KEY}`;
+  const res = await request({
+    method: 'GET',
+    url,
+  });
+  const { data } = res;
+  if (data.status !== 0) {
+    console.warn(data.message);
+    return null;
+  }
+  return data;
+}
+
+export const getNearby = async (latitude, longitude) => {//'腾讯位置服务返回' 坐标获取位置
+  const url = `${Config.MAP_SERVER_URL}/ws/geocoder/v1/?location=${latitude},${longitude}&get_poi=1&poi_options=radius=1000&key=${Config.LOCATION_KEY}`;
+  const res = await request({
+    method: 'GET',
+    url,
+  });
+  const { data } = res;
+  if (data.status !== 0) {
+    console.warn(data.message);
+    return null;
+  }
+  return data;
+}
+
+export const getLocal = async () => {
+  let getAd = await lkGetLocation();
+  if (!getAd) return
+  const res = await getNearby(getAd.latitude, getAd.longitude);
+  return new Promise((resolve, reject) => {
+    if (res && res.result) {
+      const { result } = res;
+      const locationInfo = {
+        address: result.address,
+        latitude: getAd.latitude,
+        longitude: getAd.longitude,
+        name: result.formatted_addresses.recommend,
+        province: result.address_component.province, // 省
+        city: result.address_component.city, // 市
+        district: result.address_component.district, // 区
+        street: result.address_component.street, // 街
+      };
+      resolve(locationInfo);
+      console.log(locationInfo);
+    } else {
+      resolve(false)
+    }
+  })
+}
 export default {
   lkGetSystemInfo,
   lkGetLocation,
@@ -285,4 +351,34 @@ export default {
   lkShowToast,
   lkHideLoading,
   lkHideToast,
+  getNearby,
+  getLocal,
 };
+
+
+
+function testChooseLocation() {
+  // () => chooseLocation({
+  //   success: async (res) => {
+  //     lkShowLoading('加载中')
+  //     console.log(res, 'res');
+  //     let detail = await getNearby(res.latitude, res.longitude);
+  //     console.log(detail);
+  //     const locationInfo = {
+  //       address: res.address, // 地址文字
+  //       province: detail.result.address_component.province, // 省
+  //       city: detail.result.address_component.city, // 市
+  //       district: detail.result.address_component.district, // 区
+  //       street: detail.result.address_component.street, //街
+  //       latitude: res.latitude,
+  //       longitude: res.longitude,
+  //       name: res.name
+  //     };
+
+  //     dispatch(actions.setLocationAction(locationInfo));
+  //     setTimeout(() => {
+  //       lkHideLoading();
+  //     }, 200);
+  //   }
+  // })
+}
