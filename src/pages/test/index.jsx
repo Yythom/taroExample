@@ -19,6 +19,7 @@ import { getLocal, lkGoToChangeLocation, mapRoute } from '@/common/publicFunc';
 
 import { actions } from './store/slice'
 import './index.scss';
+import CList from '@/components/Check_list';
 
 // import Modal from '@/components/Modal';
 
@@ -75,12 +76,24 @@ function Index() {
     const [open, setOpen] = useState(false);
     const [show, setShow] = useState(false);
 
+    const [c_list, setC_list] = useState([
+        {
+            title: 'a',
+        }, {
+            title: 'b',
+        }, {
+            title: 'c',
+        },
+    ])
+
+    const [newList, setNewList] = useState([]);
+
     return (
         <View className='test-h' >
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
             <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <Avatar size={80}></Avatar>
-
+                <CList list={c_list} setList={setC_list} setFilter={setNewList} />
                 {/* <Button onClick={() => {
                     Taro.navigateTo({
                         url: '/subpages/create_pages_demo/demo_pages/example/index'
