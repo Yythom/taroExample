@@ -1,0 +1,13 @@
+.drop_wrap {
+    position: relative;
+
+    .square {
+        background-color: pink;
+        position: absolute;
+        overflow: hidden;
+        transition: 400ms;
+        z-index: 99;
+    }
+
+
+}

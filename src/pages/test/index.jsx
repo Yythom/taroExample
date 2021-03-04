@@ -20,6 +20,7 @@ import { getLocal, lkGoToChangeLocation, mapRoute } from '@/common/publicFunc';
 import { actions } from './store/slice'
 import './index.scss';
 import CList from '@/components/Check_list';
+import DropDown from '@/components/DropDown';
 
 // import Modal from '@/components/Modal';
 
@@ -208,7 +209,20 @@ function Index() {
                 //     address: "目的地"	//导航详细地址
                 // })
             }}>一键导航</View>
+            <DropDown className='test_down' >
+                <View className='c_wrap' style={{ height: '300rpx' }} >
+                    {
+                        c_list[0] && c_list.map(e => {
+                            return (
+                                <View className='c_item' key={e.title + 'drop'}>
+                                    {e.title}
+                                </View>
+                            )
+                        })
+                    }
+                </View>
 
+            </DropDown>
 
             <View>
                 <Tabs
