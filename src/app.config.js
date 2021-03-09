@@ -7,11 +7,24 @@ export default {
     {
       root: 'subpages/create_pages_demo',
       pages: [
-        'example/index',
+        'index',
       ],
     },
     {
       root: 'subpages/img_cop',
+      pages: [
+        'index',
+      ],
+    },
+
+    // {
+    //   root: 'subpages/wx-native', // 原生微信插件页面
+    //   pages: [
+    //     'index',
+    //   ],
+    // }, 
+    {
+      root: 'subpages/video_sp', // 原生微信插件页面
       pages: [
         'index',
       ],

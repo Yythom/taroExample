@@ -1,8 +1,10 @@
 import React from 'react';
-import { View } from '@tarojs/components';
+import { View, Text } from '@tarojs/components';
 
-import Taro from '@tarojs/taro'
+import NavBar from '@/components/NavBar';
+import Taro, { stopPullDownRefresh, usePullDownRefresh } from '@tarojs/taro'
 import './index.scss'
+
 
 const Index = () => {
     Taro.useDidShow(() => {
@@ -14,13 +16,22 @@ const Index = () => {
             // 来自页面内转发按钮
             console.log(res.target)
         }
+
         // return {
         //     title: '自定义转发标题',
         //     path: '/page/user?id=123'
         // }
     })
-    return (<View className='index-wrap'>
-        测试分包
-    </View>)
+    usePullDownRefresh(() => {
+        ///
+        stopPullDownRefresh();
+    })
+
+    return (
+        <View className='index-wrap'>
+            <NavBar back title='' />
+            测试分包
+        </View>
+    )
 }
 export default Index;
