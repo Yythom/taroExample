@@ -5,6 +5,7 @@ import { View, Button } from '@tarojs/components';
 
 import NavBar from '@/components/NavBar'
 import './index.scss';
+import Step from '@/components/Step';
 
 function Index() {
     const userStore = useSelector(e => e.userStore, shallowEqual);
@@ -39,13 +40,22 @@ function Index() {
                     onTouchStart={(e) => touchStart(e)}
                     onTouchEnd={(e) => { touchEnd(e) }}
                     // onLongPress={(e) => longPressFn(e)}
-                    style={{ width: '100%', height: '300rpx', background: 'red' }}
+                    style={{ width: '100%', height: '300rpx', background: 'pink' }}
                 >
                     按钮
                 </View>
                 {
                     touchFlag && '88888'
                 }
+                <View className=''>
+                    <Step step={['内容', 3]}
+                        lineH={8}
+                        lineW={300}
+                        lineColor='pink'
+                        isShowIndex
+                    ></Step>
+                </View>
+
             </View >
         </View>
     )

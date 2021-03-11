@@ -194,7 +194,9 @@ function Index() {
             >
                 图片裁剪
             </View>
-
+            <View className='' onClick={() => {
+                navigateTo({ url: '/subpages/movie/index' })
+            }}>小程序post</View>
             {/* <UpImg btn_text='上传图片' /> */}
             <View onClick={() => {
                 Taro.chooseLocation().then(res => {
@@ -209,6 +211,11 @@ function Index() {
                 //     address: "目的地"	//导航详细地址
                 // })
             }}>一键导航</View>
+            <View onClick={() => {
+                navigateTo({ url: '/subpages/movie/index' })
+            }} >
+                电影选座
+            </View>
             <DropDown className='test_down' >
                 <View className='c_wrap' style={{ height: '300rpx' }} >
                     {
@@ -224,7 +231,7 @@ function Index() {
 
             </DropDown>
 
-            <View>
+            {/* <View>
                 <Tabs
                     tag_list={list}
                     status={tag_id}
@@ -261,7 +268,7 @@ function Index() {
                     {'targ' + tag_id}
 
                 </Tabs>
-            </View>
+            </View> */}
 
         </View>
     )

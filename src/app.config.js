@@ -23,8 +23,14 @@ export default {
     //     'index',
     //   ],
     // }, 
+    // {
+    //   root: 'subpages/video_sp', // 仿抖音页面
+    //   pages: [
+    //     'index',
+    //   ],
+    // },
     {
-      root: 'subpages/video_sp', // 原生微信插件页面
+      root: 'subpages/movie', // 仿选票
       pages: [
         'index',
       ],
