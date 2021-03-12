@@ -9,9 +9,12 @@ import {
   hideToast,
   login,
   request,
+  createSelectorQuery,
 } from '@tarojs/taro';
+import dayjs from 'dayjs';
 
 import Config from './mapConfig';
+import { formatSeconds } from './public';
 // import { locationStore, userStore } from '../store';
 // import UserService from '../service/UserService';
 
@@ -42,12 +45,34 @@ function compareVersion(va, vb) { //版本号
 }
 
 let loadingFixStatus = false;
-let toastFixStatus = false;
+
+
+/**
+ *  获取dom基本信息
+ * @param {*} dom_className -目标dom类名
+ */
+function RefInfo(dom_className) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      createSelectorQuery().select(`.${dom_className}`).boundingClientRect(function (rect) {
+        rect.id      // 节点的ID
+        rect.dataset // 节点的dataset
+        rect.left    // 节点的左边界坐标
+        rect.right   // 节点的右边界坐标
+        rect.top     // 节点的上边界坐标
+        rect.bottom  // 节点的下边界坐标
+        rect.width   // 节点的宽度
+        rect.height  // 节点的高度
+        resolve(rect);
+      }).exec()
+    }, 200);
+  });
+}
 
 /**
  * 获取系统信息，增加了自定义导航头的高度为 navBarHeight + navBarExtendHeight
  */
-export function lkGetSystemInfo() {
+function lkGetSystemInfo() {
   const systemInfo = getSystemInfoSync() || {
     model: '',
     system: '',
@@ -123,12 +148,12 @@ export function lkGetSystemInfo() {
   return systemInfo;
 }
 
-export const systemInfo = lkGetSystemInfo();
+const systemInfo = lkGetSystemInfo();
 
 /**
  * 引导用户授权定位
  */
-export async function lkGetLocation() {
+async function lkGetLocation() {
   if (compareVersion(systemInfo.SDKVersion, '2.10.3') <= 0) {
     showModal({
       title: '更新提醒',
@@ -193,15 +218,15 @@ export async function lkGetLocation() {
  * @param {*} latitude
  * @param {*} longitude
  */
-export function lkGoToChangeLocation(latitude, longitude) {
+function lkGoToChangeLocation(latitude, longitude) {
   const location = JSON.stringify({ latitude, longitude });
   const url = `plugin://chooseLocation/index?key=${Config.LOCATION_KEY}&referer=${Config.APP_NAME}&location=${location}&category=${Config.SERVER_CATEGORY}`;
   navigateTo({
     url,
   });
 }
-
-export function mapRoute(name, lat, lng) {
+// 调起腾讯插件地图导航
+function mapRoute(name, lat, lng) {
   let endPoint = JSON.stringify({  //终点
     'name': name,
     'latitude': lat,
@@ -210,7 +235,6 @@ export function mapRoute(name, lat, lng) {
   navigateTo({
     url: 'plugin://routePlan/index?key=' + Config.LOCATION_KEY + '&referer=' + Config.APP_NAME + '&endPoint=' + endPoint + '&navigation=1'
   });
-
 }
 
 
@@ -218,7 +242,7 @@ export function mapRoute(name, lat, lng) {
 /**
  * 引导用户获取其个人信息
  */
-export async function lkGetUserInfo(url) {
+async function lkGetUserInfo(url) {
   if (compareVersion(systemInfo.SDKVersion, '1.1.0') <= 0) {
     showModal({
       title: '更新提醒',
@@ -250,47 +274,7 @@ export async function lkGetUserInfo(url) {
   }
 }
 
-/**
- * 显示Loading
- * @param {Object} options {title} wx.showLoading方法的参数对象
- */
-export function lkShowLoading(title) {
-  loadingFixStatus = true;
-  const param = { mask: true, title };
-  showLoading(param);
-}
-
-/**
- * 隐藏Loading
- */
-export function lkHideLoading() {
-  if (loadingFixStatus) {
-    loadingFixStatus = false;
-    hideLoading();
-  }
-}
-
-/**
- * 显示Toast
- * @param {Object} options {title, icon} wx.showToast的参数对象
- */
-export function lkShowToast(options) {
-  loadingFixStatus = false;
-  toastFixStatus = true;
-  showToast(options);
-}
-
-/**
- * 隐藏Toast
- */
-export function lkHideToast() {
-  if (toastFixStatus) {
-    toastFixStatus = false;
-    hideToast();
-  }
-}
-
-export const getDetailLocation = async (desc) => {//'腾讯位置服务返回' 位置获取坐标
+const getDetailLocation = async (desc) => {//'腾讯位置服务返回' 位置获取坐标
   const url = `${Config.MAP_SERVER_URL}/ws/geocoder/v1/?address=${desc}&get_poi=1&poi_options=radius=1000&key=${Config.LOCATION_KEY}`;
   const res = await request({
     method: 'GET',
@@ -304,7 +288,7 @@ export const getDetailLocation = async (desc) => {//'腾讯位置服务返回' �
   return data;
 }
 
-export const getNearby = async (latitude, longitude) => {//'腾讯位置服务返回' 坐标获取位置
+const getNearby = async (latitude, longitude) => {//'腾讯位置服务返回' 坐标获取位置
   const url = `${Config.MAP_SERVER_URL}/ws/geocoder/v1/?location=${latitude},${longitude}&get_poi=1&poi_options=radius=1000&key=${Config.LOCATION_KEY}`;
   const res = await request({
     method: 'GET',
@@ -318,7 +302,7 @@ export const getNearby = async (latitude, longitude) => {//'腾讯位置服务�
   return data;
 }
 
-export const getLocal = async () => {
+const getLocal = async () => { // 获取当前位置详情
   let getAd = await lkGetLocation();
   if (!getAd) return
   const res = await getNearby(getAd.latitude, getAd.longitude);
@@ -342,22 +326,76 @@ export const getLocal = async () => {
     }
   })
 }
-export default {
-  lkGetSystemInfo,
-  lkGetLocation,
-  lkGoToChangeLocation,
-  lkGetUserInfo,
+
+/**
+ * @param {*} setTimer -设置页面定时器id （用于清除）
+ * @param {*} value -目标时间戳
+ * @param {*} setTime -设置当前倒计时state str
+ */
+function countdown(setTimer, value, setTime) {
+  let timer = setInterval(() => {
+    value -= 1;
+    let today_unix = dayjs(dayjs().format('YYYY-MM-DD')).unix(); // 当前时间
+    let un = value - today_unix;
+    if (un > 0) {
+      setTime(formatSeconds(un));
+    } else {
+      setTime('');
+      clearInterval(timer);
+    }
+  }, 999.8)
+  setTimer(timer);
+}
+
+export {
+  lkGetSystemInfo, // 获取系统基本信息
+  systemInfo, //系统基本信息
+  lkGetUserInfo, // 引导用户获取其个人信息
+
+  lkGetLocation, // 授权定位
+  lkGoToChangeLocation, // 调起腾讯地图选点，让用户选择定位
+  getDetailLocation, //位置获取坐标
+  getNearby, // 坐标获取位置
+  getLocal, // 获取当前位置详情
+
+
+  RefInfo, // 获取dom基本信息
+  countdown, // 倒计时处理器
+
   lkShowLoading,
-  lkShowToast,
   lkHideLoading,
-  lkHideToast,
-  getNearby,
-  getLocal,
 };
 
 
 
-function testChooseLocation() {
+
+
+
+/**
+ * 显示Loading
+ * @param {Object} options {title} wx.showLoading方法的参数对象
+ */
+function lkShowLoading(title) {
+  loadingFixStatus = true;
+  const param = { mask: true, title };
+  showLoading(param);
+}
+
+/**
+ * 隐藏Loading
+ */
+function lkHideLoading() {
+  if (loadingFixStatus) {
+    loadingFixStatus = false;
+    hideLoading();
+  }
+}
+
+
+
+
+
+function testChooseLocation() { // 地图选点返回
   // () => chooseLocation({
   //   success: async (res) => {
   //     lkShowLoading('加载中')
