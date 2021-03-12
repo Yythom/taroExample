@@ -18,7 +18,8 @@ function imgSrc(str) {
 }
 const Index = () => {
 
-    let scale = 0.5;
+    const [scale, setScale] = useState(1);
+
     const [h, setH] = useState(0); //css容器高400px /item高 400 /row
     const windowWidth = lkGetSystemInfo().windowWidth * 2;
     const [data, setData] = useState({
@@ -37,9 +38,21 @@ const Index = () => {
 
     useDidShow(() => {
         let box_hight = 800; // rpx单位
-        var row = 5;
+        var row = 20;
         var col = 5;
+        console.log(scale / col, scale / row);
         setH(box_hight / row); // 根据每一项设置容器高度
+        let scl;
+        if ((scale / col) > (scale / row)) { // 行数大于列数
+            scl = scale / row * (400 / 375 * (row / col) * 3.5);
+        } else {
+            if (col >= 40) {
+                scl = scale / col * 2.5;
+            } else {
+                scl = scale / col * 3;
+            }
+        }
+        setScale(scl);
 
         var seatArr = new Array(row); //row行
         var src = imgSrc("seat.png");
@@ -91,7 +104,7 @@ const Index = () => {
                     <MovableArea className='move_square'
                         style={{ height: data.seatArr.length * h + 'rpx' }}
                     >
-                        <MovableView outOfBounds className='move_view' direction='all' scaleMax={4} scale x={windowWidth / 4}>
+                        <MovableView outOfBounds className='move_view' direction='all' scaleMax={4} scale x={windowWidth / 4 - 5}>
                             {
                                 data && data.seatArr[0] && data.seatArr.map((row, row_index) => { // 行
                                     return (
@@ -100,7 +113,7 @@ const Index = () => {
                                                 row[0] && row.map((col, col_index) => { // 列
                                                     return (
                                                         <View className='col_item' key={`${row_index}${col_index}${col.src}-col`}>
-                                                            <View className='img_wrap' style={{ height: `${h * scale}rpx` }} >
+                                                            <View className='img_wrap' style={{ width: `${h * scale}rpx`, height: `${h * scale}rpx` }}  >
                                                                 <Image src={col.src} onClick={() => hanldeClick(row_index, col_index)} mode='widthFix' style={{ width: `${h * scale}rpx` }} />
                                                             </View>
                                                         </View>

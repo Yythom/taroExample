@@ -19,8 +19,10 @@ import { getLocal, lkGoToChangeLocation, mapRoute } from '@/common/publicFunc';
 
 import { actions } from './store/slice'
 import './index.scss';
+import PickerExample from './PickerExample'
 import CList from '@/components/Check_list';
 import DropDown from '@/components/DropDown';
+import Sticky from '@/components/Sticky';
 
 // import Modal from '@/components/Modal';
 
@@ -94,6 +96,8 @@ function Index() {
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
             <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <Avatar size={80}></Avatar>
+
+
                 <CList list={c_list} setList={setC_list} setFilter={setNewList} />
                 {/* <Button onClick={() => {
                     Taro.navigateTo({
@@ -104,43 +108,7 @@ function Index() {
 
                 <View onClick={() => goToMap()}>地图选点</View>
                 <View className='pickers_wrap'>
-                    <Picker mode='region' value={["浙江省", "杭州市", "西湖区"]} onChange={((e) => {
-                        console.log(e);
-                    })}
-                    >
-                        <View className='picker'>
-                            省市：
-                    </View>
-                    </Picker>
-                    <Picker mode='time' value='00:04' onChange={((e) => {
-                        console.log(e);
-                    })}
-                    >
-                        <View className='picker'>
-                            时间：
-                    </View>
-                    </Picker>
-                    <Picker mode='date' value='2021-02-12' onChange={((e) => {
-                        console.log(e);
-                    })}
-                    >
-                        <View className='picker'>
-                            日期：
-                    </View>
-                    </Picker>
-                    <Picker mode='multiSelector' range={[['123', '32'], '中国', '1']} onChange={((e) => {
-                        console.log(e);
-                    })}
-                    >
-                        <View className='picker'>
-                            自定义：
-                    </View>
-                    </Picker>
-                    <Picker mode='selector' range={['美国', '中国', '巴西', '日本']} >
-                        <View className='picker'>
-                            当前选择：
-                    </View>
-                    </Picker>
+                    <PickerExample />
                     <View onClick={() => setIfocus(true)}> 获取focus</View>
                     <Input type='number' style={{ position: 'fixed', top: '-99999px' }} onBlur={() => { setIfocus(false) }} focus={ifocus}></Input>
                     <View onClick={() => {
@@ -159,31 +127,22 @@ function Index() {
                     >
                         modal
                     </View>
-
-
                 </View>
             </View >
 
-            <View className='open_child_box'>
-                <View className='title_list'>
-                    <View className='title_item' onClick={() => { setOpen(!open) }}>品牌</View>
-                    <View className='title_item' onClick={() => {
-                        if (!open) {
-                            setOpen([1, 2, 3, 4, 5, 6, 7])
-                        } else {
-                            setOpen(false)
-                        }
-                    }}
-                    >
-                        距离
-                    </View>
+            <Sticky>
+                <View className='tab' style={{ width: '100%', height: '80px', background: '#3a2b1a', color: '#fff' }}>
+                    这是粘性头部 不可在flex元素内
                 </View>
-                <View className='child_list' style={open ? { height: '200rpx' } : { height: 0, padding: 0, margin: 0 }}>
-                    {open && open[0] && open.map((e, i) => {
+            </Sticky>
+            <DropDown title='品牌'>
+                <View className='child_list' style={{ height: '200rpx' }}>
+                    {[2, 2, 3, 4, 5, 6, 7].map((e, i) => {
                         return (<View key={e} className='child_item'>{e}</View>)
                     })}
                 </View>
-            </View>
+            </DropDown>
+
 
             <View
                 onClick={() => {
