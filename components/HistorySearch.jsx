@@ -30,10 +30,10 @@ const HistorySearch = ({ storage_logkey, className, isShowHot, api }) => {
 
 
         lkShowLoading('加载中'); // 请求函数
-        let shop_list = await api(text);
-        if (shop_list) {
-            if (shop_list.list[0]) {
-                setList(shop_list.list)
+        let _list = await api(text);
+        if (_list) {
+            if (_list.list[0]) {
+                setList(_list.list)
             } else {
                 showToast({ title: '暂无数据', icon: 'none' })
             }
