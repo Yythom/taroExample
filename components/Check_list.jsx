@@ -5,7 +5,6 @@ import { View, Image, Text } from '@tarojs/components';
 import './styles/checklist.scss';
 
 function CList(props) {
-    console.log(props);
     let { className, list, setList, onClick, setFilter } = props;
     return (
         <View className={`check_wrap ${className}`}>

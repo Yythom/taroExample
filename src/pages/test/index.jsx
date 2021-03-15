@@ -23,6 +23,7 @@ import PickerExample from './PickerExample'
 import CList from '@/components/Check_list';
 import DropDown from '@/components/DropDown';
 import Sticky from '@/components/Sticky';
+import HistorySearch from '@/components/HistorySearch';
 
 // import Modal from '@/components/Modal';
 
@@ -73,7 +74,7 @@ function Index() {
         // getLocal().then(res => {
         //     console.log(res);
         // })
-        dispatch(actions.changeuserInfoActionAsync())
+        // dispatch(actions.changeuserInfoActionAsync()) // 测试api
     })
     const [ifocus, setIfocus] = useState(false)
     const [open, setOpen] = useState(false);
@@ -228,7 +229,7 @@ function Index() {
 
                 </Tabs>
             </View> */}
-
+            <HistorySearch storage_logkey='search_log' api={TestService.get_ShopListApi} />
         </View>
     )
 }

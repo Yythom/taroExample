@@ -1,3 +1,5 @@
+import { getLocal } from '@/common/publicFunc'
+import { setStorageSync } from '@tarojs/taro'
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 
@@ -8,7 +10,11 @@ class App extends Component {
 
     componentDidMount() { }
 
-    componentDidShow() { }
+    componentDidShow() {
+        getLocal().then(res => {
+            setStorageSync('location_address', res)
+        })
+    }
 
     componentDidHide() { }
 
