@@ -258,6 +258,7 @@ async function lkGetUserInfo(url) {
     }
     // 尝试调用授权
     userInfo = await getUserInfo();
+    console.log(userInfo, 'userInfo');
     let userObj = {
       nickname: userInfo.userInfo.nickName,
       avatar: userInfo.userInfo.avatarUrl,

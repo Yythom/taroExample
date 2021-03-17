@@ -191,14 +191,15 @@ function Index() {
 
             </DropDown>
 
-            {/* <View>
+            <View>
                 <Tabs
                     tag_list={list}
                     status={tag_id}
                     setTag_id={setTag_id}
                     onChange={change_tag}
-                    height={900}
+                    height={800}
                     isRefresh
+                    isSticy
                     refresh_status={refresh_status}
                     setRefresh_status={setRefresh_status}
                     refresh_handle={async () => {
@@ -225,10 +226,12 @@ function Index() {
                     parentClass='nav-parent'
                     childrenClass='children-class'
                 >
-                    {'targ' + tag_id}
+                    <View className='a' style={{ height: '200px' }}>
+                        {'targ' + tag_id}
+                    </View>
 
                 </Tabs>
-            </View> */}
+            </View>
             <HistorySearch storage_logkey='search_log' api={TestService.get_ShopListApi} />
         </View>
     )

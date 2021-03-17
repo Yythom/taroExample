@@ -70,7 +70,7 @@ const HistorySearch = ({ storage_logkey, className, isShowHot, api }) => {
             }
 
             {
-                log[0] && <View className='history_box'>
+                log[0] ? <View className='history_box'>
                     <View className='history_title'>
                         <View className='text'>历史搜索</View>
                         <View className='iconfont icon-delete' onClick={() => { clear() }} ></View>
@@ -84,6 +84,10 @@ const HistorySearch = ({ storage_logkey, className, isShowHot, api }) => {
                             )
                         })}
                     </View>
+                </View> : <View className='list'>
+                    {
+                        list[0]
+                    }
                 </View>
             }
 

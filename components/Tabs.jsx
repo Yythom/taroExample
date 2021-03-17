@@ -4,6 +4,7 @@ import { View, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import Taro, { createSelectorQuery, getStorageSync } from '@tarojs/taro'
 import { debounce } from '@/common/utils';
 import './styles/tabs.scss'
+import Sticky from './Sticky';
 
 const Index = (props) => {
     const {
@@ -12,7 +13,7 @@ const Index = (props) => {
         status,
         className,
         height,
-        // content_list, // swiper-item jsx
+        isSticy, // 是否头部置顶
         scrollToLowerFn, // swiper到底触发事件
         refresh_status, // 刷新状态
         refresh_handle, // 刷新事件函数
@@ -134,7 +135,9 @@ const Index = (props) => {
                 (tag_list[0] || props.children)
                 && <View className={`tab-wrap  ${className}`}>
                     <View>
-                        <View className={topClass} style={topClass === 'top_tag' ? { top: getStorageSync('navHeight') + 50 + 'px' } : null}>
+                        <View className={isSticy ? topClass + ' sticy' : topClass}
+                            style={isSticy && { top: getStorageSync('navHeight') + 'px', zIndex: 999 }}
+                        >
                             {
                                 tag_list[0]
                                 &&
@@ -196,11 +199,11 @@ const Index = (props) => {
                                                                         {item.status == status ? props.children : null}
                                                                     </View>
                                                                 </ScrollView> : <View className='swiper-scroll'>
-                                                                        <View>
-                                                                            {/* {props.children} */}
-                                                                            {item.status == status ? props.children : null}
-                                                                        </View>
+                                                                    <View>
+                                                                        {/* {props.children} */}
+                                                                        {item.status == status ? props.children : null}
                                                                     </View>
+                                                                </View>
                                                             }
                                                         </SwiperItem>
                                                     )
@@ -220,11 +223,11 @@ const Index = (props) => {
                                                                     {item.status == status ? props.children : null}
                                                                 </View>
                                                             </ScrollView> : <View className='swiper-scroll'>
-                                                                    <View>
-                                                                        {/* {props.children} */}
-                                                                        {item.status == status ? props.children : null}
-                                                                    </View>
+                                                                <View>
+                                                                    {/* {props.children} */}
+                                                                    {item.status == status ? props.children : null}
                                                                 </View>
+                                                            </View>
                                                         }
                                                     </SwiperItem>
 

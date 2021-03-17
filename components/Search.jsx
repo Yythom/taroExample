@@ -20,7 +20,7 @@ const Search = ({
                     isEditor
                         ? <View className='home-searchv' style={{ width: width + 'rpx', height: height + 'rpx', background, }}>
                             <Text className='iconfont icon-sousuo' />
-                            <Input className='home-search home-search-input' value={value} onBlur={(e) => { if (typeof onBlur === 'function') onBlur(e.detail.value); }} placeholderStyle='color:#C8CDD1' placeholder={text}></Input>
+                            <Input className='home-search home-search-input' onBlur={(e) => { if (typeof onBlur === 'function') onBlur(e.detail.value); }} placeholderStyle='color:#C8CDD1' placeholder={text}></Input>
                         </View>
                         : <Navigator openType={isTab ? 'switchTab' : 'navigate'} url={url} className='home-searchv' style={{ width: width + 'rpx', height: height + 'rpx', background, }}>
                             <Text className='iconfont icon-sousuo' />

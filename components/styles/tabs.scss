@@ -1,39 +1,48 @@
 .tab-wrap {
-    height: 900px;
     width: 100%;
 
-    .nav-item {
-        display: inline-block;
-        margin: 0 16px;
-        text-align: center;
-        transition: color 0.3s ease;
+    .sticy {
+        position: sticky;
     }
 
     .nav {
         white-space: nowrap;
         position: relative;
-        height: 60px;
-        padding: 20px 0;
+        background-color: #fff;
+
+        .nav-item {
+            display: inline-block;
+            margin: 0 16px;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item-act {
+            color: red;
+            font-weight: bolder;
+        }
+
+        .nav-line {
+            position: absolute;
+            bottom: 0;
+            height: 10px;
+            border-radius: 10px;
+            background-color: red;
+            transition: 0.3s ease;
+        }
     }
+
+    .swiper_item {}
+
 
     ::-webkit-scrollbar {
         display: none;
     }
 
 
-    .nav-item-act {
-        color: red;
-        font-weight: bolder;
-    }
 
-    .nav-line {
-        position: absolute;
-        bottom: 0;
-        height: 10px;
-        border-radius: 10px;
-        background-color: red;
-        transition: left 0.3s ease;
-    }
+
+
 
     .swiper {
         width: 100%;
