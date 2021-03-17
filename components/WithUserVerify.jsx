@@ -89,7 +89,7 @@ const WithUserVerify = ({
                         {children}
                     </Button>
                 )
-                    : !userInfo.mobile && isVerifyPhone
+                    : !userInfo.phone && isVerifyPhone
                         ? (
                             <Button style={style} className={`with-button ${className}`} openType='getPhoneNumber' onGetPhoneNumber={handleGetPhoneNumber}>
                                 {children}

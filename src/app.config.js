@@ -23,12 +23,12 @@ export default {
     //     'index',
     //   ],
     // }, 
-    // {
-    //   root: 'subpages/video_sp', // 仿抖音页面
-    //   pages: [
-    //     'index',
-    //   ],
-    // },
+    {
+      root: 'subpages/video_sp', // 仿抖音页面
+      pages: [
+        'index',
+      ],
+    },
     {
       root: 'subpages/movie', // 仿选票
       pages: [

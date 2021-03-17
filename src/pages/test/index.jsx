@@ -155,8 +155,8 @@ function Index() {
                 图片裁剪
             </View>
             <View className='' onClick={() => {
-                navigateTo({ url: '/subpages/movie/index' })
-            }}>小程序post</View>
+                navigateTo({ url: '/subpages/video_sp/index' })
+            }}>仿抖音</View>
             {/* <UpImg btn_text='上传图片' /> */}
             <View onClick={() => {
                 Taro.chooseLocation().then(res => {
