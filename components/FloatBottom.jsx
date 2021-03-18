@@ -10,9 +10,7 @@ const Float = (props) => {
             props.hideFn();
         }
     }
-    const common_style = {
-
-    }
+    const common_style = {}
     return (
         <>
             {
