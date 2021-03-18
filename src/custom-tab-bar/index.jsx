@@ -1,15 +1,21 @@
-import React, { memo, useState } from 'react'
-import { switchTab } from '@tarojs/taro';
+import React, { memo, useEffect, useState } from 'react'
+import { setStorageSync, switchTab } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { systemInfo } from '@/common/publicFunc';
 import { actions } from './store/slice'
-
 import './index.scss'
 
 
 export default memo(() => {
-    const dispatch = useDispatch()
-    const tabbarState = useSelector(state => state.tabbar, shallowEqual)
+    const dispatch = useDispatch();
+    const tabbarState = useSelector(state => state.tabbar, shallowEqual);
+    //去除底部安全区
+    const [safeBottom, setSaveBottom] = useState(0);
+    useEffect(() => {
+        setSaveBottom(systemInfo.safeArea.top);
+        setStorageSync('safeArea', systemInfo.safeArea.top)
+    }, [])
     const [tabBars] = useState([
         {
             url: '/pages/test/index',
@@ -50,7 +56,7 @@ export default memo(() => {
     }
 
     return (
-        <View className='tabbar-wrap'>
+        <View className='tabbar-wrap' style={{ paddingBottom: safeBottom + 'px' }}>
             {
                 tabBars[0] && tabBars.map((item, index) => {
                     return (

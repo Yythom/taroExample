@@ -1,5 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { View, Image } from '@tarojs/components';
+import { getStorageSync } from '@tarojs/taro';
+import np from 'number-precision'
 import './styles/float_bottom.scss'
 
 const Float = (props) => {
@@ -7,6 +9,9 @@ const Float = (props) => {
         if (props?.show && typeof props.hideFn === 'function') {
             props.hideFn();
         }
+    }
+    const common_style = {
+
     }
     return (
         <>
@@ -20,7 +25,7 @@ const Float = (props) => {
                 }
                 />
             }
-            <View className={`float_bottom  ${props.className}`} style={!props.show ? { height: 0 } : { height: props.children?.props?.style?.height || 0 }}>
+            <View className={`float_bottom  ${props.className}`} style={!props.show ? { height: 0, ...common_style } : { ...common_style, height: np.plus(props.children?.props?.style?.height.replace('px', ''), getStorageSync('safeArea')) + 'px' || 0 }}>
                 {props.children}
             </View>
         </>
