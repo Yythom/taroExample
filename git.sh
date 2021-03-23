@@ -38,7 +38,7 @@ while [ $handle == 2 ]; do
     fi
 done
 
-while [ $istrue != 1 ]; do
+while [ $istrue == 1 ]; do
     read barcha
     pushbarch=""
     if [ $barcha == 0 ]; then
