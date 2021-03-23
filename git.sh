@@ -12,7 +12,7 @@ git commit -m $describe
 echo "push上传：1    pull拉取：2"
 read handle
 
-if [$handle==1]; then
+if [ "$handle" == 1 ]; then
     echo "0 ——> master"
     echo "请直接输入分支名称"
 else
