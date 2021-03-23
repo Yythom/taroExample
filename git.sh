@@ -13,13 +13,11 @@ echo "push上传：1    pull拉取：2"
 read handle
 
 if [$handle==1]; then
-    echo "拉取的分支名称"
     echo "0 ——> master"
-    echo "其他分支请直接输入分支名称"
+    echo "请直接输入分支名称"
 else
-    echo "上传的分支名称"
     echo "0 ——> master"
-    echo "其他分支请直接输入分支名称"
+    echo "请直接输入分支名称"
 fi
 
 while [ $handle == 2 ]; do
@@ -58,4 +56,4 @@ while [ $istrue != 1 ]; do
     fi
 done
 
-echo end
+echo "---END---"
