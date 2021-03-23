@@ -13,23 +13,21 @@ echo "push上传：1    pull拉取：2"
 read handle
 
 if [$handle==1]; then
-    echo "请输入要拉取的分支名称"
-    echo "0 -> master"
-    echo "如果是其他分支请直接输入分支名称"
+    echo "拉取的分支名称"
+    echo "0 ——> master"
+    echo "其他分支请直接输入分支名称"
 else
-    echo "请输入要上传的分支名称"
-    echo "0 -> master"
-    echo "如果是其他分支请直接输入分支名称"
+    echo "上传的分支名称"
+    echo "0 ——> master"
+    echo "其他分支请直接输入分支名称"
 fi
 
 while [ $handle == 2 ]; do
     read barch
     tempbarch=""
     if [ $barch == 0 ]; then
-        echo "输入的是master"
         tempbarch="master"
     else
-        echo "输入的是其他分支"
         tempbarch=$barch
     fi
     echo $tempbarch
@@ -46,10 +44,8 @@ while [ $istrue != 1 ]; do
     read barcha
     pushbarch=""
     if [ $barcha == 0 ]; then
-        echo "输入的是master"
         pushbarch="master"
     else
-        echo "输入的是其他分支"
         pushbarch=$barcha
     fi
     echo $pushbarch
@@ -61,3 +57,5 @@ while [ $istrue != 1 ]; do
         echo "请输入正确的分支名称"
     fi
 done
+
+echo end
