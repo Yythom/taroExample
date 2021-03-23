@@ -5,10 +5,19 @@ import { getStorageSync, removeStorageSync, setStorageSync, showToast } from '@t
 import Search from './Search';
 import './styles/history_search.scss'
 
-const HistorySearch = ({ storage_logkey, className, isShowHot, api }) => {
+const HistorySearch = ({
+    storage_logkey, // 本地设置的stroge key名
+    className,
+    isShowHot, // 热门列表
+    api, // 搜索api接口
+
+    // list, // 嵌套时可由外层控制
+    // setList,
+}) => {
+    const [list, setList] = useState([]);
+
 
     const [log, setLog] = useState([]); // 历史记录
-    const [list, setList] = useState([]);
 
     useEffect(() => {
         if (getStorageSync(storage_logkey)) {
