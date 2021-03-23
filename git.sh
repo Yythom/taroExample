@@ -55,5 +55,4 @@ while [ $istrue != 1 ]; do
         echo "请输入正确的分支名称"
     fi
 done
-
-exit
+echo "按ctrl + c 结束本次操作"
