@@ -10,22 +10,22 @@ import NavBar from '@/components/NavBar'
 import Search from '@/components/Search'
 import Avatar from '@/components/Avatar'
 import Tabs from '@/components/Tabs'
-import UpImg from '@/components/Up_image'
+import UpImg from '@/components/UpImage'
 import BlurImg from '@/components/BlurImg'
 // import WithUserVerify from '@/components/WithUserVerify'
 import TestService from '@/services/test'
 import Float from '@/components/FloatBottom';
 import { getLocal, lkGoToChangeLocation, mapRoute } from '@/common/publicFunc';
 
-import { actions } from './store/slice'
-import './index.scss';
-import PickerExample from './PickerExample'
-import CList from '@/components/Check_list';
+import CList from '@/components/CheckList';
 import DropDown from '@/components/DropDown';
 import Sticky from '@/components/Sticky';
 import HistorySearch from '@/components/HistorySearch';
-
 // import Modal from '@/components/Modal';
+
+import { actions } from './store/slice'
+import PickerExample from './PickerExample'
+import './index.scss';
 
 function Index() {
     const query = Taro.getCurrentInstance().router.params;
@@ -70,7 +70,6 @@ function Index() {
     // ////////////////////////////////
 
     useDidShow(() => {
-        change_tag(101); // 初始化默认选中tag——id
         // getLocal().then(res => {
         //     console.log(res);
         // })
@@ -194,10 +193,10 @@ function Index() {
             <View>
                 <Tabs
                     tag_list={list}
-                    status={tag_id}
                     setTag_id={setTag_id}
                     onChange={change_tag}
-                    height={800}
+                    defaultIndex='2'
+                    height='800rpx' // scroll-view导致必须要有高
                     isRefresh
                     isSticy
                     refresh_status={refresh_status}

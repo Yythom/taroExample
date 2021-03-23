@@ -11,9 +11,26 @@ function Index(props) {
     const {
         btn_text, // 按钮文案
         canvas_style,
+        isShrink, // 是否开启压缩
     } = props;
 
     const [img, setImage] = useState(false);
+
+    function up_file(path) {
+        Taro.uploadFile({
+            url: 'https://example.weixin.qq.com/upload', //仅为示例，非真实的接口地址
+            filePath: path,
+            name: 'file',
+            formData: {
+                'user': 'test'
+            },
+            // eslint-disable-next-line no-shadow
+            success(res) {
+                console.log(res);
+            }
+        })
+    }
+
     const selectImg = async () => {
         //压缩图片
         Taro.chooseImage({
@@ -21,7 +38,10 @@ function Index(props) {
             sizeType: ['original', 'compressed'],
             sourceType: ['album', 'camera'],
             success: (res) => {
-                console.log('选择图片=>', res.tempFilePaths[0])
+                if (!isShrink) {
+                    console.log('选择图片=>', res.tempFilePaths[0])
+                    up_file(res.tempFilePaths[0]);
+                } else return
                 Taro.getImageInfo({
                     src: res.tempFilePaths[0],
                     // eslint-disable-next-line no-shadow
@@ -71,18 +91,7 @@ function Index(props) {
                                             success: (res) => {
                                                 console.log('压缩后的res', res);
                                                 setImage(res.path);
-                                                Taro.uploadFile({
-                                                    url: 'https://example.weixin.qq.com/upload', //仅为示例，非真实的接口地址
-                                                    filePath: res.path,
-                                                    name: 'file',
-                                                    formData: {
-                                                        'user': 'test'
-                                                    },
-                                                    // eslint-disable-next-line no-shadow
-                                                    success(res) {
-                                                        console.log(res);
-                                                    }
-                                                })
+                                                up_file(res.path)
                                             }
                                         })
                                     }

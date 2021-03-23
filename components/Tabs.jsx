@@ -8,22 +8,28 @@ import Sticky from './Sticky';
 
 const Index = (props) => {
     const {
-        onChange,
-        tag_list, // list=[{title,tag_id}]  分类列表
-        status,
-        className,
-        height,
-        isSticy, // 是否头部置顶
-        scrollToLowerFn, // swiper到底触发事件
-        refresh_status, // 刷新状态
-        refresh_handle, // 刷新事件函数
-        setRefresh_status, // 设置刷新状态
+        // tab相关设置
+        className, // wrap class
+        onChange, // change函数
+        tag_list, // list=[{title}]  分类列表
+        isSticy, // 是否tab头部置顶
+        renderCenter, // 中间可展开筛选区域
+        defaultIndex, // 默认选中的index
+
+        // 内容相关设置
+        height, // 内容高度 （scroll-view导致必须要有高）
+
+        // 防止页面多tabs获取元素信息污染
         parentClass, // 是 并且不能为 nav
-        childrenClass, // 是 并且不能为 nav-item-act nav-item nav-item 
-        isRefresh,
-        renderCenter, // 筛选
-        topClass, // 吸顶
-        notChildScroll, // 是否需要开启scroll—view
+        childrenClass, // 是 并且不能为 nav-item-act nav-item 
+
+        // scroll-view相关设置
+        notChildScroll, // 是否开启scroll—view
+        isRefresh, // 是否开启scrollView下拉刷新
+        scrollToLowerFn, // scrollView到底触发事件
+        refresh_status, // 刷新状态
+        setRefresh_status, // 设置刷新状态
+        refresh_handle, // 刷新事件函数
     } = props;
 
     const query = createSelectorQuery();
@@ -94,7 +100,7 @@ const Index = (props) => {
     function swiperChange(e) {
         let current = e.detail.current;
         taggleNav(current);
-        onChange(tag_list[current].status);
+        onChange(current);
     }
 
     function scrollMoveDom(index) {
@@ -121,13 +127,12 @@ const Index = (props) => {
 
     useEffect(() => {
         if (navInfos[0]) {
-            let i = tag_list.findIndex(v => v.status == status);
-            if (i !== -1) {
-                taggleNav(i);
+            if (defaultIndex) {
+                taggleNav(defaultIndex);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [status, navInfos[0]])
+    }, [navInfos[0]])
 
     return (
         <>
@@ -135,8 +140,8 @@ const Index = (props) => {
                 (tag_list[0] || props.children)
                 && <View className={`tab-wrap  ${className}`}>
                     <View>
-                        <View className={isSticy ? topClass + ' sticy' : topClass}
-                            style={isSticy && { top: getStorageSync('navHeight') + 'px', zIndex: 999 }}
+                        <View className='sticy'
+                            style={isSticy && { position: 'sticky', top: getStorageSync('navHeight') + 'px', zIndex: 999 }}
                         >
                             {
                                 tag_list[0]
@@ -164,7 +169,7 @@ const Index = (props) => {
                                 </View>
                             }
                         </View>
-                        {
+                        {  // 内容区域
                             props.children
                             &&
                             <View className='swiper' style={{ height: height }}>
@@ -195,13 +200,11 @@ const Index = (props) => {
                                                                     refresherEnabled={isRefresh}
                                                                 >
                                                                     <View>
-                                                                        {/* {props.children} */}
-                                                                        {item.status == status ? props.children : null}
+                                                                        {swiperIndex == index ? props.children : null}
                                                                     </View>
                                                                 </ScrollView> : <View className='swiper-scroll'>
                                                                     <View>
-                                                                        {/* {props.children} */}
-                                                                        {item.status == status ? props.children : null}
+                                                                        {swiperIndex == index ? props.children : null}
                                                                     </View>
                                                                 </View>
                                                             }
@@ -219,13 +222,11 @@ const Index = (props) => {
                                                                 refresherEnabled={isRefresh}
                                                             >
                                                                 <View>
-                                                                    {/* {props.children} */}
-                                                                    {item.status == status ? props.children : null}
+                                                                    {swiperIndex == index ? props.children : null}
                                                                 </View>
                                                             </ScrollView> : <View className='swiper-scroll'>
                                                                 <View>
-                                                                    {/* {props.children} */}
-                                                                    {item.status == status ? props.children : null}
+                                                                    {swiperIndex == index ? props.children : null}
                                                                 </View>
                                                             </View>
                                                         }
