@@ -56,4 +56,4 @@ while [ $istrue != 1 ]; do
     fi
 done
 
-echo "---END---"
+exit
