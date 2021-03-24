@@ -1,5 +1,5 @@
 import { systemInfo } from '@/common/publicFunc';
-import { login, setStorageSync } from '@tarojs/taro';
+import { login } from '@tarojs/taro';
 import http from '../common/request';
 
 class TestService {
@@ -23,7 +23,6 @@ class TestService {
     }
 
     static async uploadErrorApi(errorStack, error) {
-        let sysinfo = systemInfo;
         let uuid = await login();
         // let open_id=await 
         let error_obj = {

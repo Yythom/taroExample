@@ -170,7 +170,7 @@ function Index() {
                 电影选座
             </View>
             <View className='12312312lll' onClick={() => {
-                console.error(123);
+                console.log(aaa);
             }}>
                 打印日志
             </View>
