@@ -1,3 +1,5 @@
+import { systemInfo } from '@/common/publicFunc';
+import { login, setStorageSync } from '@tarojs/taro';
 import http from '../common/request';
 
 class TestService {
@@ -20,13 +22,19 @@ class TestService {
         return res;
     }
 
-    // static async up(blog, key) {
-    //     const res = await http.post('/upload', {
-    //         blog,
-    //         key
-    //     });
-    //     return res;
-    // }
+    static async uploadErrorApi(errorStack, error) {
+
+        let sysinfo = systemInfo;
+        let uuid = await login();
+        let error_obj = {
+            errorStack,
+            error: error,
+            systemInfo,
+            uuid,
+        }
+        console.log(error_obj);
+        // return res;
+    }
 }
 
 export default TestService;

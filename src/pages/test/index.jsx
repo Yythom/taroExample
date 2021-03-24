@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import React, { Component, useEffect, useState } from 'react';
-import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync, requirePlugin } from '@tarojs/taro';
+import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync, requirePlugin, getLogManager, getRealtimeLogManager, onError } from '@tarojs/taro';
 import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Input, Slider, Progress, OpenData } from '@tarojs/components';
 // import Modal from '@/components/Modal'
 import NavBar from '@/components/NavBar'
@@ -51,15 +51,15 @@ function Index() {
     // tab 相关设置
     const [refresh_status, setRefresh_status] = useState(false);
     const [list, setList] = useState([
-        { title: '首页', status: '101' },
-        { title: '测试', status: '102' },
-        { title: '我的', status: '103' },
-        { title: 'hello', status: '104' },
-        { title: '测试-1', status: '105' },
-        { title: '测试-2', status: '106' },
-        { title: '测试-3', status: '107' },
-        { title: '测试-4', status: '108' },
-        { title: '测试-5', status: '109' },
+        { title: '首页' },
+        { title: '测试' },
+        { title: '我的' },
+        { title: 'hello' },
+        { title: '测试-1' },
+        { title: '测试-2' },
+        { title: '测试-3' },
+        { title: '测试-4' },
+        { title: '测试-5' },
     ])
     const [tag_id, setTag_id] = useState('');
 
@@ -99,12 +99,6 @@ function Index() {
 
 
                 <CList list={c_list} setList={setC_list} setFilter={setNewList} />
-                {/* <Button onClick={() => {
-                    Taro.navigateTo({
-                        url: '/subpages/create_pages_demo/demo_pages/example/index'
-                    })
-                }}
-                >跳转分包</Button> */}
 
                 <View onClick={() => goToMap()}>地图选点</View>
                 <View className='pickers_wrap'>
@@ -175,6 +169,11 @@ function Index() {
             }} >
                 电影选座
             </View>
+            <View className='12312312lll' onClick={() => {
+                console.error(123);
+            }}>
+                打印日志
+            </View>
             <DropDown className='test_down' >
                 <View className='c_wrap' style={{ height: '300rpx' }} >
                     {
@@ -235,4 +234,12 @@ function Index() {
         </View>
     )
 }
-export default Index
+
+function A() {
+    try {
+        return Index()
+    } catch (error) {
+        console.log(error);
+    }
+}
+export default A
