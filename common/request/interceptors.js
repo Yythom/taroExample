@@ -24,7 +24,7 @@ const customInterceptor = (chain) => {
         pages: currentPage,
         requestInfo: requestParams,
         systemInfo,
-        timer: Date.parse(new Date),
+        time: Date.parse(new Date),
       }
       console.log(error_obj);
     }
