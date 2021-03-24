@@ -1,15 +1,18 @@
 import {
-  setStorageSync, showToast, login, getStorageSync,
+  setStorageSync, showToast, login, getStorageSync, getCurrentPages,
 } from '@tarojs/taro';
 import { logInterceptor, timeoutInterceptor } from './interceptor/interceptors';
 import http from './index';
 import getBaseUrl from './baseURL';
+import { systemInfo } from '../publicFunc';
 // import { userStore } from 'store';
 
 const LOGIN_PATH = '/client/v1/user/wechat/login';
 const REFRESH_PATH = '/client/v1/user/refreshToken';
 
 const baseURL = getBaseUrl();
+
+
 
 const customInterceptor = (chain) => {
   const { requestParams } = chain;
@@ -18,6 +21,20 @@ const customInterceptor = (chain) => {
   return chain.proceed(requestParams).then(async (res) => {
     let prevUrl = '';
     let prevData = null;
+
+    // 请求错误上报
+    function reqError() {
+      let pages = getCurrentPages();
+      let currentPage = pages[pages.length - 1]?.route;
+      let error_obj = {
+        pages: currentPage,
+        requestInfo: requestParams,
+        systemInfo,
+      }
+      console.log(error_obj);
+    }
+
+
     // 当请求成功
     const { code, result, msg } = res.data;
     // TODO:当code为0，表示请求成功
@@ -27,6 +44,7 @@ const customInterceptor = (chain) => {
         icon: 'none',
         duration: 1000
       })
+      reqError();
       return Promise.resolve(false);
     } else if (code === 'F-000-000-401' || code === 'F-000-000-403') { // 重新登入的code
       let resp;

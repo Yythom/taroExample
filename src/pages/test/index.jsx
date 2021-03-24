@@ -73,7 +73,7 @@ function Index() {
         // getLocal().then(res => {
         //     console.log(res);
         // })
-        // dispatch(actions.changeuserInfoActionAsync()) // 测试api
+        dispatch(actions.changeuserInfoActionAsync()) // 测试api
     })
     const [ifocus, setIfocus] = useState(false)
     const [open, setOpen] = useState(false);

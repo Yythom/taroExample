@@ -23,9 +23,9 @@ class TestService {
     }
 
     static async uploadErrorApi(errorStack, error) {
-
         let sysinfo = systemInfo;
         let uuid = await login();
+        // let open_id=await 
         let error_obj = {
             errorStack,
             error: error,
