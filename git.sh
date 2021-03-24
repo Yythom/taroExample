@@ -47,6 +47,7 @@ while [ $handle == 1 ]; do
     fi
     echo $pushbarch
     git push origin $pushbarch
+    kill $$
     if [ $? == 0 ]; then
         istruetwo=0
         echo $istruetwo
@@ -54,5 +55,3 @@ while [ $handle == 1 ]; do
         echo "请输入正确的分支名称"
     fi
 done
-
-kill $$
