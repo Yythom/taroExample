@@ -1,6 +1,5 @@
 #!/bin/bash
 git add .
-
 echo "请输入提交描述文字如果没有默认: fix"
 read describe
 if [ ! -n "$describe" ]; then
@@ -55,4 +54,5 @@ while [ $handle == 1 ]; do
         echo "请输入正确的分支名称"
     fi
 done
-echo "按ctrl + c 结束本次操作"
+
+kill $$
