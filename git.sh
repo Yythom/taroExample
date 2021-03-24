@@ -29,12 +29,7 @@ while [ $handle == 2 ]; do
     fi
     echo $tempbarch
     git pull origin $tempbarch
-    if [ $? == 0 ]; then
-        istrue=0
-        echo $istrue
-    else
-        echo "请输入正确的分支名称"
-    fi
+    kill $$
 done
 
 while [ $handle == 1 ]; do
@@ -48,10 +43,4 @@ while [ $handle == 1 ]; do
     echo $pushbarch
     git push origin $pushbarch
     kill $$
-    if [ $? == 0 ]; then
-        istruetwo=0
-        echo $istruetwo
-    else
-        echo "请输入正确的分支名称"
-    fi
 done
