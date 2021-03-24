@@ -7,13 +7,7 @@ import getBaseUrl from './baseURL';
 import { systemInfo } from '../publicFunc';
 // import { userStore } from 'store';
 
-const LOGIN_PATH = '/client/v1/user/wechat/login';
-const REFRESH_PATH = '/client/v1/user/refreshToken';
-
 const baseURL = getBaseUrl();
-
-
-
 const customInterceptor = (chain) => {
   const { requestParams } = chain;
   const { url, data } = requestParams; // 本次请求的url
@@ -30,6 +24,7 @@ const customInterceptor = (chain) => {
         pages: currentPage,
         requestInfo: requestParams,
         systemInfo,
+        timer: Date.parse(new Date),
       }
       console.log(error_obj);
     }
