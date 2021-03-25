@@ -48,6 +48,10 @@ const customInterceptor = (chain) => {
     }
     // return Promise.reject();
   }).catch(err => {
+    showToast({
+      title: '服务器错误：' + err.errMsg,
+      icon: 'none',
+    })
     // 网络监控加入stack
     newWorkStackPush('error', 'error', '服务器错误：' + err.errMsg, requestParams);
   });
