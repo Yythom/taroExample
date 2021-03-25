@@ -207,17 +207,8 @@ var Logger = (function () {
             });
         }
     }
-    Logger.prototype.disable = function () {
-        this.enabled = false;
-    };
     Logger.prototype.bindOptions = function (debug) {
         this.enabled = debug ? true : false;
-    };
-    Logger.prototype.enable = function () {
-        this.enabled = true;
-    };
-    Logger.prototype.getEnableStatus = function () {
-        return this.enabled;
     };
     Logger.prototype.log = function () {
         var _a;
@@ -866,8 +857,10 @@ var HandleWxPageEvents = {
 
 };
 var HandleWxConsoleEvents = {
-    console: function (data) {
-        handleConsole(data);
+    console: function (data) {  // 重写console
+        if (data.level !== 'debug') {  // debug级别不再加入栈
+            handleConsole(data);
+        }
     }
 };
 

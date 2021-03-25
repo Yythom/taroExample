@@ -6,8 +6,8 @@ let Breadcrumb = null;
 
 // 每当有新的error信息加入  触发错误上报总api
 export function netUpload(stack, error_item) {
-    if (flag) {
-        console.log(stack, error_item);
+    if (flag && Breadcrumb) {
+        console.log(Breadcrumb.getStack(), error_item);
     }
 }
 
