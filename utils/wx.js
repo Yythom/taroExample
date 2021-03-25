@@ -858,9 +858,7 @@ var HandleWxPageEvents = {
 };
 var HandleWxConsoleEvents = {
     console: function (data) {  // 重写console
-        if (data.level !== 'debug') {  // debug级别不再加入栈
-            handleConsole(data);
-        }
+        handleConsole(data);
     }
 };
 
@@ -1019,7 +1017,7 @@ function replaceConsole() {  // 加入错误栈堆的信息
     if (console && variableTypeDetection.isObject(console)) {
         var logType = [
             // 'log', 
-            'debug',
+            // 'debug',
             //  'info',
             'warn',
             'error',
