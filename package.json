@@ -50,8 +50,7 @@
     "react-dom": "^16.10.0",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
-    "taro-cropper": "^1.2.3",
-    "wxml-to-canvas": "^1.1.1"
+    "taro-cropper": "^1.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.0",
