@@ -1,24 +1,30 @@
 import { getLocal, systemInfo } from '@/common/publicFunc'
+import { View } from '@tarojs/components'
 import Taro, { setStorageSync } from '@tarojs/taro'
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
-import { init } from '../utils/wx-mini'
+
+import { initErrorNet } from '../utils/wx-net_error'
+import { init, breadcrumb } from '../utils/wx-mini'
+
 import store from '../store'
 import './app.scss'
 
 class App extends Component {
 
-    componentDidMount() { }
-
-    componentDidShow() {
-        init({
+    componentWillMount() {
+        init({ // 不可在异步执行
             silentConsole: false,
-            silentFetch: true,
-            silentXhr: true,
+            // silentFetch: true,
+            // silentXhr: true,
             // debug: true,
-            silentVue: true,
-            maxBreadcrumbs: 50
+            maxBreadcrumbs: 30
         });
+        initErrorNet(breadcrumb);
+    }
+    componentDidMount() { }
+    componentDidShow() {
+
         // getLocal().then(res => { // 获取当前位置
         //     setStorageSync('location_address', res)
         // })

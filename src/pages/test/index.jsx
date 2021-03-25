@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import React, { Component, useEffect, useState } from 'react';
-import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync, requirePlugin, getLogManager, getRealtimeLogManager, onError } from '@tarojs/taro';
-import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Input, Slider, Progress, OpenData } from '@tarojs/components';
+import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync, requirePlugin, getLogManager, getRealtimeLogManager, onError, useTabItemTap } from '@tarojs/taro';
+import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Input, Slider, Progress, OpenData, WebView } from '@tarojs/components';
 // import Modal from '@/components/Modal'
 import NavBar from '@/components/NavBar'
 // import Notice from '@/components/Notice'
@@ -73,7 +73,7 @@ function Index() {
         // getLocal().then(res => {
         //     console.log(res);
         // })
-        dispatch(actions.changeuserInfoActionAsync()) // 测试api
+        // dispatch(actions.changeuserInfoActionAsync()) // 测试api
     })
     const [ifocus, setIfocus] = useState(false)
     const [open, setOpen] = useState(false);
@@ -96,8 +96,6 @@ function Index() {
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
             <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <Avatar size={80}></Avatar>
-
-
                 <CList list={c_list} setList={setC_list} setFilter={setNewList} />
 
                 <View onClick={() => goToMap()}>地图选点</View>
@@ -174,6 +172,8 @@ function Index() {
             }}>
                 打印日志
             </View>
+            <View className='12312312lll' onClick={() => { dispatch(actions.changeuserInfoActionAsync()) }}> 测试请求失败</View>
+
             <DropDown className='test_down' >
                 <View className='c_wrap' style={{ height: '300rpx' }} >
                     {

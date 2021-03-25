@@ -1,5 +1,5 @@
 import { systemInfo } from '@/common/publicFunc';
-import { login } from '@tarojs/taro';
+import { login, request } from '@tarojs/taro';
 import http from '../common/request';
 
 class TestService {
@@ -8,7 +8,7 @@ class TestService {
      * @param {Number} page 页码
      * @param {Number} pageSize 页数
      */
-    static async getTestDataApi(mobile = '12313123') {
+    static async getTestDataApi(mobile = '1314521602') {
         const res = await http.post('/shop/v1/login/send', { mobile });
         return res;
     }
@@ -32,6 +32,17 @@ class TestService {
             uuid,
         }
         console.log(error_obj);
+        return
+        request({
+            url: 'test.php', //仅为示例，并非真实的接口地址
+            data: error_obj,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function (res) {
+                console.log(res.data, '上报成功')
+            }
+        });
         // return res;
     }
 }

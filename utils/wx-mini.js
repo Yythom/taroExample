@@ -1,7 +1,8 @@
+/* eslint-disable import/no-commonjs */
 /* eslint-disable no-shadow */
 'use strict';
 
-const { default: TestService } = require("@/services/test");
+const { netUpload } = require("./wx-net_error");
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
@@ -34,8 +35,6 @@ var ERRORTYPES;
     ERRORTYPES["UNKNOWN_FUNCTION"] = "UNKNOWN_FUNCTION";
     ERRORTYPES["JAVASCRIPT_ERROR"] = "JAVASCRIPT_ERROR";
     ERRORTYPES["LOG_ERROR"] = "LOG_ERROR";
-    ERRORTYPES["FETCH_ERROR"] = "HTTP_ERROR";
-    ERRORTYPES["VUE_ERROR"] = "VUE_ERROR";
     ERRORTYPES["REACT_ERROR"] = "REACT_ERROR";
     ERRORTYPES["RESOURCE_ERROR"] = "RESOURCE_ERROR";
     ERRORTYPES["PROMISE_ERROR"] = "PROMISE_ERROR";
@@ -73,10 +72,7 @@ var BREADCRUMBTYPES;
     BREADCRUMBTYPES["ROUTE"] = "Route";
     BREADCRUMBTYPES["CLICK"] = "UI.Click";
     BREADCRUMBTYPES["CONSOLE"] = "Console";
-    BREADCRUMBTYPES["XHR"] = "Xhr";
-    BREADCRUMBTYPES["FETCH"] = "Fetch";
     BREADCRUMBTYPES["UNHANDLEDREJECTION"] = "Unhandledrejection";
-    BREADCRUMBTYPES["VUE"] = "Vue";
     BREADCRUMBTYPES["REACT"] = "React";
     BREADCRUMBTYPES["RESOURCE"] = "Resource";
     BREADCRUMBTYPES["CODE_ERROR"] = "Code Error";
@@ -94,7 +90,6 @@ var BREADCRUMBTYPES;
 })(BREADCRUMBTYPES || (BREADCRUMBTYPES = {}));
 var BREADCRUMBCATEGORYS;
 (function (BREADCRUMBCATEGORYS) {
-    BREADCRUMBCATEGORYS["HTTP"] = "http";
     BREADCRUMBCATEGORYS["USER"] = "user";
     BREADCRUMBCATEGORYS["DEBUG"] = "debug";
     BREADCRUMBCATEGORYS["EXCEPTION"] = "exception";
@@ -102,8 +97,6 @@ var BREADCRUMBCATEGORYS;
 })(BREADCRUMBCATEGORYS || (BREADCRUMBCATEGORYS = {}));
 var EVENTTYPES;
 (function (EVENTTYPES) {
-    EVENTTYPES["XHR"] = "xhr";
-    EVENTTYPES["FETCH"] = "fetch";
     EVENTTYPES["CONSOLE"] = "console";
     EVENTTYPES["DOM"] = "dom";
     EVENTTYPES["HISTORY"] = "history";
@@ -111,20 +104,9 @@ var EVENTTYPES;
     EVENTTYPES["HASHCHANGE"] = "hashchange";
     EVENTTYPES["UNHANDLEDREJECTION"] = "unhandledrejection";
     EVENTTYPES["MITO"] = "mito";
-    EVENTTYPES["VUE"] = "Vue";
     EVENTTYPES["MINI_ROUTE"] = "miniRoute";
 })(EVENTTYPES || (EVENTTYPES = {}));
-var HTTPTYPE;
-(function (HTTPTYPE) {
-    HTTPTYPE["XHR"] = "xhr";
-    HTTPTYPE["FETCH"] = "fetch";
-})(HTTPTYPE || (HTTPTYPE = {}));
-var HTTP_CODE;
-(function (HTTP_CODE) {
-    HTTP_CODE[HTTP_CODE["BAD_REQUEST"] = 400] = "BAD_REQUEST";
-    HTTP_CODE[HTTP_CODE["UNAUTHORIZED"] = 401] = "UNAUTHORIZED";
-    HTTP_CODE[HTTP_CODE["INTERNAL_EXCEPTION"] = 500] = "INTERNAL_EXCEPTION";
-})(HTTP_CODE || (HTTP_CODE = {}));
+
 var globalVar = {
     isLogAddBreadcrumb: true,
     crossOriginThreshold: 1000
@@ -187,11 +169,13 @@ var _global = getGlobal();
 var _support = getGlobalMitoSupport();
 _support.replaceFlag = _support.replaceFlag || {};
 var replaceFlag = _support.replaceFlag;
+
 function setFlag(replaceType, isSet) {
     if (replaceFlag[replaceType])
         return;
     replaceFlag[replaceType] = isSet;
 }
+
 function getFlag(replaceType) {
     return replaceFlag[replaceType] ? true : false;
 }
@@ -316,21 +300,14 @@ function getTimestamp() {
 function typeofAny(target, type) {
     return typeof target === type;
 }
-function toStringAny(target, type) {
-    return nativeToString.call(target) === type;
-}
+
 function validateOption(target, targetName, expectType) {
     if (typeofAny(target, expectType))
         return true;
     typeof target !== 'undefined' && logger.error(targetName + "\u671F\u671B\u4F20\u5165" + expectType + "\u7C7B\u578B\uFF0C\u76EE\u524D\u662F" + typeof target + "\u7C7B\u578B");
     return false;
 }
-function toStringValidateOption(target, targetName, expectType) {
-    if (toStringAny(target, expectType))
-        return true;
-    typeof target !== 'undefined' && logger.error(targetName + "\u671F\u671B\u4F20\u5165" + expectType + "\u7C7B\u578B\uFF0C\u76EE\u524D\u662F" + nativeToString.call(target) + "\u7C7B\u578B");
-    return false;
-}
+
 function slientConsoleScope(callback) {
     globalVar.isLogAddBreadcrumb = false;
     callback();
@@ -346,9 +323,7 @@ function unknownToString(target) {
     }
     return JSON.stringify(target);
 }
-function isHttpFail(code) {
-    return code === 0 || code === HTTP_CODE.BAD_REQUEST || code > HTTP_CODE.UNAUTHORIZED;
-}
+
 function setUrlQuery(url, query) {
     var queryArr = [];
     Object.keys(query).forEach(function (k) {
@@ -412,15 +387,12 @@ function parseErrorString(str) {
 
 function setSilentFlag(opitons) {
     if (opitons === void 0) { opitons = {}; }
-    setFlag(EVENTTYPES.XHR, !!opitons.silentXhr);
-    setFlag(EVENTTYPES.FETCH, !!opitons.silentFetch);
     setFlag(EVENTTYPES.CONSOLE, !!opitons.silentConsole);
     setFlag(EVENTTYPES.DOM, !!opitons.silentDom);
     setFlag(EVENTTYPES.HISTORY, !!opitons.silentHistory);
     setFlag(EVENTTYPES.ERROR, !!opitons.silentError);
     setFlag(EVENTTYPES.HASHCHANGE, !!opitons.silentHashchange);
     setFlag(EVENTTYPES.UNHANDLEDREJECTION, !!opitons.silentUnhandledrejection);
-    setFlag(EVENTTYPES.VUE, !!opitons.silentVue);
     setFlag(WxAppEvents.AppOnError, !!opitons.silentWxOnError);
     setFlag(WxAppEvents.AppOnUnhandledRejection, !!opitons.silentUnhandledrejection);
     setFlag(WxAppEvents.AppOnPageNotFound, !!opitons.silentWxOnPageNotFound);
@@ -599,7 +571,7 @@ var Breadcrumb = (function () {
         }
         this.stack.push(data);
         if (data.level === 'error') { // yyt
-            TestService.uploadErrorApi(this.stack, data)
+            netUpload(this.stack, data);
         }
         logger.log(this.stack);
     };
@@ -614,9 +586,6 @@ var Breadcrumb = (function () {
     };
     Breadcrumb.prototype.getCategory = function (type) {
         switch (type) {
-            case BREADCRUMBTYPES.XHR:
-            case BREADCRUMBTYPES.FETCH:
-                return BREADCRUMBCATEGORYS.HTTP;
             case BREADCRUMBTYPES.CLICK:
             case BREADCRUMBTYPES.ROUTE:
             case BREADCRUMBTYPES.TAP:
@@ -637,7 +606,6 @@ var Breadcrumb = (function () {
             case BREADCRUMBTYPES.UNHANDLEDREJECTION:
             case BREADCRUMBTYPES.CODE_ERROR:
             case BREADCRUMBTYPES.RESOURCE:
-            case BREADCRUMBTYPES.VUE:
             case BREADCRUMBTYPES.REACT:
             default:
                 return BREADCRUMBCATEGORYS.EXCEPTION;
@@ -651,7 +619,10 @@ var Breadcrumb = (function () {
     };
     return Breadcrumb;
 }());
+
+
 var breadcrumb = _support.breadcrumb || (_support.breadcrumb = new Breadcrumb());
+
 
 function log(_a) {
     var _b = _a.message, message = _b === void 0 ? 'emptyMsg' : _b, _c = _a.tag, tag = _c === void 0 ? '' : _c, _d = _a.level, level = _d === void 0 ? Severity.Critical : _d, _e = _a.ex, ex = _e === void 0 ? '' : _e;
@@ -681,33 +652,12 @@ function handleConsole(data) {
     }
 }
 
-var Options = (function () {
-    function Options() {
-        this.traceIdFieldName = 'Trace-Id';
-        this.enableTraceId = false;
-    }
-    Options.prototype.bindOptions = function (options) {
-        if (options === void 0) { options = {}; }
-        var beforeAppAjaxSend = options.beforeAppAjaxSend, enableTraceId = options.enableTraceId, filterXhrUrlRegExp = options.filterXhrUrlRegExp, traceIdFieldName = options.traceIdFieldName, includeHttpUrlTraceIdRegExp = options.includeHttpUrlTraceIdRegExp;
-        validateOption(beforeAppAjaxSend, 'beforeAppAjaxSend', 'function') && (this.beforeAppAjaxSend = beforeAppAjaxSend);
-        validateOption(enableTraceId, 'enableTraceId', 'boolean') && (this.enableTraceId = enableTraceId);
-        validateOption(traceIdFieldName, 'traceIdFieldName', 'string') && (this.traceIdFieldName = traceIdFieldName);
-        toStringValidateOption(filterXhrUrlRegExp, 'filterXhrUrlRegExp', '[object RegExp]') && (this.filterXhrUrlRegExp = filterXhrUrlRegExp);
-        toStringValidateOption(includeHttpUrlTraceIdRegExp, 'includeHttpUrlTraceIdRegExp', '[object RegExp]') &&
-            (this.includeHttpUrlTraceIdRegExp = includeHttpUrlTraceIdRegExp);
-    };
-    return Options;
-}());
-var options = _support.options || (_support.options = new Options());
-
 
 function initOptions(paramOptions) {
     if (paramOptions === void 0) { paramOptions = {}; }
     setSilentFlag(paramOptions);
     breadcrumb.bindOptions(paramOptions);
     logger.bindOptions(paramOptions.debug);
-
-    options.bindOptions(paramOptions);
 }
 
 var handlers = {};
@@ -829,7 +779,7 @@ var HandleWxAppEvents = {
             data: data,
             level: Severity.Error
         });
-    }
+    },
 };
 var HandleWxPageEvents = {
     onShow: function () {
@@ -899,7 +849,7 @@ var HandleWxPageEvents = {
             level: Severity.Info
         });
     },
-    onAction: function (e) { // yyt 事件信息
+    onAction: function (e) { // yyt
         var type = BREADCRUMBTYPES.TOUCHMOVE;
         if (e.type === ELinstenerTypes.Tap) {
             type = BREADCRUMBTYPES.TAP;
@@ -912,7 +862,8 @@ var HandleWxPageEvents = {
             level: Severity.Info,
             pages: pages[pages.length - 1].route,
         });
-    }
+    },
+
 };
 var HandleWxConsoleEvents = {
     console: function (data) {
@@ -1029,10 +980,13 @@ function replacePage() {
         if (getFlag(method))
             return;
         addReplaceHandler({
-            callback: function (data) { return HandleWxPageEvents[method.replace('PageOn', 'on')](data); },
+            callback: function (data) {
+                return HandleWxPageEvents[method.replace('PageOn', 'on')](data);
+            },
             type: method
         });
     });
+
     Page = function (pageOptions) {
         replacePageLifeMethods(pageOptions);
         replaceAction(pageOptions);
@@ -1145,8 +1099,9 @@ function replaceRoute() {
 }
 
 function setupReplace() {
-    replaceApp();
     replacePage();
+    replaceApp();
+
     addReplaceHandler({
         callback: function (data) { return HandleWxEvents.handleRoute(data); },
         type: EVENTTYPES.MINI_ROUTE
@@ -1158,20 +1113,23 @@ function setupReplace() {
         type: EVENTTYPES.CONSOLE
     });
     addReplaceHandler({
-        callback: function (data) { return HandleWxPageEvents.onAction(data); },
+        callback: function (data) {
+            return HandleWxPageEvents.onAction(data);
+        },
         type: EVENTTYPES.DOM
     });
 }
 
-function init(options) {
+async function init(options) {
     if (options === void 0) { options = {}; }
     if (!isWxMiniEnv)
         return;
     initOptions(options);
     setupReplace();
+
     Object.assign(wx, { mitoLog: log });
 }
 
-exports.init = init;
+exports.init = init; // 初始化   // 不可在异步执行
+exports.breadcrumb = breadcrumb; // stack对象
 
-//# sourceMappingURL=wx-mini.js.map

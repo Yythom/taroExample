@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { setStorageSync, switchTab } from '@tarojs/taro';
+import { getCurrentPages, setStorageSync, switchTab } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { systemInfo } from '@/common/publicFunc';
@@ -46,7 +46,7 @@ export default memo(() => {
     const handleClick = (url, index) => {
         switchTab({
             url,
-            //  success: () => { /* 解决点击底部的tab的重复点击，页面没有重新刷新调用接口 */
+            // success: () => { /* 解决点击底部的tab的重复点击，页面没有重新刷新调用接口 */
             //     var page = getCurrentPages().pop();
             //     if (page == undefined || page == null) return;
             //     page.onLoad();

@@ -43,20 +43,18 @@ const Index = (props) => {
 
 
     function init() {
-        console.log('获取元素');
         setTimeout(() => {
             query.select(`.${parentClass}`).fields({ rect: true, size: true }, res => {
                 if (res) {
                     setParentLeft(res.left);
                     setComponentWidth(res.width);
-                    console.log('res==>', res);
+                    console.log('tab__res==>', res);
 
                 } else {
                     init();
                 }
             });
             query.selectAll(`.${childrenClass}`).fields({ rect: true, size: true }, data => {
-
                 if (data[0]) {
                     let navInfosArr = [];
                     data.forEach((item, index) => {
@@ -117,11 +115,9 @@ const Index = (props) => {
     }
 
     useEffect(() => {
-        if (tag_list[0]) {
+        if (tag_list[0] && !navInfos[0]) {
             init();
-            console.log(props.children);
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tag_list]);
 
