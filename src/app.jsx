@@ -15,8 +15,6 @@ class App extends Component {
     componentWillMount() {
         init({ // 不可在异步执行
             silentConsole: false,
-            // silentFetch: true,
-            // silentXhr: true,
             // debug: true,
             maxBreadcrumbs: 30
         });
