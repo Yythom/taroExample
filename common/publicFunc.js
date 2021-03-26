@@ -348,6 +348,7 @@ function countdown(setTimer, value, setTime) {
   setTimer(timer);
 }
 
+
 export {
   lkGetSystemInfo, // 获取系统基本信息
   systemInfo, //系统基本信息
@@ -363,6 +364,7 @@ export {
   RefInfo, // 获取dom基本信息
   countdown, // 倒计时处理器
 
+  lkShowModal,
   lkShowLoading,
   lkHideLoading,
 };
@@ -370,6 +372,22 @@ export {
 
 
 
+
+function lkShowModal(title, content) {
+  return new Promise((resolve, reject) => {
+    showModal({
+      title: title || null,
+      content: content || content,
+      success: (res) => {
+        if (res.confirm) {
+          resolve(true)
+        } else if (res.cancel) {
+          resolve(false)
+        }
+      },
+    })
+  });
+}
 
 
 /**

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View } from '@tarojs/components';
 import { lkHideLoading, lkShowLoading } from '@/common/publicFunc';
-import { getStorageSync, removeStorageSync, setStorageSync, showToast } from '@tarojs/taro';
+import { getStorageSync, hideLoading, removeStorageSync, setStorageSync, showLoading, showToast } from '@tarojs/taro';
 import Search from './Search';
 import './styles/history_search.scss'
 
@@ -38,17 +38,16 @@ const HistorySearch = ({
         }
 
 
-        lkShowLoading('加载中'); // 请求函数
+        showLoading({ title: '加载中', })
         let _list = await api(text);
         if (_list) {
+            hideLoading();
             if (_list.list[0]) {
                 setList(_list.list)
             } else {
                 showToast({ title: '暂无数据', icon: 'none' })
             }
         }
-        lkHideLoading();
-
     }
 
 

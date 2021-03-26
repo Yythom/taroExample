@@ -15,16 +15,18 @@ import BlurImg from '@/components/BlurImg'
 // import WithUserVerify from '@/components/WithUserVerify'
 import TestService from '@/services/test'
 import Float from '@/components/FloatBottom';
-import { getLocal, lkGoToChangeLocation, mapRoute } from '@/common/publicFunc';
+import { getLocal, lkGoToChangeLocation, lkShowModal, mapRoute } from '@/common/publicFunc';
 
-import CList from '@/components/CheckList';
+import CheckList from '@/components/CheckList';
 import DropDown from '@/components/DropDown';
 import Sticky from '@/components/Sticky';
 import HistorySearch from '@/components/HistorySearch';
+import Vtabs from '@/components/Vtabs';
 // import Modal from '@/components/Modal';
 
 import { actions } from './store/slice'
 import PickerExample from './PickerExample'
+import { selectslist, vtablist, tabsList } from './data';
 import './index.scss';
 
 function Index() {
@@ -50,73 +52,42 @@ function Index() {
 
     // tab 相关设置
     const [refresh_status, setRefresh_status] = useState(false);
-    const [list, setList] = useState([
-        { title: '首页' },
-        { title: '测试' },
-        { title: '我的' },
-        { title: 'hello' },
-        { title: '测试-1' },
-        { title: '测试-2' },
-        { title: '测试-3' },
-        { title: '测试-4' },
-        { title: '测试-5' },
-    ])
     const [tag_id, setTag_id] = useState('');
-
     const change_tag = (id) => {
         setTag_id(id);
     }
-
-    // ////////////////////////////////
+    //////////////////////////////////
 
     useDidShow(() => {
-        // getLocal().then(res => {
-        //     console.log(res);
-        // })
+        // getLocal().then(res => {   console.log(res); })
         // dispatch(actions.changeuserInfoActionAsync()) // 测试api
     })
-    const [ifocus, setIfocus] = useState(false)
-    const [open, setOpen] = useState(false);
-    const [show, setShow] = useState(false);
 
-    const [c_list, setC_list] = useState([
-        {
-            title: 'a',
-        }, {
-            title: 'b',
-        }, {
-            title: 'c',
-        },
-    ])
-
+    // 多项选择相关
+    const [selectList, setSelect_list] = useState([])
     const [newList, setNewList] = useState([]);
+
+    // 竖的tabs切换
+    const [vtabindex, setVtabindex] = useState(0);
 
     return (
         <View className='test-h' >
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
             <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <Avatar size={80}></Avatar>
-                <CList list={c_list} setList={setC_list} setFilter={setNewList} />
+                <CheckList
+                    list={selectList[0] ? selectList : selectslist}
+                    setList={setSelect_list}
+                    setFilter={setNewList}
+                    renderLeftMap={(item) => {
+                        return <View className=''>{item.title}</View>
+                    }}
+                />
 
-                <View onClick={() => goToMap()}>地图选点</View>
+                <View onClick={() => goToMap()}>地图插件选点</View>
                 <View className='pickers_wrap'>
                     <PickerExample />
-                    <View onClick={() => setIfocus(true)}> 获取focus</View>
-                    <Input type='number' style={{ position: 'fixed', top: '-99999px' }} onBlur={() => { setIfocus(false) }} focus={ifocus}></Input>
-                    <View onClick={() => {
-                        Taro.showModal({
-                            title: '提示',
-                            content: '这是一个模态弹窗',
-                            success: function (res) {
-                                if (res.confirm) {
-                                    console.log('用户点击确定')
-                                } else if (res.cancel) {
-                                    console.log('用户点击取消')
-                                }
-                            }
-                        })
-                    }}
-                    >
+                    <View onClick={() => { lkShowModal('123', '213').then(res => { console.log(res); }) }} >
                         modal
                     </View>
                 </View>
@@ -177,7 +148,7 @@ function Index() {
             <DropDown className='test_down' >
                 <View className='c_wrap' style={{ height: '300rpx' }} >
                     {
-                        c_list[0] && c_list.map(e => {
+                        selectslist[0] && selectslist.map(e => {
                             return (
                                 <View className='c_item' key={e.title + 'drop'}>
                                     {e.title}
@@ -186,16 +157,15 @@ function Index() {
                         })
                     }
                 </View>
-
             </DropDown>
 
             <View>
                 <Tabs
-                    tag_list={list}
+                    tag_list={tabsList}
                     setTag_id={setTag_id}
                     onChange={change_tag}
                     defaultIndex='2'
-                    height='800rpx' // scroll-view导致必须要有高
+                    height='300rpx' // scroll-view导致必须要有高
                     isRefresh
                     isSticy
                     refresh_status={refresh_status}
@@ -217,7 +187,6 @@ function Index() {
                             }, 500);
                         });
                         let res = await a; // http req
-                        if (res) setRefresh_status(false);
                         console.log(res, 'a');
                         // http req
                     }}
@@ -229,17 +198,21 @@ function Index() {
                     </View>
 
                 </Tabs>
+
             </View>
+            <Vtabs list={vtablist} onChange={(i) => { setVtabindex(i) }} height='400rpx' windowTabsLength='5' >
+                {
+                    vtablist[vtabindex].pro.map(e => {
+                        return (
+                            <View className='' style={{ height: '80%' }} key={e}>{e.name}</View>
+                        )
+                    })
+                }
+            </Vtabs>
+
             <HistorySearch storage_logkey='search_log' api={TestService.get_ShopListApi} />
         </View>
     )
 }
 
-function A() {
-    try {
-        return Index()
-    } catch (error) {
-        console.log(error);
-    }
-}
-export default A
+export default Index

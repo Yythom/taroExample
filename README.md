@@ -37,9 +37,13 @@ xxx是图标的名称，设置css的font-size即可设置图标大小，设置co
 ##  通用功实用功能性函数 路径 /common/public.js  or  /common/publicFunc.js
 注：/c
 ##  已有组件：
+WithUserVerify ———— 登入信息集合验证高阶组件（登入集成） <br/>
+Tabs.jsx ———— 可滑动（支持tab粘性定位）tab切换 <br/>
+VTabs.jsx ———— 可滑动 竖状分类列表 切换 <br/>
 Avatar.jsx ———— 小程序集合获取用户信息头像显示头像 <br/>
-BlurImg.jsx ———— 图片模糊加载 <br/>
+UpImage ———— 图片上传（可开启压缩） <br/>
 CheckList.jsx ———— 多选列表 <br/>
+BlurImg.jsx ———— 图片模糊加载 <br/>
 DropDown.jsx ———— 下滑时弹出层 <br/>
 FloadBottom.jsx ———— 下浮动弹出层（已增加不同手机底部安全距离） <br/>
 HistorySearch.jsx ———— 包含历史记录及hot列表的搜索组件 <br/>
@@ -50,9 +54,6 @@ renderPages.jsx ————— 条件渲染多页中间页 <br/>
 search.jsx ———— 标准搜索框 <br/>
 Step.jsx ———— 步骤条 <br/>
 Sticky.jsx ———— 粘性定位容器 <br/>
-Tabs.jsx ———— 可滑动（支持tab粘性定位）tab切换 <br/>
-UpImage ———— 图片上传（可开启压缩） <br/>
-WithUserVerify ———— 登入信息集合验证高阶组件（登入集成） <br/>
 ...
 
 ### 测试例子放置于pages/test/index.jsx

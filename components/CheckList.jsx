@@ -5,7 +5,7 @@ import { View, Image, Text } from '@tarojs/components';
 import './styles/checklist.scss';
 
 function CList(props) {
-    let { className, list, setList, onClick, setFilter } = props;
+    let { className, list, setList, onClick, setFilter, renderLeftMap } = props;
     return (
         <View className={`check_wrap ${className}`}>
             {list[0] && list.map((e, i) => {
@@ -24,7 +24,7 @@ function CList(props) {
                             {e?.checked ? <Text className='iconfont icon-squarecheckfill' /> : <Text className='iconfont icon-square' />}
                         </View>
                         <View className='right'>
-                            {e.title}
+                            {renderLeftMap ? renderLeftMap(e) : null}
                         </View>
                     </View>
                 )

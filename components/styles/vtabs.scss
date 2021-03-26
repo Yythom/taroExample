@@ -1,0 +1,40 @@
+.vTabs-wrap {
+    // height: 800px;
+    display: flex;
+    overflow: hidden;
+
+    // ::-webkit-scrollbar {
+    //     width: 0;
+    //     height: 0;
+    //     color: transparent;
+    // }
+
+    .left_wrap {
+        height: 100%;
+        width: 200px;
+
+        .tabs_act_item {
+            color: red;
+            background-color: rgb(233, 233, 233);
+        }
+
+        .tabs_item {
+            height: 200px;
+            width: 100%;
+            transition: 300ms ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-line {
+            position: absolute;
+            bottom: 0;
+            width: 10px;
+            height: 0;
+            border-radius: 10px;
+            background-color: red;
+            transition: 0.3s ease;
+        }
+    }
+}

@@ -24,7 +24,7 @@ const customInterceptor = (chain) => {
         showToast({
           title: msg,
           icon: 'none',
-          duration: 1000
+          duration: 2000
         })
       }
       // 网络监控加入stack
@@ -51,6 +51,7 @@ const customInterceptor = (chain) => {
     showToast({
       title: '服务器错误：' + err.errMsg,
       icon: 'none',
+      duration: 2000
     })
     // 网络监控加入stack
     newWorkStackPush('error', 'error', '服务器错误：' + err.errMsg, requestParams);
