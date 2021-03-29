@@ -98,6 +98,8 @@ const Index = () => {
 
     return (
         <View className='movie_wrap'>
+
+            <WebView src='http://172.16.5.19:3000/xmt' />
             <NavBar back title='电影选座' />
             {
                 (data && data.seatArr[0] && windowWidth) && <>

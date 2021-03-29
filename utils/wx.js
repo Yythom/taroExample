@@ -53,7 +53,7 @@ var WxPageEvents;
 (function (WxPageEvents) {
     WxPageEvents["PageOnShow"] = "PageOnShow";
     WxPageEvents["PageOnHide"] = "PageOnHide";
-    WxPageEvents["PageOnShareAppMessage"] = "PageOnShareAppMessage";
+    // WxPageEvents["PageOnShareAppMessage"] = "PageOnShareAppMessage";
     WxPageEvents["PageOnShareTimeline"] = "PageOnShareTimeline";
     WxPageEvents["PageOnTabItemTap"] = "PageOnTabItemTap";
 })(WxPageEvents || (WxPageEvents = {}));
@@ -387,7 +387,7 @@ function setSilentFlag(opitons) {
     setFlag(WxAppEvents.AppOnError, !!opitons.silentWxOnError);
     setFlag(WxAppEvents.AppOnUnhandledRejection, !!opitons.silentUnhandledrejection);
     setFlag(WxAppEvents.AppOnPageNotFound, !!opitons.silentWxOnPageNotFound);
-    setFlag(WxPageEvents.PageOnShareAppMessage, !!opitons.silentWxOnShareAppMessage);
+    // setFlag(WxPageEvents.PageOnShareAppMessage, !!opitons.silentWxOnShareAppMessage);
     setFlag(EVENTTYPES.MINI_ROUTE, !!opitons.silentMiniRoute);
 }
 function extractErrorStack(ex, level) {
@@ -799,20 +799,21 @@ var HandleWxPageEvents = {
             level: Severity.Info
         });
     },
-    onShareAppMessage: function (options) {
-        var page = getCurrentPages().pop();
-        var data = {
-            path: page.route,
-            query: page.options,
-            options: options
-        };
-        breadcrumb.push({
-            category: breadcrumb.getCategory(BREADCRUMBTYPES.PAGE_ON_SHARE_APP_MESSAGE),
-            type: BREADCRUMBTYPES.PAGE_ON_SHARE_APP_MESSAGE,
-            data: data,
-            level: Severity.Info
-        });
-    },
+    // onShareAppMessage: function (options, params) {
+    //     console.log(options, params);
+    //     var page = getCurrentPages().pop();
+    //     var data = {
+    //         path: page.route,
+    //         query: page.options,
+    //         options: options
+    //     };
+    //     breadcrumb.push({
+    //         category: breadcrumb.getCategory(BREADCRUMBTYPES.PAGE_ON_SHARE_APP_MESSAGE),
+    //         type: BREADCRUMBTYPES.PAGE_ON_SHARE_APP_MESSAGE,
+    //         data: data,
+    //         level: Severity.Info
+    //     });
+    // },
     onShareTimeline: function () {
         var page = getCurrentPages().pop();
         var data = {
@@ -942,7 +943,7 @@ function replaceApp() {
 var pageLifeMethods = [
     WxPageEvents.PageOnShow,
     WxPageEvents.PageOnHide,
-    WxPageEvents.PageOnShareAppMessage,
+    // WxPageEvents.PageOnShareAppMessage,
     WxPageEvents.PageOnShareTimeline,
     WxPageEvents.PageOnTabItemTap
 ];

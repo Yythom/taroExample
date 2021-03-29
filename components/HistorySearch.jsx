@@ -15,8 +15,6 @@ const HistorySearch = ({
     // setList,
 }) => {
     const [list, setList] = useState([]);
-
-
     const [log, setLog] = useState([]); // 历史记录
 
     useEffect(() => {

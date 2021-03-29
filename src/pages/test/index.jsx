@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import React, { Component, useEffect, useState } from 'react';
-import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync, requirePlugin, getLogManager, getRealtimeLogManager, onError, useTabItemTap } from '@tarojs/taro';
+import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync, requirePlugin, getLogManager, getRealtimeLogManager, onError, useTabItemTap, useShareAppMessage } from '@tarojs/taro';
 import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Input, Slider, Progress, OpenData, WebView } from '@tarojs/components';
 // import Modal from '@/components/Modal'
 import NavBar from '@/components/NavBar'
@@ -37,6 +37,7 @@ function Index() {
     const [img, setImage] = useState(false);
     const testStore = useSelector(e => e.testStore, shallowEqual);
     const dispatch = useDispatch();
+
 
     useDidShow(() => {
         // const locationInfo = chooseLocation.getLocation();

@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 
 import { initErrorNet } from '../utils/wx-net_error'
-import { init, breadcrumb } from '../utils/wx-mini'
+import { init, breadcrumb } from '../utils/wx'
 
 import store from '../store'
 import './app.scss'
@@ -13,6 +13,9 @@ import './app.scss'
 class App extends Component {
 
     componentWillMount() {
+
+    }
+    componentDidMount() {
         init({ // 不可在异步执行
             silentConsole: false,
             // debug: true,
@@ -20,7 +23,6 @@ class App extends Component {
         });
         initErrorNet(breadcrumb);
     }
-    componentDidMount() { }
     componentDidShow() {
 
         // getLocal().then(res => { // 获取当前位置
