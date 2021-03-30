@@ -282,12 +282,25 @@ const getDetailLocation = async (desc) => {//'腾讯位置服务返回' 位置�
     url,
   });
   const { data } = res;
-  if (data.status !== 0) {
+  if (data.status !== 0 && data.result) {
     console.warn(data.message);
     return null;
   }
-  return data;
+  const { result } = data
+  const locationInfo = {
+    address: Object.values(result.address_components).join(''), // 地址文字
+    latitude: result.location.lat,
+    longitude: result.location.lng,
+    name: desc,
+    province: result.address_components.province, // 省
+    city: result.address_components.city, // 市
+    district: result.address_components.district, // 区
+    street: result.address_components.street, // 街
+  };
+  console.log(result, locationInfo);
+  return locationInfo
 }
+
 
 const getNearby = async (latitude, longitude) => {//'腾讯位置服务返回' 坐标获取位置
   const url = `${Config.MAP_SERVER_URL}/ws/geocoder/v1/?location=${latitude},${longitude}&get_poi=1&poi_options=radius=1000&key=${Config.LOCATION_KEY}`;
