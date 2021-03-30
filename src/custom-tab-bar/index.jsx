@@ -6,6 +6,7 @@ import { systemInfo } from '@/common/publicFunc';
 import { actions } from './store/slice'
 import './index.scss'
 
+const bar_height = '120rpx';
 
 export default memo(() => {
     const dispatch = useDispatch();
@@ -14,7 +15,8 @@ export default memo(() => {
     const [safeBottom, setSaveBottom] = useState(0);
     useEffect(() => {
         setSaveBottom(systemInfo.safeArea.top);
-        setStorageSync('safeArea', systemInfo.safeArea.top)
+        setStorageSync('safeArea', systemInfo.safeArea.top);
+        setStorageSync('bar_height', bar_height)
     }, [])
     const [tabBars] = useState([
         {

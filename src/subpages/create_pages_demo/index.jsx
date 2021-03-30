@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from '@tarojs/components';
 
 import NavBar from '@/components/NavBar';
-import Taro, { stopPullDownRefresh, usePullDownRefresh } from '@tarojs/taro'
+import Taro, { getStorageSync, stopPullDownRefresh, usePullDownRefresh } from '@tarojs/taro'
 import './index.scss'
 
 
@@ -28,9 +28,9 @@ const Index = () => {
     })
 
     return (
-        <View className='index-wrap'>
+        <View className='index-wrap' style={{ paddingBottom: `${getStorageSync('safeArea') * 2 + getStorageSync('bar_height') * 2}rpx` }} >
             <NavBar back title='' />
-            测试分包
+        测试分包
         </View>
     )
 }
