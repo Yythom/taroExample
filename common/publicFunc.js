@@ -296,36 +296,34 @@ const getNearby = async (latitude, longitude) => {//'腾讯位置服务返回' �
     url,
   });
   const { data } = res;
-  if (data.status !== 0) {
+  if (data.status !== 0 && data.result) {
     console.warn(data.message);
     return null;
   }
-  return data;
+  const { result } = data;
+  const locationInfo = {
+    address: result.address,
+    latitude,
+    longitude,
+    name: result.formatted_addresses.recommend,
+    province: result.address_component.province, // 省
+    city: result.address_component.city, // 市
+    district: result.address_component.district, // 区
+    street: result.address_component.street, // 街
+  };
+  return locationInfo;
 }
 
 const getLocal = async () => { // 获取当前位置详情
   let getAd = await lkGetLocation();
   if (!getAd) return
   const res = await getNearby(getAd.latitude, getAd.longitude);
-  return new Promise((resolve, reject) => {
-    if (res && res.result) {
-      const { result } = res;
-      const locationInfo = {
-        address: result.address,
-        latitude: getAd.latitude,
-        longitude: getAd.longitude,
-        name: result.formatted_addresses.recommend,
-        province: result.address_component.province, // 省
-        city: result.address_component.city, // 市
-        district: result.address_component.district, // 区
-        street: result.address_component.street, // 街
-      };
-      resolve(locationInfo);
-      console.log(locationInfo);
-    } else {
-      resolve(false)
-    }
-  })
+  console.log(res);
+  if (res) {
+    return res
+  } else {
+    return false
+  }
 }
 
 /**
