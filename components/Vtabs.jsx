@@ -128,7 +128,7 @@ const Vtabs = ({
                                     className='item_scroll'
                                     style={{ height: '100%' }}
                                 >
-                                    <View className='item_box' style={{ height: '100%' }}>
+                                    <View className='item_box' >
                                         {children}
                                     </View>
                                 </ScrollView>
