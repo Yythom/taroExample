@@ -15,6 +15,7 @@ const Index = (props) => {
         isSticy, // 是否tab头部置顶
         renderCenter, // 中间可展开筛选区域
         defaultIndex, // 默认选中的index
+        top,
 
         // 内容相关设置
         height, // 内容高度 （scroll-view导致必须要有高）
@@ -137,7 +138,7 @@ const Index = (props) => {
                 && <View className={`tab-wrap  ${className}`}>
                     <View>
                         <View className='sticy'
-                            style={isSticy && { position: 'sticky', top: getStorageSync('navHeight') + 'px', zIndex: 999 }}
+                            style={isSticy && { position: 'sticky', top: top ? top : getStorageSync('navHeight') + 'px', zIndex: 999 }}
                         >
                             {
                                 tag_list[0]
