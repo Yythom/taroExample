@@ -243,35 +243,47 @@ function mapRoute(name, lat, lng) {
  * 引导用户获取其个人信息
  */
 async function lkGetUserInfo(url) {
-  if (compareVersion(systemInfo.SDKVersion, '1.1.0') <= 0) {
-    showModal({
-      title: '更新提醒',
-      content: '您当前的微信版本过低，为了给您提供更好的体验，请将您的微信更新至最新版本',
-    });
-  }
-  try {
-    let userInfo = null;
-    const settingInfo = await getSetting();
-    // 用户之前拒绝过获取个人开放信息
-    if (settingInfo.authSetting['scope.userInfo'] !== undefined && settingInfo.authSetting['scope.userInfo'] !== true) {
-      return 'openSetting';
+  // eslint-disable-next-line no-undef
+  if (!wx.canIUse('getUserProfile')) {
+    if (compareVersion(systemInfo.SDKVersion, '1.1.0') <= 0) {
+      showModal({
+        title: '更新提醒',
+        content: '您当前的微信版本过低，为了给您提供更好的体验，请将您的微信更新至最新版本',
+      });
     }
-    // 尝试调用授权
-    userInfo = await getUserInfo();
-    console.log(userInfo, 'userInfo');
-    let userObj = {
-      nickname: userInfo.userInfo.nickName,
-      avatar: userInfo.userInfo.avatarUrl,
-      gender: userInfo.userInfo.gender,
-    };
+    try {
+      let userInfo = null;
+      const settingInfo = await getSetting();
+      // 用户之前拒绝过获取个人开放信息
+      if (settingInfo.authSetting['scope.userInfo'] !== undefined && settingInfo.authSetting['scope.userInfo'] !== true) {
+        return 'openSetting';
+      }
+      // 尝试调用授权
+      userInfo = await getUserInfo();
+      console.log(userInfo, 'userInfo');
+      let userObj = {
+        nickname: userInfo.userInfo.nickName,
+        avatar: userInfo.userInfo.avatarUrl,
+        gender: userInfo.userInfo.gender,
+      };
 
-
-    // if (userInfo.userInfo) {
-
-    // }
-    return userObj
-  } catch (err) {
-    return null;
+      return userObj
+    } catch (err) {
+      return null;
+    }
+  } else {
+    try {
+      // eslint-disable-next-line no-undef
+      let userInfo = await wx.getUserProfile({ desc: '用于完善会员资料' });
+      let userObj = {
+        nickname: userInfo.userInfo.nickName,
+        avatar: userInfo.userInfo.avatarUrl,
+        gender: userInfo.userInfo.gender,
+      };
+      return userObj
+    } catch (err) {
+      return null;
+    }
   }
 }
 
