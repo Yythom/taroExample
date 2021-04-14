@@ -9,7 +9,7 @@ const HistorySearch = ({
     storage_logkey, // 本地设置的stroge key名
     className,
     isShowHot, // 热门列表
-    api, // 搜索api接口
+    api, // 搜索api接口 {api,params:{}}
 
     // list, // 嵌套时可由外层控制
     // setList,
@@ -24,30 +24,64 @@ const HistorySearch = ({
     }, [])
 
 
-    const searchFn = async (text) => {
-        if (!text) {
-            showToast({ title: '请输入搜索的内容', icon: 'none' })
+    const searchFn = async (_text) => {
+        if (!_text) {
+            setList([]);
+            setItem('')
             return;
         }
-        if (!log.includes(text)) { // 并且 历史不存在当前 输入框的值
-            const $log = [...log, text];
+        if (!log.includes(_text)) { // 并且 历史不存在当前 输入框的值
+            const $log = [...log, _text];
             setStorageSync(storage_logkey, JSON.stringify($log)); // 添加新的历史
             setLog($log);
         }
 
 
         showLoading({ title: '加载中', })
-        let _list = await api(text);
+        let _list = await api.api({ ...api.params });
         if (_list) {
             hideLoading();
             if (_list.list[0]) {
+                setPage(1);
+                setTotal(_list.total)
                 setList(_list.list)
             } else {
                 showToast({ title: '暂无数据', icon: 'none' })
             }
         }
+        setItem(_text)
     }
 
+
+    // 分页相关
+    const [page, setPage] = useState('');
+    const [total, setTotal] = useState('');
+    const [req, setReq] = useState(false);
+    const paging = async () => {
+        if (total > 10 && list.length !== total && !req) {
+            if (total === list.length) {
+                showToast({ title: '到底了' });
+                // return
+            }
+            showLoading('加载中...')
+            setReq(true)
+            let res = await api.api({ ...api.params, page: page + 1 });
+            if (res) {
+                console.log(res, 'res----------paging');
+                setPage(page + 1);
+                setList([...list, ...res.list])
+                if (total != res.total) {
+                    setTotal(res.total);
+                }
+            }
+            setReq(false)
+            hideLoading();
+        }
+    }
+
+    useReachBottom(() => {
+        paging();
+    })
 
     const clear = () => {
         setLog('');
