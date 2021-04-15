@@ -28,7 +28,7 @@ const Index = () => {
     })
 
     return (
-        <View className='index-wrap' style={{ paddingBottom: `${getStorageSync('safeArea') * 2 + getStorageSync('bar_height') * 2}rpx` }} >
+        <View className='index-wrap' style={{ paddingBottom: `${getStorageSync('safeArea') + getStorageSync('bar_height')}px` }} >
             <NavBar back title='' />
         测试分包
         </View>

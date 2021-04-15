@@ -6,7 +6,7 @@ import { systemInfo } from '@/common/publicFunc';
 import { actions } from './store/slice'
 import './index.scss'
 
-const bar_height = '120rpx';
+const bar_height = '60';
 
 export default memo(() => {
     const dispatch = useDispatch();
@@ -58,7 +58,7 @@ export default memo(() => {
     }
 
     return (
-        <View className='tabbar-wrap' style={{ paddingBottom: safeBottom + 'px' }}>
+        <View className='tabbar-wrap' style={{ height: bar_height + 'px', paddingBottom: safeBottom + 'px' }}>
             {
                 tabBars[0] && tabBars.map((item, index) => {
                     return (
