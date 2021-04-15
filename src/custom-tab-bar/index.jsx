@@ -58,7 +58,7 @@ export default memo(() => {
     }
 
     return (
-        <View className='tabbar-wrap' style={{ height: bar_height + 'px', paddingBottom: safeBottom + 'px' }}>
+        <View className='tabbar-wrap' style={{ height: bar_height * 2 + 'rpx', paddingBottom: safeBottom + 'px' }}>
             {
                 tabBars[0] && tabBars.map((item, index) => {
                     return (
