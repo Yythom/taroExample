@@ -1,7 +1,11 @@
+/* eslint-disable react/jsx-indent-props */
 import React, { useEffect, useState } from 'react';
-import { View } from '@tarojs/components';
+import { Text, View } from '@tarojs/components';
 import { lkHideLoading, lkShowLoading } from '@/common/publicFunc';
-import { getStorageSync, hideLoading, removeStorageSync, setStorageSync, showLoading, showToast } from '@tarojs/taro';
+import { getStorageSync, hideLoading, navigateTo, openLocation, removeStorageSync, setStorageSync, showLoading, showToast, useReachBottom } from '@tarojs/taro';
+import BlurImg from '@/components/BlurImg'
+import { formatKm, Star } from '@/common/public';
+
 import Search from './Search';
 import './styles/history_search.scss'
 
@@ -9,13 +13,15 @@ const HistorySearch = ({
     storage_logkey, // 本地设置的stroge key名
     className,
     isShowHot, // 热门列表
-    api, // 搜索api接口 {api,params:{}}
-
+    api, // 搜索api接口
+    renderCenter, // 筛选jsx
+    text
     // list, // 嵌套时可由外层控制
     // setList,
 }) => {
     const [list, setList] = useState([]);
     const [log, setLog] = useState([]); // 历史记录
+    const [item, setItem] = useState('')
 
     useEffect(() => {
         if (getStorageSync(storage_logkey)) {
@@ -23,6 +29,9 @@ const HistorySearch = ({
         }
     }, [])
 
+    // useEffect(() => {
+    //     searchFn(item) // 筛选内容改变重搜索
+    // }, [api?.params?.sort])
 
     const searchFn = async (_text) => {
         if (!_text) {
@@ -38,6 +47,7 @@ const HistorySearch = ({
 
 
         showLoading({ title: '加载中', })
+        console.log(api.params);
         let _list = await api.api({ ...api.params });
         if (_list) {
             hideLoading();
@@ -52,16 +62,16 @@ const HistorySearch = ({
         setItem(_text)
     }
 
-
     // 分页相关
     const [page, setPage] = useState('');
     const [total, setTotal] = useState('');
+
     const [req, setReq] = useState(false);
     const paging = async () => {
         if (total > 10 && list.length !== total && !req) {
             if (total === list.length) {
-                showToast({ title: '到底了' });
-                // return
+                showToast({ title: '到底了', icon: 'none' });
+                return
             }
             showLoading('加载中...')
             setReq(true)
@@ -80,9 +90,8 @@ const HistorySearch = ({
     }
 
     useReachBottom(() => {
-        paging();
+        paging()
     })
-
     const clear = () => {
         setLog('');
         setList([]);
@@ -90,8 +99,12 @@ const HistorySearch = ({
     }
 
     return (
-        <View className={`history_search_wrap ${className}`} >
-            <Search isEditor onBlur={searchFn} width={700} height={100} text='搜索条件' />
+        <View className={`history_search_wrap ${className}`}  >
+            <Search isEditor width='97%' value={item} onBlur={searchFn} height='34px' text={text} style={{ top: getStorageSync('navHeight') + 'px' }} />
+            {
+                list[0] && renderCenter
+            }
+
             {
                 isShowHot && <View className='hot_box'>
                     <View className='hot_title'>
@@ -110,7 +123,7 @@ const HistorySearch = ({
             }
 
             {
-                log[0] ? <View className='history_box'>
+                log[0] ? !list[0] && <View className='history_box'>
                     <View className='history_title'>
                         <View className='text'>历史搜索</View>
                         <View className='iconfont icon-delete' onClick={() => { clear() }} ></View>
@@ -118,20 +131,29 @@ const HistorySearch = ({
                     <View className='history_list'>
                         {log.map(e => {
                             return (
-                                <View className='item' key={'his' + e} >
+                                <View className='item' key={'his' + e} onClick={() => searchFn(e)}>
                                     {e}
                                 </View>
                             )
                         })}
                     </View>
-                </View> : <View className='list'>
+                </View> : <View className='history_box' style={{ marginTop: '12px', textAlign: 'center', color: '#555' }}>暂无搜索记录</View>
+            }
+
+            {
+                <View className='list'>
                     {
-                        list[0]
+                        list[0] && list.map(e => {
+                            return (
+                                <View className=' animation' key={e.shop_id + '_1'} onClick={() => navigateTo({ url: `/subpages/offline_shop/index?shop_id=${e.shop_id}&merchant_id=${e.merchant_id}` })}>
+
+                                </View>
+                            )
+                        })
                     }
                 </View>
             }
-
-        </View>
+        </View >
     )
 }
 export default HistorySearch;

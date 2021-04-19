@@ -5,27 +5,28 @@ import './styles/search.scss'
 const Search = ({
     isEditor, // 是否可编辑
     text, // placeholder
-    url, // 跳转的url
     width,
     height,
     background,
-    value, // input value
+    className,
+    onClick,
     onBlur,
-    isTab // 是否为主包tab跳转
+    value,
+    style
 }) => {
     return (
-        <View className='searcj-wrap'>
+        <View className={`searcj-wrap ${className}`} style={{ width: width, height: height, background, ...style }}>
             <View className='home-searchview'>
                 {
                     isEditor
-                        ? <View className='home-searchv' style={{ width: width + 'rpx', height: height + 'rpx', background, }}>
+                        ? <View className='home-searchv' >
                             <Text className='iconfont icon-sousuo' />
-                            <Input className='home-search home-search-input' onBlur={(e) => { if (typeof onBlur === 'function') onBlur(e.detail.value); }} placeholderStyle='color:#C8CDD1' placeholder={text}></Input>
+                            <Input className='home-search home-search-input' value={value} onBlur={(e) => onBlur(e.detail.value)} placeholderStyle='color:#C8CDD1' placeholder={text}></Input>
                         </View>
-                        : <Navigator openType={isTab ? 'switchTab' : 'navigate'} url={url} className='home-searchv' style={{ width: width + 'rpx', height: height + 'rpx', background, }}>
+                        : <View onClick={() => onClick()} className='home-searchv' >
                             <Text className='iconfont icon-sousuo' />
                             <View className='home-search'>{text}</View>
-                        </Navigator>
+                        </View>
                 }
             </View>
         </View>
