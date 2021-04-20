@@ -301,6 +301,7 @@ const getDetailLocation = async (desc) => {//'腾讯位置服务返回' 位置�
   const { result } = data
   const locationInfo = {
     address: Object.values(result.address_components).join(''), // 地址文字
+    adcode: result.ad_info.adcode,
     latitude: result.location.lat,
     longitude: result.location.lng,
     name: desc,
@@ -309,7 +310,6 @@ const getDetailLocation = async (desc) => {//'腾讯位置服务返回' 位置�
     district: result.address_components.district, // 区
     street: result.address_components.street, // 街
   };
-  console.log(result, locationInfo);
   return locationInfo
 }
 
@@ -328,6 +328,7 @@ const getNearby = async (latitude, longitude) => {//'腾讯位置服务返回' �
   const { result } = data;
   const locationInfo = {
     address: result.address,
+    adcode: result.ad_info.adcode,
     latitude,
     longitude,
     name: result.formatted_addresses.recommend,
@@ -343,7 +344,6 @@ const getLocal = async () => { // 获取当前位置详情
   let getAd = await lkGetLocation();
   if (!getAd) return
   const res = await getNearby(getAd.latitude, getAd.longitude);
-  console.log(res);
   if (res) {
     return res
   } else {
