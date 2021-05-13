@@ -1,8 +1,12 @@
 .float_bottom {
     position: fixed;
-    bottom: 0;
-    transition: 300ms;
+    bottom: -999px;
+    left: 0;
+    transition: 400ms;
     z-index: 99999;
-    background-color: pink;
+    background-color: rgb(240, 240, 240);
+    border-radius: 24px 24px 0 0;
     width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 }

@@ -1,30 +1,40 @@
-import React, { memo, useEffect } from 'react';
-import { View, Image } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { getStorageSync } from '@tarojs/taro';
-import np from 'number-precision'
+import React, { memo, useEffect, useState } from 'react';
 import './styles/float_bottom.scss'
 
-const Float = (props) => {
+const Float = ({ show, height, hide, setShow, className, style, children }) => {
     const hideFn = () => {
-        if (props?.show && typeof props.hideFn === 'function') {
-            props.hideFn();
+        if (show && typeof hide === 'function') {
+            hide();
         }
     }
-    const common_style = {}
+    const [top, setTop] = useState('');
+
+    useEffect(() => {
+        console.log(show);
+        if (show) {
+            // vibrateShort();
+            setTop(-10)
+        } else {
+            setTop(-(height + 10 + (+getStorageSync('safeArea'))))
+        }
+    }, [show]);
+
     return (
         <>
             {
-                props.show
+                show
                 && <View className='modal-mask' onClick={
                     () => {
                         hideFn();
-                        props.setShow(!props.show);
+                        setShow(!show);
                     }
                 }
                 />
             }
-            <View className={`float_bottom  ${props.className}`} style={!props.show ? { height: 0, ...common_style } : { ...common_style, height: np.plus(props.children?.props?.style?.height.replace('px', ''), getStorageSync('safeArea')) + 'px' || 0 }}>
-                {props.children}
+            <View className={`float_bottom  ${className}`} style={{ ...style, bottom: top, paddingBottom: getStorageSync('safeArea') * 2 + 10 + 'rpx' }}>
+                {children}
             </View>
         </>
 

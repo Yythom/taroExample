@@ -14,7 +14,7 @@ import UpImg from '@/components/UpImage'
 import BlurImg from '@/components/BlurImg'
 // import WithUserVerify from '@/components/WithUserVerify'
 import TestService from '@/services/test'
-import Float from '@/components/FloatBottom';
+import FloatBottom from '@/components/FloatBottom';
 import { getLocal, lkGoToChangeLocation, lkShowModal, mapRoute } from '@/common/publicFunc';
 
 import CheckList from '@/components/CheckList';
@@ -30,6 +30,7 @@ import { selectslist, vtablist, tabsList } from './data';
 import './index.scss';
 
 function Index() {
+    const [show, setShow] = useState(false)
     const query = Taro.getCurrentInstance().router.params;
     // console.log(decodeURIComponent(query));
     // const chooseLocation = requirePlugin('chooseLocation'); // 引入腾讯位置服务的地图
@@ -159,7 +160,7 @@ function Index() {
                     }
                 </View>
             </DropDown>
-
+            <View onClick={() => setShow(true)} >打开float</View>
             <View>
                 <Tabs
                     tag_list={tabsList}
@@ -210,6 +211,11 @@ function Index() {
                     })
                 }
             </Vtabs>
+
+
+            <FloatBottom show={show} setShow={setShow} height={300 + 40} style={{ padding: '1.2rem 2rem' }}>
+                <View style={{ background: '#333', height: '300px', width: '100%' }}>111</View>
+            </FloatBottom>
 
             <HistorySearch storage_logkey='search_log' api={TestService.get_ShopListApi} />
         </View>
