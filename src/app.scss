@@ -1,0 +1,20 @@
+.modal-mask {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, .5);
+    animation: ans 300ms;
+}
+
+@keyframes ans {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

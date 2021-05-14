@@ -246,7 +246,7 @@ function Index() {
             </Vtabs>
 
 
-            <FloatBottom show={show} setShow={setShow} height={600 + 40} style={{ padding: '1.2rem 2rem' }}>
+            <FloatBottom show={show} setShow={setShow} className='_float_test' style={{ padding: '1.2rem 2rem' }}>
                 <View style={{ background: '#333', height: '300px', width: '100%' }}>111</View>
             </FloatBottom>
 
