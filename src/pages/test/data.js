@@ -92,9 +92,11 @@ const vtablist = [
 const selectslist = [
     {
         title: 'a',
-    }, {
+    },
+    {
         title: 'b',
-    }, {
+    },
+    {
         title: 'c',
     },
 ]

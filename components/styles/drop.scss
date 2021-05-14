@@ -1,0 +1,46 @@
+.drop_wrap {
+    background-color: #fff;
+    opacity: 0;
+    transition: 300ms;
+    box-sizing: border-box;
+    position: relative;
+
+    .list_wrap {
+        overflow: hidden;
+    }
+
+    .drop_item {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 0.6rem;
+        border: none;
+    }
+
+    .act_drop_item {
+        color: violet;
+    }
+
+    .drop-mask {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, .5);
+        transition: 300ms;
+    }
+}
+
+.act_drop_wrap {
+    opacity: 1;
+
+    .drop_item {
+        border-bottom: 0.1rem solid #888;
+
+        &:nth-last-of-type(1) {
+            border-bottom: none !important;
+        }
+    }
+}

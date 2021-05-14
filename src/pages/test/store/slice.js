@@ -19,16 +19,7 @@ const reducers = {
     // }
 }
 
-/**
- * 异步action
- * 第二个参数 payloadCreator 应返回包含一些异步逻辑结果的promise
- * thunkAPI:
- * dispatch
- * getState
- * extra
- * signal
- * rejectWithValue
- */
+
 const changeuserInfoActionAsync = createAsyncThunk(
     'test/changeuserInfoActionAsync',
     async (data, thunkAPI) => {

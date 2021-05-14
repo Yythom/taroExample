@@ -16,9 +16,8 @@ import BlurImg from '@/components/BlurImg'
 import TestService from '@/services/test'
 import FloatBottom from '@/components/FloatBottom';
 import { getLocal, lkGoToChangeLocation, lkShowModal, mapRoute } from '@/common/publicFunc';
-
+import Drop from '@/components/DropDwon';
 import CheckList from '@/components/CheckList';
-import DropDown from '@/components/DropDown';
 import Sticky from '@/components/Sticky';
 import HistorySearch from '@/components/HistorySearch';
 import Vtabs from '@/components/Vtabs';
@@ -72,6 +71,9 @@ function Index() {
     // 竖的tabs切换
     const [vtabindex, setVtabindex] = useState(0);
 
+    // 
+    const [drop, setDrop] = useState(false)
+    const [drop1, setDrop1] = useState(false)
     return (
         <View className='test-h' >
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
@@ -100,13 +102,6 @@ function Index() {
                     这是粘性头部 不可在flex元素内
                 </View>
             </Sticky>
-            <DropDown title='品牌'>
-                <View className='child_list' style={{ height: '200rpx' }}>
-                    {[2, 2, 3, 4, 5, 6, 7].map((e, i) => {
-                        return (<View key={e} className='child_item'>{e}</View>)
-                    })}
-                </View>
-            </DropDown>
 
 
             <View
@@ -140,26 +135,64 @@ function Index() {
             }} >
                 电影选座
             </View>
-            <View className='12312312lll' onClick={() => {
+            <View onClick={() => {
                 console.log(aaa);
             }}>
                 打印日志
             </View>
-            <View className='12312312lll' onClick={() => { dispatch(actions.changeuserInfoActionAsync()) }}> 测试请求失败</View>
+            <View onClick={() => { dispatch(actions.changeuserInfoActionAsync()) }}> 测试请求失败</View>
 
-            <DropDown className='test_down' >
-                <View className='c_wrap' style={{ height: '300rpx' }} >
-                    {
-                        selectslist[0] && selectslist.map(e => {
-                            return (
-                                <View className='c_item' key={e.title + 'drop'}>
-                                    {e.title}
-                                </View>
-                            )
-                        })
-                    }
-                </View>
-            </DropDown>
+            <View className=''>
+                <Text style={{ marginRight: '20rpx' }} onClick={() => { setDrop(!drop); setDrop1(false) }}>开关下拉1</Text>
+                <Text onClick={() => { setDrop1(!drop1); setDrop(false) }}>开关下拉2</Text>
+                <Drop
+                    spaceName='test'
+                    setShow={() => { setDrop(!drop); setDrop1(false) }}
+                    show={drop}
+                    itemHeight='60'
+                    onChange={(type) => {
+                        console.log('选择了=----', type);
+                    }}
+                    list={[
+                        {
+                            text: '1111',
+                        },
+                        {
+                            text: '2222',
+                        },
+                        {
+                            text: '3333',
+                        },
+                        {
+                            text: '3333',
+                        }
+                    ]}
+                />
+                <Drop
+                    spaceName='test'
+                    setShow={() => { setDrop1(!drop1); setDrop(false) }}
+                    show={drop1}
+                    itemHeight='50'
+                    onChange={(type) => {
+                        console.log('选择了=----', type);
+                    }}
+                    list={[
+                        {
+                            text: '2',
+                        },
+                        {
+                            text: '2',
+                        },
+                        {
+                            text: '2',
+                        },
+                        {
+                            text: '3',
+                        }
+                    ]}
+                />
+            </View>
+
             <View onClick={() => setShow(true)} >打开float</View>
             <View>
                 <Tabs
@@ -213,7 +246,7 @@ function Index() {
             </Vtabs>
 
 
-            <FloatBottom show={show} setShow={setShow} height={300 + 40} style={{ padding: '1.2rem 2rem' }}>
+            <FloatBottom show={show} setShow={setShow} height={600 + 40} style={{ padding: '1.2rem 2rem' }}>
                 <View style={{ background: '#333', height: '300px', width: '100%' }}>111</View>
             </FloatBottom>
 
