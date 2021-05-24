@@ -1,13 +1,16 @@
 .drop_wrap {
     background-color: #fff;
-    opacity: 0;
-    transition: 300ms;
     box-sizing: border-box;
     position: relative;
 
     .list_wrap {
+        width: 100%;
+        position: absolute;
+        background-color: #fff;
+        z-index: 99999999;
         overflow: hidden;
     }
+
 
     .drop_item {
         display: flex;
@@ -27,15 +30,11 @@
         position: absolute;
         z-index: 10;
         left: 0;
-        top: 0;
         background: rgba(0, 0, 0, .5);
-        transition: 300ms;
     }
 }
 
 .act_drop_wrap {
-    opacity: 1;
-
     .drop_item {
         border-bottom: 0.1rem solid #888;
 

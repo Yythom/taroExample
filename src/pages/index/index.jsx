@@ -35,27 +35,8 @@ function Index() {
     return (
         <View className='index-wrap' >
             <NavBar background='pink' title='首页' />
-            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-                <View
-                    onTouchStart={(e) => touchStart(e)}
-                    onTouchEnd={(e) => { touchEnd(e) }}
-                    // onLongPress={(e) => longPressFn(e)}
-                    style={{ width: '100%', height: '300rpx', background: 'pink' }}
-                >
-                    按钮
-                </View>
-                {
-                    touchFlag && '88888'
-                }
-                <View className=''>
-                    <Step step={['内容', 3]}
-                        lineH={8}
-                        lineW={300}
-                        lineColor='pink'
-                        isShowIndex
-                    ></Step>
-                </View>
-
+            <View >
+                首页
             </View >
         </View>
     )

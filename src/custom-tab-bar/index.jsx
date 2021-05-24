@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { getCurrentPages, setStorageSync, switchTab } from '@tarojs/taro';
+import { setStorageSync, switchTab } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { systemInfo } from '@/common/publicFunc';
@@ -12,11 +12,14 @@ export default memo(() => {
     const dispatch = useDispatch();
     const tabbarState = useSelector(state => state.tabbar, shallowEqual);
     //去除底部安全区
-    const [safeBottom, setSaveBottom] = useState(0);
     useEffect(() => {
-        setSaveBottom(systemInfo.safeArea.top);
-        setStorageSync('safeArea', systemInfo.safeArea.top);
-        setStorageSync('bar_height', bar_height)
+        if (systemInfo.model.indexOf('iPhone X') !== -1 || systemInfo.model.indexOf('iPhone 11') !== -1 || systemInfo.model.indexOf('iPhone 12') !== -1) {
+            setStorageSync('safeArea', systemInfo.safeArea.top);
+        } else {
+            setStorageSync('safeArea', 5);
+        }
+        setStorageSync('bar_height', bar_height);
+
     }, [])
     const [tabBars] = useState([
         {
@@ -35,14 +38,6 @@ export default memo(() => {
             activeIcon: <Text className='iconfont icon-squarecheckfill' />,
             activeIconColor: '',
         },
-        {
-            url: '/pages/profile/index',
-            text: '我的',
-            icon: <Text className='iconfont icon-square' />,
-            iconColor: '',
-            activeIcon: <Text className='iconfont  icon-squarecheckfill' />,
-            activeIconColor: '',
-        },
     ])
 
     const handleClick = (url, index) => {
@@ -58,11 +53,11 @@ export default memo(() => {
     }
 
     return (
-        <View className='tabbar-wrap' style={{ height: bar_height * 2 + 'rpx', paddingBottom: safeBottom + 'px' }}>
+        <View className='tabbar-wrap' style={{ height: bar_height * 2 + 'rpx', paddingBottom: `env(safe-area-inset-bottom)` }} >
             {
                 tabBars[0] && tabBars.map((item, index) => {
                     return (
-                        <View key={item.url} className={`${index === tabbarState.active ? 'text-main' : ''}`} onClick={() => handleClick(item.url, index)} >
+                        <View key={item.url} className={`${index === tabbarState.active ? 'text-main _widthAuto' : '_widthAuto'}`} onClick={() => handleClick(item.url, index)} >
                             <View className='icon_wrap' style={{ borderRadius: '50%', }}>
                                 <View style={index === tabbarState.active && item.activeIcon ? { color: item.activeIconColor } : { color: item.iconColor }}>
                                     {
@@ -71,7 +66,7 @@ export default memo(() => {
                                 </View>
 
                             </View>
-                            <Text>{item.text}</Text>
+                            <Text style={index === tabbarState.active && item.activeIcon ? { color: item.activeIconColor } : { color: item.iconColor }}>{item.text}</Text>
                         </View>
                     )
                 })

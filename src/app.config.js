@@ -5,40 +5,9 @@ export default {
   ],
   subpackages: [
     {
-      root: 'subpages/create_pages_demo',
+      root: 'subpages/',
       pages: [
-        'index',
-      ],
-    },
-    {
-      root: 'subpages/img_cop',
-      pages: [
-        'index',
-      ],
-    },
-
-    // {
-    //   root: 'subpages/wx-native', // 原生微信插件页面
-    //   pages: [
-    //     'index',
-    //   ],
-    // }, 
-    {
-      root: 'subpages/video_sp', // 仿抖音页面
-      pages: [
-        'index',
-      ],
-    },
-    {
-      root: 'subpages/movie', // 仿选票
-      pages: [
-        'index',
-      ],
-    },
-    {
-      root: 'pages/canvasExample',
-      pages: [
-        'postersExample',
+        'create_pages_demo/index', // demo 页面
       ],
     },
   ],
