@@ -40,6 +40,7 @@ const WithUserVerify = ({
         }
     }
     const handleGetUserInfo = async () => {
+
         if (!type) {
             const userInfoRes = await lkGetUserInfo();
             if (userInfoRes !== 'openSetting') {
