@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-indent-props */
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import Taro, { useDidShow } from '@tarojs/taro'
@@ -85,9 +86,21 @@ const WithUserVerify = ({
         <>
             {
                 !userInfo && !userInfo?.avatar ? (
-                    <Button style={style} className={`with-button ${className}`} openType={type ? type : 'getUserInfo'} onGetUserInfo={handleGetUserInfo}>
-                        {children}
-                    </Button>
+                    // eslint-disable-next-line no-undef
+                    !wx.canIUse('getUserProfile') ?
+                        <Button style={style}
+                            openType={type ? type : 'getUserInfo'}
+                            onGetUserInfo={handleGetUserInfo}
+                            className={`with-button ${className}`}
+                        >
+                            {children}
+                        </Button>
+                        : <Button style={style}
+                            onClick={() => { handleGetUserInfo() }}
+                            className={`with-button ${className}`}
+                        >
+                            {children}
+                        </Button>
                 )
                     : !userInfo.phone && isVerifyPhone
                         ? (
