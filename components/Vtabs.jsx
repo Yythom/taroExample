@@ -29,16 +29,11 @@ const Vtabs = ({
                 if (res) {
                     setParentTop(res.top);
                     setParentWidth(res.width);
-                    console.log('tab__res==>', res);
-                } else {
-                    init();
                 }
             });
             query.select(`.left_wrap`).fields({ rect: true, size: true }, res => {
                 if (res) {
                     setBoxH(res.height)
-                } else {
-                    init();
                 }
             });
             query.selectAll(`.childrenClass`).fields({ rect: true, size: true }, data => {

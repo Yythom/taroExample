@@ -10,7 +10,6 @@ const Drop = ({
     list = [],
     spaceName = '必填',
 }) => {
-
     const [item, setItem] = useState(null)
     const _onChange = (i) => {
         if (typeof onChange === 'function') {

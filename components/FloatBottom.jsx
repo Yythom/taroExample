@@ -15,13 +15,12 @@ const Float = ({ show, height = 1500, hide, setShow, className, style, children 
     //     setTop(initTop)
     // }, [])
     useEffect(() => {
-        console.log(show);
         if (show) {
             // vibrateShort();
             setTop(-10)
         } else {
+            setTop(-(700));
             RefInfo(`${className}`).then(res => {
-                console.log(res, 'res');
                 setTop(-(res.height + 10))
             })
             // (+getStorageSync('safeArea')

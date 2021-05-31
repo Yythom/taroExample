@@ -74,6 +74,8 @@ function Index() {
     // 
     const [drop, setDrop] = useState(false)
     const [drop1, setDrop1] = useState(false)
+
+    const [init, setInit] = useState(false)
     return (
         <View className='test-h' >
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
@@ -200,7 +202,6 @@ function Index() {
                     setTag_id={setTag_id}
                     onChange={change_tag}
                     defaultIndex='2'
-                    height='300rpx' // scroll-view导致必须要有高
                     isRefresh
                     isSticy
                     refresh_status={refresh_status}
@@ -225,12 +226,17 @@ function Index() {
                         console.log(res, 'a');
                         // http req
                     }}
-                    parentClass='nav-parent'
-                    childrenClass='children-class'
+                    initTabs={init}
                 >
-                    <View className='a' style={{ height: '200px' }}>
-                        {'targ' + tag_id}
-                    </View>
+                    {
+                        [0, 1].map(e => {
+                            return (
+                                <View onClick={() => setInit(!init)} key={e} className='a' style={{ height: '200px', background: '#ccc' }}>
+                                    {'targ' + tag_id}
+                                </View>
+                            )
+                        })
+                    }
 
                 </Tabs>
 
