@@ -203,12 +203,13 @@ function Index() {
             <View>
                 <Tabs
                     tag_list={tabsList}
-                    setTag_id={setIndex}
                     onChange={change_tag}
                     defaultIndex='2'
+                    maxHeight={'300rpx'}
                     isRefresh
                     isSticy
                     initTabs={init}
+                    // notChildScroll
                     request={{
                         params: {
                             page: 1,

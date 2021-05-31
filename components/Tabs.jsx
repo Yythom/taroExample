@@ -11,20 +11,24 @@ const Index = (props) => {
         className, // wrap class
         onChange, // change函数
         tag_list, // list=[{title}]  分类列表
-        isSticy, // 是否tab头部置顶
+
         renderCenter, // 中间可展开筛选区域
         defaultIndex, // 默认选中的index
+
+        // 是否tab头部置顶
+        isSticy,
         top,
 
         // 监听并初始化tabs
         initTabs,
+        maxHeight,
 
         // 防止页面多tabs获取元素信息污染
         parentClass = 'nav-parent', // 是 并且不能为 nav
         childrenClass = 'children-class', // 是 并且不能为 nav-item-act nav-item 
 
         // scroll-view相关设置
-        notChildScroll, // 是否开启scroll—view
+        notChildScroll, // 是否开启scroll—view // maxHeight不可使用
         isRefresh, // 是否开启scrollView下拉刷新
 
         // 请求相关
@@ -199,7 +203,7 @@ const Index = (props) => {
                         {  // 内容区域
                             props.children
                             &&
-                            <View className='swiper' style={{ height: height * 2 + 'rpx', maxHeight: '300rpx' }}>
+                            <View className='swiper' style={{ height: height * 2 + 'rpx', maxHeight: maxHeight }}>
                                 <Swiper
                                     current={swiperIndex}
                                     duration={300}
@@ -230,7 +234,7 @@ const Index = (props) => {
                                                                         {swiperIndex == index ? props.children : null}
                                                                     </View>
                                                                 </ScrollView>
-                                                                    : <View className='swiper-scroll' >
+                                                                    : <View className='swiper-scroll _view' >
                                                                         <View className='autoHeight'>
                                                                             {swiperIndex == index ? props.children : null}
                                                                         </View>
@@ -252,7 +256,7 @@ const Index = (props) => {
                                                                 <View className='autoHeight'>
                                                                     {swiperIndex == index ? props.children : null}
                                                                 </View>
-                                                            </ScrollView> : <View className='swiper-scroll'>
+                                                            </ScrollView> : <View className='swiper-scroll _view'>
                                                                 <View className='autoHeight'>
                                                                     {swiperIndex == index ? props.children : null}
                                                                 </View>
