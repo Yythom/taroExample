@@ -52,14 +52,18 @@ function Index() {
     }
 
     // tab 相关设置
-    const [refresh_status, setRefresh_status] = useState(false);
-    const [tag_id, setTag_id] = useState('');
+    // const [refresh_status, setRefresh_status] = useState(false);
+    const [content, setContent] = useState([])
+    const [index, setIndex] = useState('');
     const change_tag = (id) => {
-        setTag_id(id);
+        setIndex(id);
     }
     //////////////////////////////////
 
     useDidShow(() => {
+        TestService.getTestList().then(res => {
+            setContent(res.list)
+        })
         // getLocal().then(res => {   console.log(res); })
         // dispatch(actions.changeuserInfoActionAsync()) // 测试api
     })
@@ -199,41 +203,32 @@ function Index() {
             <View>
                 <Tabs
                     tag_list={tabsList}
-                    setTag_id={setTag_id}
+                    setTag_id={setIndex}
                     onChange={change_tag}
                     defaultIndex='2'
                     isRefresh
                     isSticy
-                    refresh_status={refresh_status}
-                    setRefresh_status={setRefresh_status}
-                    refresh_handle={async () => {
-                        let a = new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                resolve(6666);
-                            }, 500);
-                        });
-                        let res = await a; // http req
-                        if (res) setRefresh_status(false);
-                        console.log(res, 'a');
-                    }}
-                    scrollToLowerFn={async () => {
-                        let a = new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                resolve(6666);
-                            }, 500);
-                        });
-                        let res = await a; // http req
-                        console.log(res, 'a');
-                        // http req
-                    }}
                     initTabs={init}
+                    request={{
+                        params: {
+                            page: 1,
+                            // brand: tabsList[index]
+                            brand: '',
+                        },
+                        http: TestService.getTestList
+                    }}
+                    onScrollBottom={(_newList) => {
+                        setContent([...content, ..._newList?.list])
+                    }}
+                    init={(_newList) => {
+                        setContent(_newList?.list)
+                    }}
                 >
                     {
-                        [0, 1].map(e => {
+                        content[0] && content.map(e => {
+                            console.log(e,);
                             return (
-                                <View onClick={() => setInit(!init)} key={e} className='a' style={{ height: '200px', background: '#ccc' }}>
-                                    {'targ' + tag_id}
-                                </View>
+                                <View style={{ height: '100px', background: 'pink' }} key={e.shop_id + e.shop_name}>{e.shop_name}</View>
                             )
                         })
                     }

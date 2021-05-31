@@ -2,9 +2,8 @@
 import React, { useState, useEffect, memo } from 'react';
 import { View, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import Taro, { createSelectorQuery, getStorageSync } from '@tarojs/taro'
-import { debounce } from '@/common/utils';
+import paging, { initing } from '../utils/paging';
 import './styles/tabs.scss'
-import { RefInfo } from '@/common/publicFunc';
 
 const Index = (props) => {
     const {
@@ -27,10 +26,12 @@ const Index = (props) => {
         // scroll-view相关设置
         notChildScroll, // 是否开启scroll—view
         isRefresh, // 是否开启scrollView下拉刷新
-        scrollToLowerFn, // scrollView到底触发事件
-        refresh_status, // 刷新状态
-        setRefresh_status, // 设置刷新状态
-        refresh_handle, // 刷新事件函数
+
+        // 请求相关
+        request,
+        onScrollBottom = Function.prototype,
+        init = Function.prototype,
+
     } = props;
 
     const query = createSelectorQuery();
@@ -43,9 +44,10 @@ const Index = (props) => {
     const [scrollLeft, setScrollLeft] = useState('');   // tab scrollLeft:number
     const [height, setHeight] = useState('');
 
-    const [loading, setLoading] = useState(false)
-
-    function init() {
+    const [page, setPage] = useState(1);
+    const [refresh_status, setRefresh_status] = useState(false);
+    const [tabIndex, settabIndex] = useState('')
+    function initTabsFn() {
         setTimeout(() => {
             query.select(`.${parentClass}`).fields({ rect: true, size: true }, res => {
                 if (res) {
@@ -69,7 +71,6 @@ const Index = (props) => {
             });
             query.exec();
             initContentHeight(defaultIndex);
-            setLoading(true)
         }, 200);
     }
 
@@ -85,20 +86,37 @@ const Index = (props) => {
     }
 
     // swiper到底事件
-    const onLower = debounce(() => {
+    const onLower = () => {
         console.log('到底了');
-        scrollToLowerFn();
-    }, 600)
+        paging(request, page, (newList) => {
+            if (newList) {
+                if (newList.list[0]) {
+                    onScrollBottom(newList);
+                    setPage(page + 1)
+                    setTimeout(() => {
+                        initContentHeight(tabIndex)
+                    }, 100);
+                }
+            }
+            setRefresh_status(false)
+        });
+    }
 
     // 下拉刷新事件
     const refresh = () => {
         if (refresh_status) return
         console.log('刷新');
         setRefresh_status(true);
-        refresh_handle(); // props
+        initing(request, (newList) => {
+            console.log(newList, 'init--list------');
+            if (newList) {
+                if (newList.list[0]) {
+                    init(newList)
+                }
+            }
+            setRefresh_status(false);
+        })
     }
-
-
 
     // 点击tab切换函数
     function taggleNav(i) {
@@ -111,7 +129,9 @@ const Index = (props) => {
         let current = e.detail.current;
         taggleNav(current);
         onChange(current);
+        settabIndex(e)
         initContentHeight(current);
+        setPage(1)
     }
 
     function scrollMoveDom(index) {
@@ -128,7 +148,7 @@ const Index = (props) => {
     }
 
     useEffect(() => {
-        init()
+        initTabsFn()
     }, [])
 
     useEffect(() => {
@@ -179,7 +199,7 @@ const Index = (props) => {
                         {  // 内容区域
                             props.children
                             &&
-                            <View className='swiper' style={{ height: height * 2 + 'rpx' }}>
+                            <View className='swiper' style={{ height: height * 2 + 'rpx', maxHeight: '300rpx' }}>
                                 <Swiper
                                     current={swiperIndex}
                                     duration={300}
