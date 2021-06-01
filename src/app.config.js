@@ -35,12 +35,6 @@ export default {
         'index',
       ],
     },
-    {
-      root: 'pages/canvasExample',
-      pages: [
-        'postersExample',
-      ],
-    },
   ],
   window: {
     backgroundTextStyle: 'light',

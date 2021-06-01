@@ -2,8 +2,8 @@
 import React, { useState, useEffect, memo } from 'react';
 import { View, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import Taro, { createSelectorQuery, getStorageSync } from '@tarojs/taro'
-import paging, { initing } from '../utils/paging';
-import './styles/tabs.scss'
+import paging, { initing } from '../../utils/paging';
+import './tabs.scss'
 
 const Index = (props) => {
     const {

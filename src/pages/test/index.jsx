@@ -9,7 +9,7 @@ import NavBar from '@/components/NavBar'
 // import Notice from '@/components/Notice'
 import Search from '@/components/Search'
 import Avatar from '@/components/Avatar'
-import Tabs from '@/components/Tabs'
+import Tabs from '@/components/tabs/Tabs'
 import UpImg from '@/components/UpImage'
 import BlurImg from '@/components/BlurImg'
 // import WithUserVerify from '@/components/WithUserVerify'
@@ -82,6 +82,7 @@ function Index() {
     const [init, setInit] = useState(false)
     return (
         <View className='test-h' >
+            {/* <WebView src='http://172.16.5.18:3002/demo' /> */}
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
             <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <Avatar size={80}></Avatar>
@@ -229,7 +230,9 @@ function Index() {
                         content[0] && content.map(e => {
                             console.log(e,);
                             return (
-                                <View style={{ height: '100px', background: 'pink' }} key={e.shop_id + e.shop_name}>{e.shop_name}</View>
+                                <View onClick={() => {
+                                    setInit(!init)
+                                }} style={{ height: '100px', background: 'pink' }} key={e.shop_id + e.shop_name}>{e.shop_name}</View>
                             )
                         })
                     }
