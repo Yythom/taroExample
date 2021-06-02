@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { View, Button } from '@tarojs/components';
-import { lkGetUserInfo } from '../common/publicFunc';
+import { lkGetUserInfo } from '../../common/publicFunc';
 // import { userStore } from '../store';
-import { actions } from '../store/userStore';
-import './styles/withAuth.scss';
+import { actions } from '../../store/userStore';
+import './withAuth.scss';
 
 
 const WithUserVerify = ({

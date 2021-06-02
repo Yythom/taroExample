@@ -3,9 +3,9 @@ import React, { Component, useState } from 'react';
 import Taro, { getStorageSync, useDidShow, hideTabBar } from '@tarojs/taro';
 import { View, Button } from '@tarojs/components';
 
-import NavBar from '@/components/NavBar'
+import NavBar from '@/components/navbar/NavBar'
+import Step from '@/components/step/Step';
 import './index.scss';
-import Step from '@/components/Step';
 
 function Index() {
     const userStore = useSelector(e => e.userStore, shallowEqual);

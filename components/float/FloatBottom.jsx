@@ -2,7 +2,7 @@ import { RefInfo } from '@/common/publicFunc';
 import { View } from '@tarojs/components';
 import { createSelectorQuery, getStorageSync } from '@tarojs/taro';
 import React, { memo, useEffect, useState } from 'react';
-import './styles/float_bottom.scss'
+import './float_bottom.scss'
 
 const Float = ({ show, height = 1500, hide, setShow, className, style, children }) => {
     const hideFn = () => {

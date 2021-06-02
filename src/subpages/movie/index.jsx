@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, MovableArea, MovableView, WebView } from '@tarojs/components';
 
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/navbar/NavBar';
 import Taro, { stopPullDownRefresh, useDidShow, usePullDownRefresh } from '@tarojs/taro'
 import './index.scss'
 import './img/down.png'

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Image, Text } from '@tarojs/components';
 import { useSelector, shallowEqual } from 'react-redux';
-import WithUserVerify from './WithUserVerify';
-import './styles/avatar.scss';
+import WithUserVerify from '../auth/UserVerify';
+import './avatar.scss';
 
 const Avatar = ({ size }) => {
     const userStore = useSelector(e => e.userStore, shallowEqual);

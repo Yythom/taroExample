@@ -4,23 +4,23 @@ import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import React, { Component, useEffect, useState } from 'react';
 import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync, requirePlugin, getLogManager, getRealtimeLogManager, onError, useTabItemTap, useShareAppMessage } from '@tarojs/taro';
 import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Input, Slider, Progress, OpenData, WebView } from '@tarojs/components';
-// import Modal from '@/components/Modal'
-import NavBar from '@/components/NavBar'
+// import Modal from '@/components/modal（暂放）/Modal'
+import NavBar from '@/components/navbar/NavBar'
 // import Notice from '@/components/Notice'
-import Search from '@/components/Search'
-import Avatar from '@/components/Avatar'
+import Search from '@/components/search/Search'
+import Avatar from '@/components/avatar/Avatar'
 import Tabs from '@/components/tabs/Tabs'
-import UpImg from '@/components/UpImage'
-import BlurImg from '@/components/BlurImg'
+import UpImg from '@/components/upload-img/Uploadimg'
+import BlurImg from '@/components/blur-img/BlurImg'
 // import WithUserVerify from '@/components/WithUserVerify'
 import TestService from '@/services/test'
-import FloatBottom from '@/components/FloatBottom';
+import FloatBottom from '@/components/float/FloatBottom';
 import { getLocal, lkGoToChangeLocation, lkShowModal, mapRoute } from '@/common/publicFunc';
-import Drop from '@/components/DropDwon';
-import CheckList from '@/components/CheckList';
+import Drop from '@/components/drop/DropDwon';
+import CheckList from '@/components/select-list/CheckList';
 import Sticky from '@/components/Sticky';
-import HistorySearch from '@/components/HistorySearch';
-import Vtabs from '@/components/Vtabs';
+import HistorySearch from '@/components/histoty-search/HistorySearch';
+import Vtabs from '@/components/v-tabs/Vtabs';
 // import Modal from '@/components/Modal';
 
 import { actions } from './store/slice'
@@ -70,7 +70,6 @@ function Index() {
 
     // 多项选择相关
     const [selectList, setSelect_list] = useState([])
-    const [newList, setNewList] = useState([]);
 
     // 竖的tabs切换
     const [vtabindex, setVtabindex] = useState(0);
@@ -89,7 +88,10 @@ function Index() {
                 <CheckList
                     list={selectList[0] ? selectList : selectslist}
                     setList={setSelect_list}
-                    setFilter={setNewList}
+                    onClick={(list) => {
+                        console.log(list);
+                        setSelect_list(list)
+                    }}
                     renderLeftMap={(item) => {
                         return <View className=''>{item.title}</View>
                     }}
@@ -98,9 +100,6 @@ function Index() {
                 <View onClick={() => goToMap()}>地图插件选点</View>
                 <View className='pickers_wrap'>
                     <PickerExample />
-                    <View onClick={() => { lkShowModal('123', '213').then(res => { console.log(res); }) }} >
-                        modal
-                    </View>
                 </View>
             </View >
 
@@ -112,11 +111,7 @@ function Index() {
 
 
             <View
-                onClick={() => {
-
-                    setStorageSync('cop_src', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3592591149,2523126110&fm=26&gp=0.jpg');
-                    navigateTo({ url: '/subpages/img_cop/index' })
-                }}
+                onClick={() => { setStorageSync('cop_src', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3592591149,2523126110&fm=26&gp=0.jpg'); navigateTo({ url: '/subpages/img_cop/index' }) }}
             >
                 图片裁剪
             </View>
@@ -228,7 +223,6 @@ function Index() {
                 >
                     {
                         content[0] && content.map(e => {
-                            console.log(e,);
                             return (
                                 <View onClick={() => {
                                     setInit(!init)

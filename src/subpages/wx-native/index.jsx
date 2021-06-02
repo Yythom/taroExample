@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, Video } from '@tarojs/components';
 
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/navbar/NavBar';
 // import NavBar from '../../wx_components/wxml-to-canvas/src/index';
 import Taro, { getCurrentInstance, stopPullDownRefresh, useDidShow, usePullDownRefresh } from '@tarojs/taro'
 import './index.scss'

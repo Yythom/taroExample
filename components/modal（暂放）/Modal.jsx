@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from '@tarojs/components';
 
-import './styles/modal.scss';
+import './modal.scss';
 
 const Modal = ({
   show,
