@@ -1,0 +1,133 @@
+.sort_img_wrap {
+    .release_box {
+        background: #fff;
+        padding: 32px;
+    }
+
+    .nullPic {
+        width: 222px;
+        height: 222px;
+        background: #E6E6E6;
+        text-align: center;
+        float: left;
+        margin-left: 10px;
+    }
+
+    .nullPic image {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        top: 60px;
+    }
+
+    .release_text {
+        min-height: 132px;
+    }
+
+    .release_text textarea {
+        width: 100%;
+        min-height: 132px;
+        height: auto;
+        margin-bottom: 30px;
+
+    }
+
+    .pic_box {
+        float: left;
+        margin-bottom: 16px !important;
+        margin-left: 10px;
+        width: 222px;
+        height: 222px;
+        overflow: hidden;
+        position: relative
+    }
+
+
+    .gays_pic_C {
+        width: 222px;
+    }
+
+    .pic_box:nth-child(1) {
+        margin: 0
+    }
+
+    .pic_box:nth-child(4) {
+        margin: 0
+    }
+
+    .pic_box:nth-child(7) {
+        margin: 0
+    }
+
+    .release_btn_null {
+        width: 120px;
+        height: 60px;
+        background: #CCCCCC;
+        font-size: 24px;
+        color: #fff;
+        float: right;
+        margin-top: 40px;
+        margin-right: 32px;
+    }
+
+    .release_btn {
+        width: 120px;
+        height: 60px;
+        background: #FFA300;
+        font-size: 24px;
+        color: #fff;
+        float: right;
+        margin-top: 40px;
+        margin-right: 32px;
+    }
+
+    .del_pic {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        right: 0;
+        top: 0
+    }
+
+    /* ===> */
+
+    /* test/test.wxss */
+    .outer {
+        width: 100%;
+        max-height: 800px
+    }
+
+    .inner {
+        width: 100%;
+        height: 100%;
+    }
+
+    movable-area {
+        width: 100%;
+        height: 500px;
+    }
+
+    .item {
+        float: left;
+        width: 222px;
+        height: 222px;
+    }
+
+    .index-first {
+        display: inline-block;
+        width: 15px;
+        height: 222px;
+        background: firebrick;
+    }
+
+    .item-move {
+        display: inline-block;
+        width: 222px;
+        height: 222px;
+        overflow: hidden
+    }
+
+    .item-move image {
+        width: 222px;
+    }
+}
