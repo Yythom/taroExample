@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import { createSelectorQuery } from '@tarojs/taro';
-import './styles/vtabs.scss'
+import './vtabs.scss'
 
 const Vtabs = ({
     list, // 左侧列表

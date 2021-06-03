@@ -5,7 +5,7 @@ import React, { Component, useEffect, useState } from 'react';
 import Taro, { getStorageSync, useDidShow } from '@tarojs/taro';
 import { View, Canvas, Button, Image } from '@tarojs/components';
 
-import './styles/img.scss';
+import './img.scss';
 
 function Index(props) {
     const {

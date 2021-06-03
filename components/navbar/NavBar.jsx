@@ -4,9 +4,8 @@ import {
 } from '@tarojs/components';
 import { navigateBack, setStorageSync } from '@tarojs/taro';
 import classnames from 'classnames';
-import { lkGetSystemInfo } from '../common/publicFunc';
-
-import './styles/navbar.scss';
+import { lkGetSystemInfo } from '../../common/publicFunc';
+import './navbar.scss';
 
 const globalSystemInfo = lkGetSystemInfo();
 const defaultProps = {

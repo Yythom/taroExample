@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Image, Text } from '@tarojs/components';
 
 
-import './styles/checklist.scss';
+import './checklist.scss';
 
 function CList(props) {
-    let { className, list, setList, onClick, setFilter, renderLeftMap } = props;
+    let { className, list, onClick, renderLeftMap } = props;
     return (
         <View className={`check_wrap ${className}`}>
             {list[0] && list.map((e, i) => {
@@ -13,10 +13,8 @@ function CList(props) {
                     <View className='check_item' key={e + 'check_item'} onClick={() => {
                         let autoList = JSON.parse(JSON.stringify(list));
                         autoList[i].checked = !autoList[i].checked;
-                        setList(autoList);
-                        setFilter(autoList.filter(el => el.checked));
                         if (typeof onClick === 'function') {
-                            onClick();
+                            onClick(autoList);
                         }
                     }}
                     >

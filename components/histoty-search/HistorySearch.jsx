@@ -3,11 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from '@tarojs/components';
 import { lkHideLoading, lkShowLoading } from '@/common/publicFunc';
 import { getStorageSync, hideLoading, navigateTo, openLocation, removeStorageSync, setStorageSync, showLoading, showToast, useReachBottom } from '@tarojs/taro';
-import BlurImg from '@/components/BlurImg'
+import BlurImg from '@/components/blur-img/BlurImg'
 import { formatKm, Star } from '@/common/public';
-
-import Search from './Search';
-import './styles/history_search.scss'
+import Search from '@/components/search/Search';
+import './history_search.scss'
 
 const HistorySearch = ({
     storage_logkey, // 本地设置的stroge key名

@@ -1,6 +1,6 @@
 import { View } from '@tarojs/components';
 import React, { useState } from 'react';
-import './styles/drop.scss'
+import './drop.scss'
 
 const Drop = ({
     show = false,
