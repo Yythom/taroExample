@@ -6,6 +6,7 @@ import { View, Button } from '@tarojs/components';
 import NavBar from '@/components/NavBar'
 import './index.scss';
 import Step from '@/components/Step';
+import Sort from './sort'
 
 function Index() {
     const userStore = useSelector(e => e.userStore, shallowEqual);
@@ -35,6 +36,7 @@ function Index() {
     return (
         <View className='index-wrap' >
             <NavBar background='pink' title='首页' />
+            <Sort />
             <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <View
                     onTouchStart={(e) => touchStart(e)}

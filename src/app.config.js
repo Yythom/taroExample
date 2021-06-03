@@ -1,6 +1,6 @@
 export default {
   pages: [
-    'pages/test/sort',
+    'pages/test/index',
     'pages/index/index',
   ],
   subpackages: [
@@ -48,7 +48,7 @@ export default {
     selectedColor: '#FF8106',
     list: [
       {
-        pagePath: 'pages/test/sort',
+        pagePath: 'pages/test/index',
         text: '测试',
       },
       // {

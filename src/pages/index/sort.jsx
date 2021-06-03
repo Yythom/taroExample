@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { MovableArea, MovableView, ScrollView, View } from '@tarojs/components';
 import './temp.scss'
 import SortImage from './imgSort/sortImg'
+import { getStorageSync } from '@tarojs/taro';
 
 const Sort = () => {
     const [pageData, setPageData] = useState([
@@ -42,10 +43,9 @@ const Sort = () => {
 
         // 初始化拖动控件数据
         var _movableViewInfo = JSON.parse(JSON.stringify(movableViewInfo))
-        console.log();
         _movableViewInfo.data = pageData[i]
         _movableViewInfo.showClass = "inline"
-        _movableViewInfo.y = _pageInfo.startY - (_pageInfo.rowHeight / 2)
+        _movableViewInfo.y = _pageInfo.startY - (_pageInfo.rowHeight / 2) - getStorageSync('navHeight')
 
         setPageInfo(_pageInfo);
         setMovableViewInfo(_movableViewInfo)
@@ -58,7 +58,7 @@ const Sort = () => {
         // 计算拖拽距离
         var _movableViewInfo = JSON.parse(JSON.stringify(movableViewInfo))
         var movedDistance = event.touches[0].clientY - _pageInfo.startY
-        _movableViewInfo.y = _pageInfo.startY - (_pageInfo.rowHeight / 2) + movedDistance
+        _movableViewInfo.y = _pageInfo.startY - (_pageInfo.rowHeight / 2) + movedDistance - getStorageSync('navHeight')
         console.log('移动的距离为', movedDistance)
 
         // 修改预计放置位置
