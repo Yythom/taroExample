@@ -224,7 +224,7 @@ const Index = (props) => {
                                                                 !notChildScroll ? <ScrollView
                                                                     className='swiper-scroll'
                                                                     scrollY
-                                                                    lowerThreshold={20}
+                                                                    lowerThreshold={0}
                                                                     refresherTriggered={refresh_status}
                                                                     onRefresherRefresh={refresh}
                                                                     onScrollToLower={onLower}
@@ -247,7 +247,7 @@ const Index = (props) => {
                                                             !notChildScroll ? <ScrollView
                                                                 className='swiper-scroll'
                                                                 scrollY
-                                                                lowerThreshold={20}
+                                                                lowerThreshold={0}
                                                                 refresherTriggered={refresh_status}
                                                                 onRefresherRefresh={refresh}
                                                                 onScrollToLower={onLower}

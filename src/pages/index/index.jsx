@@ -6,6 +6,7 @@ import { View, Button } from '@tarojs/components';
 import NavBar from '@/components/navbar/NavBar'
 import Step from '@/components/step/Step';
 import './index.scss';
+import Modal from '@/components/modal（暂放）/Modal';
 
 function Index() {
     const userStore = useSelector(e => e.userStore, shallowEqual);
@@ -15,38 +16,14 @@ function Index() {
         console.log(userStore);
     })
 
-    const longPressFn = (e) => {
-        console.log(e, '长按');
-        setTouchFlag(true)
-    }
 
-    const [touchStartTime, setTouchStartTime] = useState(0);
-    const [touchFlag, setTouchFlag] = useState(false);
-    const touchStart = (e) => {
-        setTouchStartTime(e.timeStamp);
-        console.log(e, '开始');
-    }
-    const touchEnd = (e) => {
-        console.log(e, '结束');
-        if (e.timeStamp - touchStartTime > 500) {
-            setTouchFlag(true)
-        }
-    }
+    const [modal, setModal] = useState(true);
     return (
         <View className='index-wrap' >
             <NavBar background='pink' title='首页' />
             <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-                <View
-                    onTouchStart={(e) => touchStart(e)}
-                    onTouchEnd={(e) => { touchEnd(e) }}
-                    // onLongPress={(e) => longPressFn(e)}
-                    style={{ width: '100%', height: '300rpx', background: 'pink' }}
-                >
-                    按钮
-                </View>
-                {
-                    touchFlag && '88888'
-                }
+
+                <Modal show={modal} />
                 <View className=''>
                     <Step step={['内容', 3]}
                         lineH={8}
