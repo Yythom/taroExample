@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Navigator, Text, Input } from '@tarojs/components';
-import './styles/search.scss'
+import './search.scss'
 
 const Search = ({
     isEditor, // 是否可编辑

@@ -15,7 +15,7 @@ class HttpRequest {
       method,
       header: {
         'Content-Type': contentType,
-        token: getStorageSync('token'),
+        // token: getStorageSync('token'),
       },
     };
     return wx.request(option);

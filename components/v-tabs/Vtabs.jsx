@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import { createSelectorQuery } from '@tarojs/taro';
-import './styles/vtabs.scss'
+import './vtabs.scss'
 
 const Vtabs = ({
     list, // 左侧列表
@@ -29,16 +29,11 @@ const Vtabs = ({
                 if (res) {
                     setParentTop(res.top);
                     setParentWidth(res.width);
-                    console.log('tab__res==>', res);
-                } else {
-                    init();
                 }
             });
             query.select(`.left_wrap`).fields({ rect: true, size: true }, res => {
                 if (res) {
                     setBoxH(res.height)
-                } else {
-                    init();
                 }
             });
             query.selectAll(`.childrenClass`).fields({ rect: true, size: true }, data => {

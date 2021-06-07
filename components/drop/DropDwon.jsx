@@ -1,6 +1,6 @@
 import { View } from '@tarojs/components';
 import React, { useState } from 'react';
-import './styles/drop.scss'
+import './drop.scss'
 
 const Drop = ({
     show = false,
@@ -10,7 +10,6 @@ const Drop = ({
     list = [],
     spaceName = '必填',
 }) => {
-
     const [item, setItem] = useState(null)
     const _onChange = (i) => {
         if (typeof onChange === 'function') {

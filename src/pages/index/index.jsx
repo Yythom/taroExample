@@ -3,9 +3,10 @@ import React, { Component, useState } from 'react';
 import Taro, { getStorageSync, useDidShow, hideTabBar } from '@tarojs/taro';
 import { View, Button } from '@tarojs/components';
 
-import NavBar from '@/components/NavBar'
+import NavBar from '@/components/navbar/NavBar'
+import Step from '@/components/step/Step';
 import './index.scss';
-import Step from '@/components/Step';
+import Modal from '@/components/modal/Modal';
 
 function Index() {
     const userStore = useSelector(e => e.userStore, shallowEqual);
@@ -15,28 +16,14 @@ function Index() {
         console.log(userStore);
     })
 
-    const longPressFn = (e) => {
-        console.log(e, '长按');
-        setTouchFlag(true)
-    }
-
-    const [touchStartTime, setTouchStartTime] = useState(0);
-    const [touchFlag, setTouchFlag] = useState(false);
-    const touchStart = (e) => {
-        setTouchStartTime(e.timeStamp);
-        console.log(e, '开始');
-    }
-    const touchEnd = (e) => {
-        console.log(e, '结束');
-        if (e.timeStamp - touchStartTime > 500) {
-            setTouchFlag(true)
-        }
-    }
+    const [modal, setModal] = useState(false);
     return (
         <View className='index-wrap' >
             <NavBar background='pink' title='首页' />
-            <View >
-                首页
+            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+                <Button onClick={() => setModal(!modal)}>modal</Button>
+                <Modal show={modal} setShow={setModal} />
+
             </View >
         </View>
     )

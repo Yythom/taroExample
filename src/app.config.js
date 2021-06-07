@@ -7,7 +7,8 @@ export default {
     {
       root: 'subpages/',
       pages: [
-        'create_pages_demo/index', // demo 页面
+        // 'img_cop/index',
+
       ],
     },
   ],
@@ -36,5 +37,5 @@ export default {
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
     }
-  }
+  },
 }

@@ -4,7 +4,7 @@ import Taro, { getImageInfo } from '@tarojs/taro';
 import { View, Image, } from '@tarojs/components';
 
 
-import './styles/blur_img.scss';
+import './blur_img.scss';
 
 function Index(props) {
     const {

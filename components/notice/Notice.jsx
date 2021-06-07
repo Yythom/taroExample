@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components';
-import './styles/notice.scss'
+import './notice.scss'
 
 const RollingNotice = (props) => { //rolling notice 横向滚动公告
     const { isShow, content, background, color } = props;

@@ -2,7 +2,7 @@ import { RefInfo } from '@/common/publicFunc';
 import { View } from '@tarojs/components';
 import { createSelectorQuery, getStorageSync } from '@tarojs/taro';
 import React, { memo, useEffect, useState } from 'react';
-import './styles/float_bottom.scss'
+import './float_bottom.scss'
 
 const Float = ({ show, height = 1500, hide, setShow, className, style, children }) => {
     const hideFn = () => {
@@ -15,13 +15,12 @@ const Float = ({ show, height = 1500, hide, setShow, className, style, children 
     //     setTop(initTop)
     // }, [])
     useEffect(() => {
-        console.log(show);
         if (show) {
             // vibrateShort();
             setTop(-10)
         } else {
+            setTop(-(700));
             RefInfo(`${className}`).then(res => {
-                console.log(res, 'res');
                 setTop(-(res.height + 10))
             })
             // (+getStorageSync('safeArea')

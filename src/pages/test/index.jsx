@@ -4,23 +4,23 @@ import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import React, { Component, useEffect, useState } from 'react';
 import Taro, { getStorageSync, useDidShow, hideTabBar, navigateTo, setStorageSync, requirePlugin, getLogManager, getRealtimeLogManager, onError, useTabItemTap, useShareAppMessage } from '@tarojs/taro';
 import { View, Text, Canvas, Button, Image, Swiper, SwiperItem, Picker, Input, Slider, Progress, OpenData, WebView } from '@tarojs/components';
-// import Modal from '@/components/Modal'
-import NavBar from '@/components/NavBar'
+// import Modal from '@/components/modal（暂放）/Modal'
+import NavBar from '@/components/navbar/NavBar'
 // import Notice from '@/components/Notice'
-import Search from '@/components/Search'
-import Avatar from '@/components/Avatar'
-import Tabs from '@/components/Tabs'
-import UpImg from '@/components/UpImage'
-import BlurImg from '@/components/BlurImg'
+import Search from '@/components/search/Search'
+import Avatar from '@/components/avatar/Avatar'
+import Tabs from '@/components/tabs/Tabs'
+import UpImg from '@/components/upload-img/Uploadimg'
+import BlurImg from '@/components/blur-img/BlurImg'
 // import WithUserVerify from '@/components/WithUserVerify'
 import TestService from '@/services/test'
-import FloatBottom from '@/components/FloatBottom';
+import FloatBottom from '@/components/float/FloatBottom';
 import { getLocal, lkGoToChangeLocation, lkShowModal, mapRoute } from '@/common/publicFunc';
-import Drop from '@/components/DropDwon';
-import CheckList from '@/components/CheckList';
+import Drop from '@/components/drop/DropDwon';
+import CheckList from '@/components/select-list/CheckList';
 import Sticky from '@/components/Sticky';
-import HistorySearch from '@/components/HistorySearch';
-import Vtabs from '@/components/Vtabs';
+import HistorySearch from '@/components/histoty-search/HistorySearch';
+import Vtabs from '@/components/v-tabs/Vtabs';
 // import Modal from '@/components/Modal';
 
 import { actions } from './store/slice'
@@ -52,21 +52,24 @@ function Index() {
     }
 
     // tab 相关设置
-    const [refresh_status, setRefresh_status] = useState(false);
-    const [tag_id, setTag_id] = useState('');
+    // const [refresh_status, setRefresh_status] = useState(false);
+    const [content, setContent] = useState([])
+    const [index, setIndex] = useState('');
     const change_tag = (id) => {
-        setTag_id(id);
+        setIndex(id);
     }
     //////////////////////////////////
 
     useDidShow(() => {
+        TestService.getTestList().then(res => {
+            setContent(res.list)
+        })
         // getLocal().then(res => {   console.log(res); })
         // dispatch(actions.changeuserInfoActionAsync()) // 测试api
     })
 
     // 多项选择相关
     const [selectList, setSelect_list] = useState([])
-    const [newList, setNewList] = useState([]);
 
     // 竖的tabs切换
     const [vtabindex, setVtabindex] = useState(0);
@@ -74,15 +77,21 @@ function Index() {
     // 
     const [drop, setDrop] = useState(false)
     const [drop1, setDrop1] = useState(false)
+
+    const [init, setInit] = useState(false)
     return (
         <View className='test-h' >
+            {/* <WebView src='http://172.16.5.18:3002/demo' /> */}
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
             <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <Avatar size={80}></Avatar>
                 <CheckList
                     list={selectList[0] ? selectList : selectslist}
                     setList={setSelect_list}
-                    setFilter={setNewList}
+                    onClick={(list) => {
+                        console.log(list);
+                        setSelect_list(list)
+                    }}
                     renderLeftMap={(item) => {
                         return <View className=''>{item.title}</View>
                     }}
@@ -91,9 +100,6 @@ function Index() {
                 <View onClick={() => goToMap()}>地图插件选点</View>
                 <View className='pickers_wrap'>
                     <PickerExample />
-                    <View onClick={() => { lkShowModal('123', '213').then(res => { console.log(res); }) }} >
-                        modal
-                    </View>
                 </View>
             </View >
 
@@ -105,11 +111,7 @@ function Index() {
 
 
             <View
-                onClick={() => {
-
-                    setStorageSync('cop_src', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3592591149,2523126110&fm=26&gp=0.jpg');
-                    navigateTo({ url: '/subpages/img_cop/index' })
-                }}
+                onClick={() => { setStorageSync('cop_src', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3592591149,2523126110&fm=26&gp=0.jpg'); navigateTo({ url: '/subpages/img_cop/index' }) }}
             >
                 图片裁剪
             </View>
@@ -197,40 +199,37 @@ function Index() {
             <View>
                 <Tabs
                     tag_list={tabsList}
-                    setTag_id={setTag_id}
                     onChange={change_tag}
                     defaultIndex='2'
-                    height='300rpx' // scroll-view导致必须要有高
+                    maxHeight={'300rpx'}
                     isRefresh
                     isSticy
-                    refresh_status={refresh_status}
-                    setRefresh_status={setRefresh_status}
-                    refresh_handle={async () => {
-                        let a = new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                resolve(6666);
-                            }, 500);
-                        });
-                        let res = await a; // http req
-                        if (res) setRefresh_status(false);
-                        console.log(res, 'a');
+                    initTabs={init}
+                    // notChildScroll
+                    request={{
+                        params: {
+                            page: 1,
+                            // brand: tabsList[index]
+                            brand: '',
+                        },
+                        http: TestService.getTestList
                     }}
-                    scrollToLowerFn={async () => {
-                        let a = new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                resolve(6666);
-                            }, 500);
-                        });
-                        let res = await a; // http req
-                        console.log(res, 'a');
-                        // http req
+                    onScrollBottom={(_newList) => {
+                        setContent([...content, ..._newList?.list])
                     }}
-                    parentClass='nav-parent'
-                    childrenClass='children-class'
+                    init={(_newList) => {
+                        setContent(_newList?.list)
+                    }}
                 >
-                    <View className='a' style={{ height: '200px' }}>
-                        {'targ' + tag_id}
-                    </View>
+                    {
+                        content[0] && content.map(e => {
+                            return (
+                                <View onClick={() => {
+                                    setInit(!init)
+                                }} style={{ height: '100px', background: 'pink' }} key={e.shop_id + e.shop_name}>{e.shop_name}</View>
+                            )
+                        })
+                    }
 
                 </Tabs>
 

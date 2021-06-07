@@ -2,9 +2,8 @@
 import React, { useState, useEffect, memo } from 'react';
 import { View, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import Taro, { createSelectorQuery, getStorageSync } from '@tarojs/taro'
-import { debounce } from '@/common/utils';
-import './styles/tabs.scss'
-import Sticky from './Sticky';
+import paging, { initing } from '../../utils/paging';
+import './tabs.scss'
 
 const Index = (props) => {
     const {
@@ -12,25 +11,31 @@ const Index = (props) => {
         className, // wrap class
         onChange, // change函数
         tag_list, // list=[{title}]  分类列表
-        isSticy, // 是否tab头部置顶
+
         renderCenter, // 中间可展开筛选区域
         defaultIndex, // 默认选中的index
+
+        // 是否tab头部置顶
+        isSticy,
         top,
 
-        // 内容相关设置
-        height, // 内容高度 （scroll-view导致必须要有高）
+        // 监听并初始化tabs
+        initTabs,
+        maxHeight,
 
         // 防止页面多tabs获取元素信息污染
-        parentClass, // 是 并且不能为 nav
-        childrenClass, // 是 并且不能为 nav-item-act nav-item 
+        parentClass = 'nav-parent', // 是 并且不能为 nav
+        childrenClass = 'children-class', // 是 并且不能为 nav-item-act nav-item 
 
         // scroll-view相关设置
-        notChildScroll, // 是否开启scroll—view
+        notChildScroll, // 是否开启scroll—view // maxHeight不可使用
         isRefresh, // 是否开启scrollView下拉刷新
-        scrollToLowerFn, // scrollView到底触发事件
-        refresh_status, // 刷新状态
-        setRefresh_status, // 设置刷新状态
-        refresh_handle, // 刷新事件函数
+
+        // 请求相关
+        request,
+        onScrollBottom = Function.prototype,
+        init = Function.prototype,
+
     } = props;
 
     const query = createSelectorQuery();
@@ -38,21 +43,21 @@ const Index = (props) => {
     const [navInfos, setNavInfos] = useState([]);  // 所有子元素的信息
     const [navItemWidth, setNavItemWidth] = useState([]);  // 选中下划线的宽度
     const [navItemLeft, setNavItemLeft] = useState([]);   // 选中下划线的显示位置
-    const [parentLeft, setParentLeft] = useState([]);   // 选中下划线的显示位置
-    const [componentWidth, setComponentWidth] = useState([]);   // 选中下划线的显示位置
+    const [parentLeft, setParentLeft] = useState('');   // 选中下划线的显示位置
+    const [componentWidth, setComponentWidth] = useState('');   // 选中下划线的显示位置
     const [scrollLeft, setScrollLeft] = useState('');   // tab scrollLeft:number
+    const [height, setHeight] = useState('');
 
-
-    function init() {
+    const [page, setPage] = useState(1);
+    const [refresh_status, setRefresh_status] = useState(false);
+    const [tabIndex, settabIndex] = useState('')
+    function initTabsFn() {
         setTimeout(() => {
             query.select(`.${parentClass}`).fields({ rect: true, size: true }, res => {
                 if (res) {
                     setParentLeft(res.left);
                     setComponentWidth(res.width);
                     console.log('tab__res==>', res);
-
-                } else {
-                    init();
                 }
             });
             query.selectAll(`.${childrenClass}`).fields({ rect: true, size: true }, data => {
@@ -66,28 +71,57 @@ const Index = (props) => {
                         navInfosArr.push({ width: item.width, left: item.left });
                     });
                     setNavInfos(navInfosArr)
-                } else {
-                    init();
                 }
             });
             query.exec();
-        }, 100);
+            initContentHeight(defaultIndex);
+        }, 200);
     }
+
+    function initContentHeight(current) {
+        setTimeout(() => {
+            createSelectorQuery().selectAll(`.autoHeight`).boundingClientRect(function (rect) {
+                if (rect[current]) {
+                    console.log(rect[current].height);
+                    setHeight(rect[current].height)
+                }
+            }).exec()
+        }, 200);
+    }
+
     // swiper到底事件
-    const onLower = debounce(() => {
+    const onLower = () => {
         console.log('到底了');
-        scrollToLowerFn();
-    }, 600)
+        paging(request, page, (newList) => {
+            if (newList) {
+                if (newList.list[0]) {
+                    onScrollBottom(newList);
+                    setPage(page + 1)
+                    setTimeout(() => {
+                        initContentHeight(tabIndex)
+                    }, 100);
+                }
+            }
+            setRefresh_status(false)
+        });
+    }
 
     // 下拉刷新事件
     const refresh = () => {
         if (refresh_status) return
         console.log('刷新');
         setRefresh_status(true);
-        refresh_handle(); // props
+        initing(request, (newList) => {
+            console.log(newList, 'init--list------');
+            if (newList) {
+                setPage(1)
+                if (newList.list[0]) {
+                    init(newList)
+                }
+            }
+            setRefresh_status(false);
+        })
     }
-
-
 
     // 点击tab切换函数
     function taggleNav(i) {
@@ -100,6 +134,9 @@ const Index = (props) => {
         let current = e.detail.current;
         taggleNav(current);
         onChange(current);
+        settabIndex(e)
+        initContentHeight(current);
+        setPage(1)
     }
 
     function scrollMoveDom(index) {
@@ -116,20 +153,18 @@ const Index = (props) => {
     }
 
     useEffect(() => {
-        if (tag_list[0] && !navInfos[0]) {
-            init();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tag_list]);
+        initTabsFn()
+    }, [])
 
     useEffect(() => {
         if (navInfos[0]) {
             if (defaultIndex) {
                 taggleNav(defaultIndex);
+                initContentHeight(defaultIndex);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navInfos[0]])
+    }, [defaultIndex, initTabs, navInfos])
 
     return (
         <>
@@ -169,7 +204,7 @@ const Index = (props) => {
                         {  // 内容区域
                             props.children
                             &&
-                            <View className='swiper' style={{ height: height }}>
+                            <View className='swiper' style={{ height: height * 2 + 'rpx', maxHeight: maxHeight }}>
                                 <Swiper
                                     current={swiperIndex}
                                     duration={300}
@@ -190,20 +225,21 @@ const Index = (props) => {
                                                                 !notChildScroll ? <ScrollView
                                                                     className='swiper-scroll'
                                                                     scrollY
-                                                                    lowerThreshold={20}
+                                                                    lowerThreshold={0}
                                                                     refresherTriggered={refresh_status}
                                                                     onRefresherRefresh={refresh}
                                                                     onScrollToLower={onLower}
                                                                     refresherEnabled={isRefresh}
                                                                 >
-                                                                    <View>
+                                                                    <View className='autoHeight'>
                                                                         {swiperIndex == index ? props.children : null}
                                                                     </View>
-                                                                </ScrollView> : <View className='swiper-scroll'>
-                                                                    <View>
-                                                                        {swiperIndex == index ? props.children : null}
+                                                                </ScrollView>
+                                                                    : <View className='swiper-scroll _view' >
+                                                                        <View className='autoHeight'>
+                                                                            {swiperIndex == index ? props.children : null}
+                                                                        </View>
                                                                     </View>
-                                                                </View>
                                                             }
                                                         </SwiperItem>
                                                     )
@@ -212,17 +248,17 @@ const Index = (props) => {
                                                             !notChildScroll ? <ScrollView
                                                                 className='swiper-scroll'
                                                                 scrollY
-                                                                lowerThreshold={20}
+                                                                lowerThreshold={0}
                                                                 refresherTriggered={refresh_status}
                                                                 onRefresherRefresh={refresh}
                                                                 onScrollToLower={onLower}
                                                                 refresherEnabled={isRefresh}
                                                             >
-                                                                <View>
+                                                                <View className='autoHeight'>
                                                                     {swiperIndex == index ? props.children : null}
                                                                 </View>
-                                                            </ScrollView> : <View className='swiper-scroll'>
-                                                                <View>
+                                                            </ScrollView> : <View className='swiper-scroll _view'>
+                                                                <View className='autoHeight'>
                                                                     {swiperIndex == index ? props.children : null}
                                                                 </View>
                                                             </View>
@@ -232,7 +268,6 @@ const Index = (props) => {
                                             )
                                         })
                                     }
-
                                 </Swiper>
                             </View>
                         }

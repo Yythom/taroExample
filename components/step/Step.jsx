@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-indent-props */
 import React from 'react';
 import { View, Image } from '@tarojs/components';
-import './styles/step.scss'
+import './step.scss'
 
 const Step = ({ step, className, lineColor, lineH, lineW, isShowIndex, currentIndex, act_lineColor }) => {
     return (
