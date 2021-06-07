@@ -8,6 +8,7 @@
     transition: 400ms;
     transform: translate(-50%, -50%);
     z-index: 999;
+    animation: ans 1600ms;
 
     .modal-header {
         display: flex;
@@ -64,6 +65,16 @@
             left: 50%;
             background-color: rgb(243, 243, 243);
             transform: translateX(-50%);
+        }
+    }
+
+    @keyframes ans {
+        0% {
+            opacity: .0;
+        }
+
+        100% {
+            opacity: 1;
         }
     }
 }

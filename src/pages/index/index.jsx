@@ -5,8 +5,8 @@ import { View, Button } from '@tarojs/components';
 
 import NavBar from '@/components/navbar/NavBar'
 import Step from '@/components/step/Step';
+import Modal from '@/components/modal/Modal';
 import './index.scss';
-import Modal from '@/components/modal（暂放）/Modal';
 
 function Index() {
     const userStore = useSelector(e => e.userStore, shallowEqual);
@@ -23,7 +23,7 @@ function Index() {
             <NavBar background='pink' title='首页' />
             <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
 
-                <Modal show={modal} />
+                <Modal show={modal} setShow={setModal} />
                 <View className=''>
                     <Step step={['内容', 3]}
                         lineH={8}

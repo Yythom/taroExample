@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Input, Text, View } from '@tarojs/components';
-
-import './modal.scss';
-import { onKeyboardHeightChange, showModal } from '@tarojs/taro';
+import { onKeyboardHeightChange } from '@tarojs/taro';
 import { RefInfo, systemInfo } from '@/common/publicFunc';
+import './modal.scss';
 
 const Modal = ({
   show,
+  setShow,
   title = '提示',
   content = '这是一段内容',
   onOk,
@@ -33,6 +33,7 @@ const Modal = ({
     } else {
       console.warn('onOk is not a function');
     }
+    setShow(false);
   };
 
   const handleCancel = () => {
@@ -41,6 +42,7 @@ const Modal = ({
     } else {
       console.warn('onCancel is not a function');
     }
+    setShow(false);
   };
 
   const handleStopProp = (e) => {
