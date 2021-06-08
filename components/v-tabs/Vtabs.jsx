@@ -131,9 +131,6 @@ const Vtabs = ({
                         )
                     })
                 }
-                <SwiperItem >
-
-                </SwiperItem>
             </Swiper>
         </View>
     )
