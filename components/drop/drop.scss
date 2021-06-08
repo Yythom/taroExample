@@ -1,0 +1,48 @@
+.drop_wrap {
+    background-color: #fff;
+    opacity: 0;
+    box-sizing: border-box;
+    position: relative;
+
+    .list_wrap {
+        z-index: 9999;
+        width: 100%;
+        position: absolute;
+        background-color: #fff;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+    }
+
+
+    .drop_item {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 0.6rem;
+        border: none;
+    }
+
+    .act_drop_item {
+        color: violet;
+    }
+
+    .drop-mask {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        z-index: 999;
+        left: 0;
+        background: rgba(0, 0, 0, .5);
+    }
+}
+
+.act_drop_wrap {
+    .drop_item {
+        border-bottom: 0.1rem solid #888;
+
+        &:nth-last-of-type(1) {
+            border-bottom: none !important;
+        }
+    }
+}

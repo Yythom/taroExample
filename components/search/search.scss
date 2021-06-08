@@ -1,0 +1,35 @@
+.home-searchview {
+    display: flex;
+    flex-direction: row;
+
+    .home-search-input {
+        width: 84%;
+        color: #333;
+    }
+
+    .home-searchv {
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0px 0px 10px 0px rgba(9, 44, 76, 0.1);
+        border-radius: 45px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .iconfont {
+            font-size: 30px;
+        }
+
+        .icon-sousuo {
+            font-size: 30px;
+            font-weight: bold;
+            color: #C8CDD1;
+            align-self: center;
+            margin-left: 20px;
+        }
+
+        .home-search {
+            margin-left: 20px;
+            color: #C8CDD1;
+        }
+    }
+}

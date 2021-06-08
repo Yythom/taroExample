@@ -1,0 +1,67 @@
+.ty-nav-bar {
+    box-sizing: border-box;
+
+    &__placeholder {
+        position: relative;
+        visibility: hidden;
+        z-index: 50;
+    }
+
+    &__inner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 5001;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        transition: all 0.3s;
+    }
+
+    &__left {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    &__buttons {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        border-radius: 16PX;
+        border: 1px solid rgba(204, 204, 204, 0.6);
+        position: relative;
+        box-sizing: border-box;
+
+        &::after {
+            position: absolute;
+            content: '';
+            width: 1Px;
+            height: 18.4PX;
+            background: rgba(204, 204, 204, 0.6);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        &.android {
+            border: 1px solid rgba(234, 234, 234, 0.6);
+
+            &::after {
+                background: rgba(234, 234, 234, 0.6);
+            }
+        }
+
+        .iconfont {
+            display: inline-block;
+            width: 50%;
+        }
+    }
+
+    &__center {
+        flex: 1;
+    }
+}

@@ -1,0 +1,5 @@
+@mixin active {
+  &:active {
+    opacity: 0.7;
+  }
+}

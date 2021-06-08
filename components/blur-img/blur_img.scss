@@ -1,0 +1,22 @@
+.image--not-loaded {
+    // fix ios 缺少重绘的问题，添加无意义的transform强制触发重绘
+    transform: scale(1);
+    filter: blur(30px);
+}
+
+.image--is-loaded {
+    // fix ios 缺少重绘的问题，添加无意义的transform强制触发重绘
+    transform: scale(1);
+    filter: blur(20px);
+    animation: sharpen 0.8s both;
+}
+
+@keyframes sharpen {
+    0% {
+        filter: blur(20px);
+    }
+
+    100% {
+        filter: blur(0px);
+    }
+}

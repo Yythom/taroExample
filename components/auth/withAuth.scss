@@ -1,0 +1,22 @@
+button.with-button {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+    font-size: inherit;
+    text-align: inherit;
+    text-decoration: inherit;
+    line-height: inherit;
+    border-radius: 0;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+    cursor: pointer;
+    color: inherit;
+    background-color: inherit;
+}
+
+button.with-button::after {
+    border: none;
+}
