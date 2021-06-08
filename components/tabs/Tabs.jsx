@@ -115,6 +115,7 @@ const Index = (props) => {
             console.log(newList, 'init--list------');
             if (newList) {
                 if (newList.list[0]) {
+                    setPage(1);
                     init(newList)
                 }
             }
