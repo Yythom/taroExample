@@ -114,8 +114,8 @@ const Index = (props) => {
         initing(request, (newList) => {
             console.log(newList, 'init--list------');
             if (newList) {
+                setPage(1)
                 if (newList.list[0]) {
-                    setPage(1);
                     init(newList)
                 }
             }
@@ -173,7 +173,7 @@ const Index = (props) => {
                 && <View className={`tab-wrap  ${className}`}>
                     <View>
                         <View className='sticy'
-                            style={isSticy && { position: 'sticky', top: top ? top : getStorageSync('navHeight') + 'px', zIndex: 999 }}
+                            style={isSticy && { position: 'sticky', top: top ? top : getStorageSync('navHeight') + 'px', zIndex: 90 }}
                         >
                             {
                                 tag_list[0]
