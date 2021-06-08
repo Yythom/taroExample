@@ -17,11 +17,11 @@ import TestService from '@/services/test'
 import FloatBottom from '@/components/float/FloatBottom';
 import { getLocal, lkGoToChangeLocation, lkShowModal, mapRoute } from '@/common/publicFunc';
 import Drop from '@/components/drop/DropDwon';
-import CheckList from '@/components/select-list/CheckList';
+import CheckList from '@/components/check-box/CheckBox';
 import Sticky from '@/components/Sticky';
 import HistorySearch from '@/components/histoty-search/HistorySearch';
 import Vtabs from '@/components/v-tabs/Vtabs';
-// import Modal from '@/components/Modal';
+import Modal from '@/components/modal/Modal';
 
 import { actions } from './store/slice'
 import PickerExample from './PickerExample'
@@ -38,7 +38,7 @@ function Index() {
     const testStore = useSelector(e => e.testStore, shallowEqual);
     const dispatch = useDispatch();
 
-
+    const [modal, setModal] = useState(false);
     useDidShow(() => {
         // const locationInfo = chooseLocation.getLocation();
         // if (locationInfo) {
@@ -58,7 +58,6 @@ function Index() {
     const change_tag = (id) => {
         setIndex(id);
     }
-    //////////////////////////////////
 
     useDidShow(() => {
         TestService.getTestList().then(res => {
@@ -67,9 +66,6 @@ function Index() {
         // getLocal().then(res => {   console.log(res); })
         // dispatch(actions.changeuserInfoActionAsync()) // 测试api
     })
-
-    // 多项选择相关
-    const [selectList, setSelect_list] = useState([])
 
     // 竖的tabs切换
     const [vtabindex, setVtabindex] = useState(0);
@@ -81,18 +77,16 @@ function Index() {
     const [init, setInit] = useState(false)
     return (
         <View className='test-h' >
-            {/* <WebView src='http://172.16.5.18:3002/demo' /> */}
             <NavBar background='pink' renderCenter={<Search isEditor width={300} height={40} />} />
             <View className='img_wrap' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                 <Avatar size={80}></Avatar>
                 <CheckList
-                    list={selectList[0] ? selectList : selectslist}
-                    setList={setSelect_list}
-                    onClick={(list) => {
-                        console.log(list);
-                        setSelect_list(list)
+                    list={[{ title: 'a' }, { title: 'b', }]}
+                    onChange={(list, isSelectAll) => {
+                        console.log(list, isSelectAll);
+                        // setSelect_list(list)
                     }}
-                    renderLeftMap={(item) => {
+                    renderLeftItem={(item) => {
                         return <View className=''>{item.title}</View>
                     }}
                 />
@@ -102,6 +96,8 @@ function Index() {
                     <PickerExample />
                 </View>
             </View >
+            <Button onClick={() => setModal(!modal)}>modal</Button>
+            <Modal show={modal} setShow={setModal} />
 
             <Sticky>
                 <View className='tab' style={{ width: '100%', height: '80px', background: '#3a2b1a', color: '#fff' }}>
@@ -110,9 +106,7 @@ function Index() {
             </Sticky>
 
 
-            <View
-                onClick={() => { setStorageSync('cop_src', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3592591149,2523126110&fm=26&gp=0.jpg'); navigateTo({ url: '/subpages/img_cop/index' }) }}
-            >
+            <View onClick={() => { setStorageSync('cop_src', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3592591149,2523126110&fm=26&gp=0.jpg'); navigateTo({ url: '/subpages/img_cop/index' }) }} >
                 图片裁剪
             </View>
             <View className='' onClick={() => {
@@ -137,9 +131,7 @@ function Index() {
             }} >
                 电影选座
             </View>
-            <View onClick={() => {
-                console.log(aaa);
-            }}>
+            <View onClick={() => { console.log(aaa); }}>
                 打印日志
             </View>
             <View onClick={() => { dispatch(actions.changeuserInfoActionAsync()) }}> 测试请求失败</View>
@@ -155,20 +147,7 @@ function Index() {
                     onChange={(type) => {
                         console.log('选择了=----', type);
                     }}
-                    list={[
-                        {
-                            text: '1111',
-                        },
-                        {
-                            text: '2222',
-                        },
-                        {
-                            text: '3333',
-                        },
-                        {
-                            text: '3333',
-                        }
-                    ]}
+                    list={[{ text: '2', }, { text: '2', }, { text: '2', }, { text: '3', }]}
                 />
                 <Drop
                     spaceName='test'
@@ -178,20 +157,7 @@ function Index() {
                     onChange={(type) => {
                         console.log('选择了=----', type);
                     }}
-                    list={[
-                        {
-                            text: '2',
-                        },
-                        {
-                            text: '2',
-                        },
-                        {
-                            text: '2',
-                        },
-                        {
-                            text: '3',
-                        }
-                    ]}
+                    list={[{ text: '2', }, { text: '2', }, { text: '2', }, { text: '3', }]}
                 />
             </View>
 

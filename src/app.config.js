@@ -7,8 +7,7 @@ export default {
     {
       root: 'subpages/',
       pages: [
-        // 'img_cop/index',
-
+        'create_pages_demo/index',
       ],
     },
   ],
