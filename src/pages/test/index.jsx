@@ -192,7 +192,7 @@ function Index() {
                             return (
                                 <View onClick={() => {
                                     setInit(!init)
-                                }} style={{ height: '100px', background: 'pink' }} key={e.shop_id + e.shop_name}>{e.shop_name}</View>
+                                }} style={{ height: '300px', background: 'pink' }} key={e.shop_id + e.shop_name}>{e.shop_name}</View>
                             )
                         })
                     }
@@ -212,7 +212,7 @@ function Index() {
 
 
             <FloatBottom show={show} setShow={setShow} className='_float_test' style={{ padding: '1.2rem 2rem' }}>
-                <View style={{ background: '#333', height: '300px', width: '100%' }}>111</View>
+                <View style={{ background: '#333', height: '600rpx', width: '100%' }}>111</View>
             </FloatBottom>
 
             <HistorySearch storage_logkey='search_log' api={TestService.get_ShopListApi} />
