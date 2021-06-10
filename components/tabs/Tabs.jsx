@@ -4,6 +4,7 @@ import { View, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import Taro, { createSelectorQuery, getStorageSync } from '@tarojs/taro'
 import paging, { initing } from '../../utils/paging';
 import './tabs.scss'
+import { debounce } from '@/common/utils';
 
 const Index = (props) => {
     const {
@@ -90,21 +91,19 @@ const Index = (props) => {
     }
 
     // swiper到底事件
-    const onLower = () => {
+    const onLower = debounce(() => {
         console.log('到底了');
         paging(request, page, (newList) => {
             if (newList) {
                 if (newList.list[0]) {
                     onScrollBottom(newList);
                     setPage(page + 1)
-                    setTimeout(() => {
-                        initContentHeight(tabIndex)
-                    }, 100);
+                    initContentHeight(tabIndex)
                 }
             }
             setRefresh_status(false)
         });
-    }
+    }, 200)
 
     // 下拉刷新事件
     const refresh = () => {
@@ -225,7 +224,7 @@ const Index = (props) => {
                                                                 !notChildScroll ? <ScrollView
                                                                     className='swiper-scroll'
                                                                     scrollY
-                                                                    lowerThreshold={0}
+                                                                    lowerThreshold={30}
                                                                     refresherTriggered={refresh_status}
                                                                     onRefresherRefresh={refresh}
                                                                     onScrollToLower={onLower}
@@ -248,7 +247,7 @@ const Index = (props) => {
                                                             !notChildScroll ? <ScrollView
                                                                 className='swiper-scroll'
                                                                 scrollY
-                                                                lowerThreshold={0}
+                                                                lowerThreshold={30}
                                                                 refresherTriggered={refresh_status}
                                                                 onRefresherRefresh={refresh}
                                                                 onScrollToLower={onLower}
