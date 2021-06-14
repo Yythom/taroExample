@@ -359,7 +359,7 @@ const getLocal = async () => { // 获取当前位置详情
 function countdown(setTimer, value, setTime) {
     let timer = setInterval(() => {
         value -= 1;
-        let today_unix = dayjs(dayjs().format('YYYY-MM-DD')).unix(); // 当前时间
+        let today_unix = dayjs().unix(); // 当前时间
         let un = value - today_unix;
         if (un > 0) {
             setTime(formatSeconds(un));
