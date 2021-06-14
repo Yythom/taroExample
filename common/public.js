@@ -324,3 +324,7 @@ export function numberToChinese(value) {
     return k.pri_ary()
 }
 
+export function hideMobile(mobile) {
+    if (mobile) return mobile.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2")
+    else return ''
+}
