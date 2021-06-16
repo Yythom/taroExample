@@ -396,6 +396,11 @@ const navLinkTo = (isSubPages = true, url = '', query = {}) => {
     }
 }
 
+function hideMobile(mobile) {
+    if (mobile) return mobile.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2")
+    else return ''
+}
+
 export {
     lkGetSystemInfo, // 获取系统基本信息
     systemInfo, //系统基本信息
@@ -411,6 +416,7 @@ export {
     RefInfo, // 获取dom基本信息
     countdown, // 倒计时处理器
 
+    hideMobile,
     navLinkTo,
 };
 
