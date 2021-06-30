@@ -1,0 +1,24 @@
+.banner_wrap {
+    position: relative;
+
+    .banner {
+        width: 100%;
+        height: 100%;
+
+        image,
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .pag {
+        position: absolute;
+        right: 20px;
+        bottom: 30px;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 6px 24px;
+        border-radius: 30px;
+    }
+}
