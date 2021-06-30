@@ -44,9 +44,6 @@ function compareVersion(va, vb) { //版本号
     return 0;
 }
 
-let loadingFixStatus = false;
-
-
 /**
  *  获取dom基本信息
  * @param {*} dom_className -目标dom类名
