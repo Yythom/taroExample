@@ -25,10 +25,14 @@ export default {
       {
         pagePath: 'pages/test/index',
         text: '测试',
+        // iconPath: 'icon/home.png',
+        // selectedIconPath: 'icon/s-home.png',
       },
       {
         pagePath: 'pages/index/index',
         text: '首页',
+        // iconPath: 'icon/cuotiku.png',
+        // selectedIconPath: 'icon/s-cuotiku.png',
       },
     ],
   },
