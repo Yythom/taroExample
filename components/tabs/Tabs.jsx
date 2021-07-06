@@ -2,9 +2,9 @@
 import React, { useState, useEffect, memo } from 'react';
 import { View, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import Taro, { createSelectorQuery, getStorageSync } from '@tarojs/taro'
+import { debounce } from '@/common/utils';
 import paging, { initing } from '../../utils/paging';
 import './tabs.scss'
-import { debounce } from '@/common/utils';
 
 const Index = (props) => {
     const {
@@ -12,7 +12,7 @@ const Index = (props) => {
         className, // wrap class
         onChange, // change函数
         tag_list, // list=[{title}]  分类列表
-
+        scalc = 1.5, // nav-line缩小倍率
         renderCenter, // 中间可展开筛选区域
         defaultIndex, // 默认选中的index
 
@@ -42,7 +42,7 @@ const Index = (props) => {
     const query = createSelectorQuery();
     const [swiperIndex, setSwiperIndex] = useState(''); // tab index
     const [navInfos, setNavInfos] = useState([]);  // 所有子元素的信息
-    const [navItemWidth, setNavItemWidth] = useState([]);  // 选中下划线的宽度
+    const [navItemWidth, setNavItemWidth] = useState('');  // 选中下划线的宽度
     const [navItemLeft, setNavItemLeft] = useState([]);   // 选中下划线的显示位置
     const [parentLeft, setParentLeft] = useState('');   // 选中下划线的显示位置
     const [componentWidth, setComponentWidth] = useState('');   // 选中下划线的显示位置
@@ -69,7 +69,7 @@ const Index = (props) => {
                             setNavItemLeft(item.left);
                             setNavItemWidth(item.width);
                         }
-                        navInfosArr.push({ width: item.width, left: item.left });
+                        navInfosArr.push({ width: item.width / scalc, left: item.left + (item.width - item.width / scalc) / 2 });
                     });
                     setNavInfos(navInfosArr)
                 }
@@ -145,7 +145,7 @@ const Index = (props) => {
         let scrollLefts = offsetLeft - (componentWidth - info.width) / 2;
         let scrollToLeft = scrollLefts < 0 ? 0 : scrollLefts;
         setScrollLeft(scrollToLeft);
-        setNavItemLeft(info.left)
+        setNavItemLeft(info.left);
         setTimeout(() => {
             setNavItemWidth(info.width)
         }, 50);
@@ -188,7 +188,7 @@ const Index = (props) => {
                                                 )
                                             })
                                         }
-                                        <View className='nav-line' style={{ width: navItemWidth + 'px', left: navItemLeft - 1 + 'px' }} ></View>
+                                        <View className='nav-line' style={{ width: navItemWidth + 'px', left: (navItemLeft - 1) + 'px' }} ></View>
                                     </View>
 
                                 </ScrollView>
