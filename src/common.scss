@@ -1,0 +1,103 @@
+@import '../common/mixins/index.scss';
+
+.handle_input {
+    display: flex;
+    height: 50px;
+
+    .num {
+        font-size: 28px;
+        width: 80px;
+        height: 100%;
+        margin: 0 8px;
+        background-color: rgb(238, 240, 240);
+        text-align: center;
+
+        &::placeholder {
+            color: #333;
+        }
+    }
+
+    .btn {
+        line-height: 50px;
+        text-align: center;
+        width: 60px;
+        height: 100%;
+        background-color: rgb(245, 245, 245);
+        font-size: 40px;
+        color: #999;
+    }
+}
+
+.search {
+    background-color: #fff;
+
+    .iconfont {
+        margin-left: 24px;
+    }
+}
+
+.card {
+    border-radius: 12px;
+    background-color: #fff;
+    height: 100%;
+    width: calc(100vw - 32px);
+    flex-shrink: 0;
+
+    .check {
+        margin-left: 10px;
+        height: 100%;
+        width: 10%;
+
+        .radio {
+            // color: ;
+        }
+    }
+
+    .product {
+        max-width: calc(100vw - 10% - 10px);
+        flex-shrink: 0;
+
+        .img {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .desc {
+            justify-content: center;
+            height: 100%;
+            max-width: calc(100% - 218px - 32px);
+
+            .p-price {
+                font-size: 36px;
+            }
+
+            .p-name {
+                word-break: break-all;
+                @include line(2);
+                font-size: 26px;
+                // margin-bottom: 8px;
+            }
+
+            .p-sku {
+                margin-bottom: 18px;
+                font-size: 24px;
+                color: #999;
+
+                &-item {
+                    color: #999;
+                    padding: 4px 8px;
+                    margin-right: 12px;
+                    border-radius: 8px;
+                    background-color: #eee;
+
+                    &:nth-last-child(1) {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+
+}

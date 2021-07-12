@@ -1,11 +1,97 @@
-@import '../assets/icon.css';
+@import './common.scss';
+// @import './window.scss';
+@import './theme.scss';
 
 .modal-mask {
     width: 100vw;
     height: 100vh;
     position: fixed;
-    z-index: 999;
+    z-index: 9;
     left: 0;
     top: 0;
     background: rgba(0, 0, 0, .5);
+}
+
+page {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+button::after,
+taro-button-core:after {
+    border: none !important;
+}
+
+._money {
+    font-size: 24px;
+}
+
+.fd {
+    display: flex;
+    // align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.fdc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.fc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fb {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ab-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.iconfont {
+    font-size: 40px;
+}
+
+.p-16 {
+    box-sizing: border-box;
+    padding: 0 16px;
+}
+
+.p-24 {
+    box-sizing: border-box;
+    padding: 0 24px;
+}
+
+// view,
+// text {
+//     font-size: 28px;
+// }
+button {
+    background: none;
+    margin: 0;
+    padding: 0;
+}
+
+._money {
+    font-size: 24px;
 }
