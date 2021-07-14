@@ -374,7 +374,7 @@ function countdown(setTimer, value, setTime) {
  * @param {*} url url
  * @param {*} query 参数
  */
-const navLinkTo = (isSubPages = true, url = '', query = {}) => {
+const navLinkTo = (url = '', query = {}, isSubPages = true,) => {
     let search = '';
     if (Object.keys(query)[0]) {
         search = '?';
